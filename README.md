@@ -1,2 +1,2 @@
 # CS449-Nine-Men-Morris
-Repo for CS449 Project
+Remember to branch off of master for any PR
