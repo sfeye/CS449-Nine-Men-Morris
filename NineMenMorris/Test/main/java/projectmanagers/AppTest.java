@@ -1,4 +1,4 @@
-package projectmanagers;
+package main.java.projectmanagers;
 
 import static org.junit.Assert.assertTrue;
 

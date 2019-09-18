@@ -1,6 +1,6 @@
-package projectmanagers.logic;
+package main.java.projectmanagers.logic;
 
-import projectmanagers.logic.GameStatuses.ColorStatus;
+import main.java.projectmanagers.logic.GameStatuses.ColorStatus;
 
 public class Position {
     private final MillConditions[] millConditions;
@@ -11,9 +11,14 @@ public class Position {
         this.status = ColorStatus.EMPTY;
     }
 
-    public void onClick(Player player) {
+    public boolean placePiece(Player player) {
+        if (status == ColorStatus.EMPTY){
             status = player.get_color();
             determineMills();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public ColorStatus get_status() {
@@ -21,6 +26,7 @@ public class Position {
     }
 
     private void determineMills() {
+        // TODO: Sprint 2
     }
 
     public void remove() {

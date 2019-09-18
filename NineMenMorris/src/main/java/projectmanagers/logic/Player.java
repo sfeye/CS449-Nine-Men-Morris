@@ -1,6 +1,6 @@
-package projectmanagers.logic;
+package main.java.projectmanagers.logic;
 
-import projectmanagers.logic.GameStatuses.ColorStatus;
+import main.java.projectmanagers.logic.GameStatuses.ColorStatus;
 public class Player {
     final private ColorStatus color;
     private int totalPieces;

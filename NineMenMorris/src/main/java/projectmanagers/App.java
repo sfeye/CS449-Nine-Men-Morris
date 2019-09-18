@@ -1,4 +1,4 @@
-package projectmanagers;
+package main.java.projectmanagers;
 
 /**
  * Hello world!
