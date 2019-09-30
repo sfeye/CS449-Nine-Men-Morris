@@ -23,4 +23,9 @@ public class Player {
     public int get_placedPieces() {
         return placedPieces;
     }
+
+    public void pieceAdded() {
+        this.totalPieces -= 1;
+        this.placedPieces += 1;
+    }
 }

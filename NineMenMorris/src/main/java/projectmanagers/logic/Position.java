@@ -3,20 +3,25 @@ package main.java.projectmanagers.logic;
 import main.java.projectmanagers.logic.GameStatuses.ColorStatus;
 
 public class Position {
-    private final MillConditions[] millConditions;
+    //private final MillConditions[] millConditions;
     private ColorStatus status;
 
-    public Position(MillConditions[] millConditions) {
-        this.millConditions = millConditions;
+    public Position() {
+        //this.millConditions = millConditions;
         this.status = ColorStatus.EMPTY;
     }
 
-    public boolean placePiece(Player player) {
-        if (status == ColorStatus.EMPTY){
-            status = player.get_color();
+    public boolean placePiece(Player player, int row, int column)
+    {
+        if (Board.boardArray[row][column] == ColorStatus.EMPTY && Board.boardArray[row][column] != ColorStatus.INVALID)
+        {
+            Board.boardArray[row][column] = player.get_color();
+            player.pieceAdded();
             determineMills();
             return true;
-        } else {
+        }
+        else
+            {
             return false;
         }
     }
@@ -29,7 +34,7 @@ public class Position {
         // TODO: Sprint 2
     }
 
-    public void remove() {
-        status = ColorStatus.EMPTY;
+    public void remove(int row, int column) {
+        Board.boardArray[row][column] = ColorStatus.EMPTY;
     }
 }
