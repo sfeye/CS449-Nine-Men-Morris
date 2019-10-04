@@ -5,15 +5,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+import static main.java.projectmanagers.trackers.PlayerTracking.RED_PLAYER;
+
 public class Player1Panel extends JPanel {
     private Color bgc = new Color(116,101,72);
     private static ArrayList<PlayerPieces> pieces;
     public JLabel player1Txt;
-    public static int turns = 8;
     private GridBagConstraints gbc;
 
     public Player1Panel () {
-        pieces = new ArrayList<>(turns);
+        pieces = new ArrayList<>(RED_PLAYER.getTurns());
         gbc = new GridBagConstraints();
         player1Txt = new JLabel("Player 1");
         buildPanel();
@@ -28,22 +29,22 @@ public class Player1Panel extends JPanel {
         trackTurns();
     }
     public void trackTurns () {
-        for (int i = 0; i <= turns; i++) {
+        for (int i = 0; i <= RED_PLAYER.getTurns(); i++) {
             gbc.gridy = i + 1;
             pieces.add(new PlayerPieces(Color.red, Color.black));
             add(pieces.get(i), gbc);
         }
     }
     public void decrementTurns() {
-        if (turns >= 0) {
-            pieces.get(turns).setBg(bgc);
-            pieces.get(turns).setOL(bgc);
-            turns--;
+        if (RED_PLAYER.getTurns() >= 0) {
+            pieces.get(RED_PLAYER.getTurns()).setBg(bgc);
+            pieces.get(RED_PLAYER.getTurns()).setOL(bgc);
+            RED_PLAYER.decrementTurns();
             repaint();
         }
     }
     public static boolean hasTurn() {
-        if (turns >= 0)
+        if (RED_PLAYER.getTurns() >= 0)
             return true;
         return false;
     }

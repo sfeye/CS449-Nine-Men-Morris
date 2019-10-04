@@ -3,29 +3,41 @@ package main.java.projectmanagers.logic;
 import main.java.projectmanagers.logic.GameStatuses.ColorStatus;
 public class Player {
     final private ColorStatus color;
-    private int totalPieces;
-    private int placedPieces;
+    private int pieces;
+    private int turns;
 
     public Player(ColorStatus color) {
         this.color = color;
-        this.totalPieces = 9;
-        this.placedPieces = 0;
+        this.pieces = 0;
+        this.turns = 8;
     }
 
-    public ColorStatus get_color() {
+    public ColorStatus getColor() {
         return color;
     }
 
-    public int get_totalPieces() {
-        return totalPieces;
+    public int getPieces() {
+        return pieces;
     }
 
-    public int get_placedPieces() {
-        return placedPieces;
+    public int getTurns() {
+        return turns;
     }
 
-    public void pieceAdded() {
-        this.totalPieces -= 1;
-        this.placedPieces += 1;
+    public void decrementTurns(){
+        turns--;
+    }
+
+    public void incrementPieces() {
+        this.pieces++;
+    }
+
+    public void decrementPieces(){
+        this.pieces--;
+    }
+
+    public void setInitialVariables() {
+        this.pieces = 0;
+        this.turns = 8;
     }
 }

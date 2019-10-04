@@ -1,63 +1,93 @@
 package main.java.projectmanagers.logic;
 
+import static main.java.projectmanagers.logic.GameStatuses.ColorStatus;
+import static main.java.projectmanagers.logic.GameStatuses.ColorStatus.EMPTY;
+import static main.java.projectmanagers.logic.GameStatuses.ColorStatus.INVALID;
+import static main.java.projectmanagers.trackers.PlayerTracking.PLAYER_LOOKUP;
 
 public class Board {
 
-    //GameStatuses.ColorStatus boardArrayTEST[] = new GameStatuses.ColorStatus[24];
-
-    static public GameStatuses.ColorStatus[][] boardArray = new GameStatuses.ColorStatus[7][7];
-    static public GameStatuses.ColorStatus[][] boardMills = new GameStatuses.ColorStatus[16][3];
+    static private ColorStatus[][] boardArray = new ColorStatus[7][7];
+    static public ColorStatus[][] boardMills = new ColorStatus[16][3];
 
     public Board() {
         startingBoard();
-        //millAllocation();
     }
 
-    private void startingBoard() {
+    static public void startingBoard() {
 
         //row,column
-        boardArray[0][0] = GameStatuses.ColorStatus.EMPTY;
-        boardArray[0][3] = GameStatuses.ColorStatus.EMPTY;
-        boardArray[0][6] = GameStatuses.ColorStatus.EMPTY;
+        boardArray[0][0] = EMPTY;
+        boardArray[0][3] = EMPTY;
+        boardArray[0][6] = EMPTY;
 
-        boardArray[1][1] = GameStatuses.ColorStatus.EMPTY;
-        boardArray[1][3] = GameStatuses.ColorStatus.EMPTY;
-        boardArray[1][5] = GameStatuses.ColorStatus.EMPTY;
+        boardArray[1][1] = EMPTY;
+        boardArray[1][3] = EMPTY;
+        boardArray[1][5] = EMPTY;
 
-        boardArray[2][2] = GameStatuses.ColorStatus.EMPTY;
-        boardArray[2][3] = GameStatuses.ColorStatus.EMPTY;
-        boardArray[2][4] = GameStatuses.ColorStatus.EMPTY;
+        boardArray[2][2] = EMPTY;
+        boardArray[2][3] = EMPTY;
+        boardArray[2][4] = EMPTY;
 
-        boardArray[3][0] = GameStatuses.ColorStatus.EMPTY;
-        boardArray[3][1] = GameStatuses.ColorStatus.EMPTY;
-        boardArray[3][2] = GameStatuses.ColorStatus.EMPTY;
-        boardArray[3][4] = GameStatuses.ColorStatus.EMPTY;
-        boardArray[3][5] = GameStatuses.ColorStatus.EMPTY;
-        boardArray[3][6] = GameStatuses.ColorStatus.EMPTY;
+        boardArray[3][0] = EMPTY;
+        boardArray[3][1] = EMPTY;
+        boardArray[3][2] = EMPTY;
+        boardArray[3][4] = EMPTY;
+        boardArray[3][5] = EMPTY;
+        boardArray[3][6] = EMPTY;
 
-        boardArray[4][2] = GameStatuses.ColorStatus.EMPTY;
-        boardArray[4][3] = GameStatuses.ColorStatus.EMPTY;
-        boardArray[4][4] = GameStatuses.ColorStatus.EMPTY;
+        boardArray[4][2] = EMPTY;
+        boardArray[4][3] = EMPTY;
+        boardArray[4][4] = EMPTY;
 
-        boardArray[5][1] = GameStatuses.ColorStatus.EMPTY;
-        boardArray[5][3] = GameStatuses.ColorStatus.EMPTY;
-        boardArray[5][5] = GameStatuses.ColorStatus.EMPTY;
+        boardArray[5][1] = EMPTY;
+        boardArray[5][3] = EMPTY;
+        boardArray[5][5] = EMPTY;
 
-        boardArray[6][0] = GameStatuses.ColorStatus.EMPTY;
-        boardArray[6][3] = GameStatuses.ColorStatus.EMPTY;
-        boardArray[6][6] = GameStatuses.ColorStatus.EMPTY;
+        boardArray[6][0] = EMPTY;
+        boardArray[6][3] = EMPTY;
+        boardArray[6][6] = EMPTY;
 
         for (int i = 0; i < 7; i++)
         {
             for (int j = 0; j < 7; j++)
             {
-                if (boardArray[i][j] != GameStatuses.ColorStatus.EMPTY)
-                    boardArray[i][j] = GameStatuses.ColorStatus.INVALID;
+                if (boardArray[i][j] != EMPTY)
+                    boardArray[i][j] = INVALID;
             }
         }
     }
 
-    private void millAllocation() {
+    static public boolean placePiece(Player player, int row, int column) {
+        if ((Board.boardArray[row][column] == EMPTY) && (Board.boardArray[row][column] != INVALID)) {
+            Board.boardArray[row][column] = player.getColor();
+            player.incrementPieces();
+            determineMills();
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    static public boolean remove(int row, int column) {
+        if (boardArray[row][column] != EMPTY && boardArray[row][column] != INVALID) {
+            PLAYER_LOOKUP.get(boardArray[row][column]).decrementPieces();
+            boardArray[row][column] = EMPTY;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    static public ColorStatus position(int row, int column){
+        return boardArray[row][column];
+    }
+    static private void determineMills(){
+        //TODO: Sprint 2
+    }
+
+    static private void millAllocation() {
         // TODO: Sprint 2
 
 
@@ -127,9 +157,6 @@ public class Board {
         boardMills[15][1] = ;
         boardMills[15][2] = ;
         */
-
-
-
 
     }
 }

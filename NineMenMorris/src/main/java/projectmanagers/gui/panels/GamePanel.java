@@ -5,11 +5,13 @@ import java.awt.*;
 import java.util.ArrayList;
 import main.java.projectmanagers.gui.components.*;
 import main.java.projectmanagers.logic.Board;
-import main.java.projectmanagers.logic.GameStatuses;
+
+import static main.java.projectmanagers.logic.GameStatuses.ColorStatus.EMPTY;
+import static main.java.projectmanagers.logic.GameStatuses.ColorStatus.INVALID;
+import static main.java.projectmanagers.trackers.PlayerTracking.BLUE_PLAYER;
+import static main.java.projectmanagers.trackers.PlayerTracking.RED_PLAYER;
 
 public class GamePanel extends JPanel {
-    private int player1Count;
-    private int player2Count;
     public GridBagConstraints gbc;
     public static ArrayList<BoardPieces> boardPieces;
     public static ArrayList<PlayerPieces> player1Pieces;
@@ -27,7 +29,7 @@ public class GamePanel extends JPanel {
         remove(piece);
         gbc.gridx = piece.getXCoordinate(); gbc.gridy = piece.getYCoordinate();
         add(new BoardPieces(piece.getXCoordinate(), piece.getYCoordinate()), gbc);
-        player1Count--;
+        RED_PLAYER.decrementPieces();
         revalidate();
         repaint();
     }
@@ -35,7 +37,7 @@ public class GamePanel extends JPanel {
         remove(piece);
         gbc.gridx = piece.getXCoordinate(); gbc.gridy = piece.getYCoordinate();
         add(new BoardPieces(piece.getXCoordinate(), piece.getYCoordinate()), gbc);
-        player2Count--;
+        BLUE_PLAYER.decrementPieces();
         revalidate();
         repaint();
     }
@@ -46,22 +48,24 @@ public class GamePanel extends JPanel {
     public void addPlayer1Piece(BoardPieces piece){
         remove(piece);
         gbc.gridx = piece.getXCoordinate(); gbc.gridy = piece.getYCoordinate();
-        player1Pieces.get(player1Count).setX(piece.getXCoordinate());   player1Pieces.get(player1Count).setY(piece.getYCoordinate());
-        add(player1Pieces.get(player1Count), gbc);
-        player1Count++;
+        player1Pieces.get(RED_PLAYER.getPieces()).setX(piece.getXCoordinate());
+        player1Pieces.get(RED_PLAYER.getPieces()).setY(piece.getYCoordinate());
+
+        add(player1Pieces.get(RED_PLAYER.getPieces()), gbc);
+        Board.placePiece(RED_PLAYER, piece.getXCoordinate(), piece.getYCoordinate());
         revalidate();
         repaint();
-        Board.boardArray[piece.getXCoordinate()][piece.getYCoordinate()] = GameStatuses.ColorStatus.BLACK;
     }
     public void addPlayer2Piece(BoardPieces piece){
         remove(piece);
         gbc.gridx = piece.getXCoordinate(); gbc.gridy = piece.getYCoordinate();
-        player2Pieces.get(player2Count).setX(piece.getXCoordinate());   player2Pieces.get(player2Count).setY(piece.getYCoordinate());
-        add(player2Pieces.get(player2Count), gbc);
-        player2Count++;
+        player2Pieces.get(BLUE_PLAYER.getPieces()).setX(piece.getXCoordinate());
+        player2Pieces.get(BLUE_PLAYER.getPieces()).setY(piece.getYCoordinate());
+
+        add(player2Pieces.get(BLUE_PLAYER.getPieces()), gbc);
+        Board.placePiece(BLUE_PLAYER, piece.getXCoordinate(), piece.getYCoordinate());
         revalidate();
         repaint();
-        Board.boardArray[piece.getXCoordinate()][piece.getYCoordinate()] = GameStatuses.ColorStatus.WHITE;
     }
 
     public void buildBoard () {
@@ -77,11 +81,9 @@ public class GamePanel extends JPanel {
         boardPieces.clear();
         player1Pieces.clear();
         player2Pieces.clear();
-        player1Count = 0;
-        player2Count = 0;
         for (int i = 0; i < 7; i++){
             for (int j = 0; j < 7; j++) {
-                if(Board.boardArray[i][j] == GameStatuses.ColorStatus.EMPTY)
+                if(Board.position(i, j) == EMPTY)
                     boardPieces.add(new BoardPieces(i, j));
             }
         }
@@ -95,7 +97,7 @@ public class GamePanel extends JPanel {
         int count = 0;
         for (int i = 0; i < 7 ; i ++) {
             for (int j = 0; j < 7; j++) {
-                if(Board.boardArray[i][j] == GameStatuses.ColorStatus.EMPTY){
+                if(Board.position(i, j) == EMPTY){
                     gbc.gridx = i; gbc.gridy = j;
                     add(boardPieces.get(count), gbc);
                     count++;
@@ -106,7 +108,7 @@ public class GamePanel extends JPanel {
     public void drawBoardLines() {
         for (int i = 0; i < 7 ; i ++) {
             for (int j = 0; j < 7; j++) {
-                if(Board.boardArray[i][j] == GameStatuses.ColorStatus.INVALID){
+                if(Board.position(i, j) == INVALID){
                     gbc.gridx = i; gbc.gridy = j;
                     if ((j == 0 || j == 1 || j == 5 || j == 6) && (i != 0 && i != 6)) {
                         gbc.fill = GridBagConstraints.HORIZONTAL;
