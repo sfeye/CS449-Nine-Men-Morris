@@ -7,7 +7,11 @@ public class App
 {
     public static void main( String[] args )
     {
+
         Board board = new Board();
-        GameBoardGui.start();
+
+        System.out.println(board.adjacent(3,2));
+
+        //GameBoardGui.start();
     }
 }

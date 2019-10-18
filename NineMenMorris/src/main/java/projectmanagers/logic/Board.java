@@ -48,10 +48,8 @@ public class Board {
         boardArray[6][3] = EMPTY;
         boardArray[6][6] = EMPTY;
 
-        for (int i = 0; i < 7; i++)
-        {
-            for (int j = 0; j < 7; j++)
-            {
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 7; j++) {
                 if (boardArray[i][j] != EMPTY)
                     boardArray[i][j] = INVALID;
             }
@@ -64,8 +62,7 @@ public class Board {
             player.incrementPieces();
             determineMills();
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -80,10 +77,11 @@ public class Board {
         }
     }
 
-    static public ColorStatus position(int row, int column){
+    static public ColorStatus position(int row, int column) {
         return boardArray[row][column];
     }
-    static private void determineMills(){
+
+    static private void determineMills() {
         //TODO: Sprint 2
     }
 
@@ -159,4 +157,84 @@ public class Board {
         */
 
     }
+
+    static public int[] adjacent(int row, int column) {
+
+        int [] aPieces = new int[] {};
+
+        if (row == 0)
+        {
+            if (column == 0)
+                aPieces = new int[]{03, 30};
+            else if (column == 3)
+                aPieces = new int[]{00, 06, 13};
+            else if (column == 6)
+                aPieces = new int[]{03, 36};
+        }
+        else if (row == 1)
+        {
+            if (column == 1)
+                aPieces = new int[]{31, 13};
+            else if (column == 3)
+                aPieces = new int[]{03, 11, 15, 23};
+            else if (column == 5)
+                aPieces = new int[]{13, 35};
+        }
+        else if (row == 2)
+        {
+            if (column == 2)
+                aPieces = new int[]{32, 23};
+            else if (column == 3)
+                aPieces = new int[]{22, 13, 24};
+            else if (column == 4)
+                aPieces = new int[]{23, 34};
+        }
+        else if (row == 3)
+        {
+            if (column == 0)
+                aPieces = new int[]{00, 60, 31};
+            else if (column == 1)
+                aPieces = new int[]{30, 11, 51, 32};
+            else if (column == 2)
+                aPieces = new int[]{31, 22, 42};
+            else if (column == 4)
+                aPieces = new int[]{35, 24, 44};
+            else if (column == 5)
+                aPieces = new int[]{34, 15, 55, 36};
+            else if (column == 6)
+                aPieces = new int[]{35, 06, 66};
+        }
+        else if (row == 4)
+        {
+            if (column == 2)
+                aPieces = new int[]{32, 42};
+            else if (column == 3)
+                aPieces = new int[]{42, 53, 44};
+            else if (column == 4)
+                aPieces = new int[]{42, 34};
+        }
+        else if (row == 5)
+        {
+            if (column == 1)
+                aPieces = new int[]{31, 53};
+            else if (column == 3)
+                aPieces = new int[]{63, 51, 55, 43};
+            else if (column == 5)
+                aPieces = new int[]{53, 35};
+        }
+        else if (row == 6)
+        {
+            if (column == 0)
+                aPieces = new int[]{63, 30};
+            else if (column == 3)
+                aPieces = new int[]{60, 66 ,53};
+            else if (column == 6)
+                aPieces = new int[]{63, 36};
+        }
+
+        return aPieces;
+
+    }
+
+
 }
