@@ -1,4 +1,5 @@
 package main.java.projectmanagers.gui;
+import main.java.projectmanagers.gui.components.PlayerPieces;
 import main.java.projectmanagers.gui.panels.*;
 
 import javax.swing.*;
@@ -85,16 +86,22 @@ public class GameBoardGui extends JFrame {
             GamePanel.boardPieces.get(i).addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent me) {
-                    if(twoPlayerGame) {
-                        if (aTurn && player1Panel.hasTurn()) {
+                    if(twoPlayerGame && (player1Panel.hasTurn() || player2Panel.hasTurn())) {
+                        if (aTurn) {
                             gamePanel.addPlayer1Piece(GamePanel.boardPieces.get(temp));
                             player1Panel.decrementTurns();
                             aTurn = !aTurn;
-                        } else if (!aTurn && player2Panel.hasTurn()) {
+                        } else{
                             gamePanel.addPlayer2Piece(GamePanel.boardPieces.get(temp));
                             player2Panel.decrementTurns();
                             aTurn = !aTurn;
                         }
+                    }
+                    else if(twoPlayerGame && PlayerPieces.isSelected && aTurn){
+                        gamePanel.slidePiece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer1Piece());
+                    }
+                    else if(twoPlayerGame && PlayerPieces.isSelected && !aTurn){
+                        gamePanel.slidePiece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer2Piece());
                     }
                 }
             });
@@ -109,7 +116,14 @@ public class GameBoardGui extends JFrame {
                     if(!player1Panel.hasTurn() && !player2Panel.hasTurn()) {
                         if(isMill)
                             gamePanel.millPlayer1Remove(gamePanel.player1Pieces.get(temp));
-                        aTurn = !aTurn;
+                        else if (aTurn && !PlayerPieces.isSelected){
+                            gamePanel.player1Pieces.get(temp).selectPiece();
+                            gamePanel.setSelectedPiece(gamePanel.player1Pieces.get(temp));
+                        }
+                        else if (!aTurn && !PlayerPieces.isSelected) {
+                            gamePanel.player2Pieces.get(temp).selectPiece();
+                            gamePanel.setSelectedPiece(gamePanel.player2Pieces.get(temp));
+                        }
                     }
                 }
             });

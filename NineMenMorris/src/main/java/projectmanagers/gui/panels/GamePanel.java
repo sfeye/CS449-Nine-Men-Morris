@@ -5,6 +5,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import main.java.projectmanagers.gui.components.*;
 import main.java.projectmanagers.logic.Board;
+import main.java.projectmanagers.logic.Player;
 
 import static main.java.projectmanagers.logic.GameStatuses.ColorStatus.EMPTY;
 import static main.java.projectmanagers.logic.GameStatuses.ColorStatus.INVALID;
@@ -16,6 +17,7 @@ public class GamePanel extends JPanel {
     public static ArrayList<BoardPieces> boardPieces;
     public static ArrayList<PlayerPieces> player1Pieces;
     public static ArrayList<PlayerPieces> player2Pieces;
+    private PlayerPieces selectedPiece;
 
     public GamePanel () {
         super();
@@ -42,8 +44,42 @@ public class GamePanel extends JPanel {
         repaint();
     }
     //TODO: Sprint two slide piece
-    public void slidePiece(PlayerPieces piece){
+    public void slidePiece(BoardPieces blackPiece, PlayerPieces playerPiece){
+        remove(blackPiece);
+        remove(playerPiece);
+        gbc.gridx = blackPiece.getXCoordinate(); gbc.gridy = blackPiece.getYCoordinate();
+        add(playerPiece, gbc, 0);
+        gbc.gridx = selectedPiece.getXCoordinate(); gbc.gridy = selectedPiece.getYCoordinate();
+        //add(blackPiece, gbc, 1);
+        swapCoordinates(blackPiece, playerPiece);
 
+        revalidate();
+        repaint();
+    }
+    public void swapCoordinates(BoardPieces blackPiece, PlayerPieces playerPiece) {
+        int tempx = blackPiece.getX();  int tempy = blackPiece.getY();
+        blackPiece.setXCoordinate(playerPiece.getX());
+        blackPiece.setYCoordinate(playerPiece.getYCoordinate());
+        playerPiece.setX(tempx);    playerPiece.setY(tempy);
+    }
+    public void setSelectedPiece(PlayerPieces piece) {
+        selectedPiece = piece;
+        selectedPiece.setX(piece.getX());
+        selectedPiece.setY(piece.getY());
+    }
+    public PlayerPieces getSelectedPlayer1Piece() {
+        for (PlayerPieces red : player1Pieces) {
+            if (red.getXCoordinate() == selectedPiece.getXCoordinate() && red.getYCoordinate() == selectedPiece.getYCoordinate())
+                return red;
+        }
+        return null;
+    }
+    public PlayerPieces getSelectedPlayer2Piece() {
+        for (PlayerPieces blue : player2Pieces) {
+            if (blue.getXCoordinate() == selectedPiece.getXCoordinate() && blue.getYCoordinate() == selectedPiece.getYCoordinate())
+                return blue;
+        }
+        return null;
     }
     public void addPlayer1Piece(BoardPieces piece){
         remove(piece);

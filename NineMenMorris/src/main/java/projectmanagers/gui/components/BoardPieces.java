@@ -55,6 +55,8 @@ public class BoardPieces extends JButton{
     }
     public int getXCoordinate () { return x; }
     public int getYCoordinate () { return y; }
+    public void setXCoordinate (int x) { this.x = x; }
+    public void setYCoordinate (int y) { this.y = y; }
     private int getDiameter() {
         diameter = Math.min(getWidth(), getHeight());
         return diameter;
@@ -77,7 +79,7 @@ public class BoardPieces extends JButton{
         //fill oval will change the color of the inside of the circle
         g.fillOval(getWidth() / 2 - radius, getHeight() / 2 - radius, diameter, diameter);
         //Highlight the current board selection
-        if (mouseOver && g.getColor() == Color.black && (Player1Panel.hasTurn() || Player2Panel.hasTurn()))
+        if (mouseOver && g.getColor() == Color.black && (Player1Panel.hasTurn() || Player2Panel.hasTurn() || PlayerPieces.isSelected))
             g.setColor(Color.yellow);
         else
             g.setColor(Color.black);
