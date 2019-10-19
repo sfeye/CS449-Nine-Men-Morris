@@ -5,6 +5,7 @@ package main.java.projectmanagers.logic;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static main.java.projectmanagers.logic.GameStatuses.ColorStatus;
@@ -165,7 +166,7 @@ public class Board {
 
     }
 
-    static public List<Pair<Integer, Integer>> adjacent(int xpos, int ypos) {
+    static public List<Pair<Integer, Integer>> adjacentPieces(int xpos, int ypos) {
 
         List<Pair<Integer, Integer>> adjacentPieces = new ArrayList<>();
 
@@ -296,10 +297,10 @@ public class Board {
                     adjacentPieces.add(new Pair<>(6, 3));
                 }
                 break;
+            default:
+                adjacentPieces = Collections.emptyList();
         }
-
         return adjacentPieces;
-
     }
 
 
