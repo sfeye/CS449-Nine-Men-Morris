@@ -1,5 +1,13 @@
 package main.java.projectmanagers.logic;
 
+
+
+import javafx.util.Pair;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import static main.java.projectmanagers.logic.GameStatuses.ColorStatus;
 import static main.java.projectmanagers.logic.GameStatuses.ColorStatus.EMPTY;
 import static main.java.projectmanagers.logic.GameStatuses.ColorStatus.INVALID;
@@ -14,9 +22,9 @@ public class Board {
         startingBoard();
     }
 
-    static public void startingBoard() {
+    static void startingBoard() {
 
-        //row,column
+        // xpos, ypos
         boardArray[0][0] = EMPTY;
         boardArray[0][3] = EMPTY;
         boardArray[0][6] = EMPTY;
@@ -48,42 +56,40 @@ public class Board {
         boardArray[6][3] = EMPTY;
         boardArray[6][6] = EMPTY;
 
-        for (int i = 0; i < 7; i++)
-        {
-            for (int j = 0; j < 7; j++)
-            {
-                if (boardArray[i][j] != EMPTY)
-                    boardArray[i][j] = INVALID;
+        for (int xpos = 0; xpos < 7; xpos++) {
+            for (int ypos = 0; ypos < 7; ypos++) {
+                if (boardArray[xpos][ypos] != EMPTY)
+                    boardArray[xpos][ypos] = INVALID;
             }
         }
     }
 
-    static public boolean placePiece(Player player, int row, int column) {
-        if ((Board.boardArray[row][column] == EMPTY) && (Board.boardArray[row][column] != INVALID)) {
-            Board.boardArray[row][column] = player.getColor();
+    static public boolean placePiece(Player player, int xpos, int ypos) {
+        if ((Board.boardArray[xpos][ypos] == EMPTY) && (Board.boardArray[xpos][ypos] != INVALID)) {
+            Board.boardArray[xpos][ypos] = player.getColor();
             player.incrementPieces();
             determineMills();
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    static public boolean remove(int row, int column) {
-        if (boardArray[row][column] != EMPTY && boardArray[row][column] != INVALID) {
-            PLAYER_LOOKUP.get(boardArray[row][column]).decrementPieces();
-            boardArray[row][column] = EMPTY;
             return true;
         } else {
             return false;
         }
     }
 
-    static public ColorStatus position(int row, int column){
-        return boardArray[row][column];
+    static public boolean remove(int xpos, int ypos) {
+        if (boardArray[xpos][ypos] != EMPTY && boardArray[xpos][ypos] != INVALID) {
+            PLAYER_LOOKUP.get(boardArray[xpos][ypos]).decrementPieces();
+            boardArray[xpos][ypos] = EMPTY;
+            return true;
+        } else {
+            return false;
+        }
     }
-    static private void determineMills(){
+
+    static public ColorStatus position(int xpos, int ypos) {
+        return boardArray[xpos][ypos];
+    }
+
+    static private void determineMills() {
         //TODO: Sprint 2
     }
 
@@ -159,4 +165,143 @@ public class Board {
         */
 
     }
+
+    static public List<Pair<Integer, Integer>> adjacentPieces(int xpos, int ypos) {
+
+        List<Pair<Integer, Integer>> adjacentPieces = new ArrayList<>();
+
+        switch (ypos) {
+            case 0:
+                if (xpos == 0) {
+                    adjacentPieces.add(new Pair<>(3, 0));
+                    adjacentPieces.add(new Pair<>(0, 3));
+                }
+                else if (xpos == 3) {
+                    adjacentPieces.add(new Pair<>(0, 0));
+                    adjacentPieces.add(new Pair<>(6, 0));
+                    adjacentPieces.add(new Pair<>(3, 1));
+                }
+                else if (xpos == 6) {
+                    adjacentPieces.add(new Pair<>(3, 0));
+                    adjacentPieces.add(new Pair<>(6, 3));
+                }
+                break;
+            case 1:
+                if (xpos == 1) {
+                    adjacentPieces.add(new Pair<>(1, 3));
+                    adjacentPieces.add(new Pair<>(3, 1));
+                }
+                else if (xpos == 3) {
+                    adjacentPieces.add(new Pair<>(3, 0));
+                    adjacentPieces.add(new Pair<>(1, 1));
+                    adjacentPieces.add(new Pair<>(5, 1));
+                    adjacentPieces.add(new Pair<>(3, 2));
+                }
+                else if (xpos == 5) {
+                    adjacentPieces.add(new Pair<>(3, 1));
+                    adjacentPieces.add(new Pair<>(5, 3));
+                }
+                break;
+            case 2:
+                if (xpos == 2) {
+                    adjacentPieces.add(new Pair<>(2, 3));
+                    adjacentPieces.add(new Pair<>(3, 2));
+                }
+                else if (xpos == 3) {
+                    adjacentPieces.add(new Pair<>(2, 2));
+                    adjacentPieces.add(new Pair<>(3, 1));
+                    adjacentPieces.add(new Pair<>(4, 2));
+                }
+                else if (xpos == 4) {
+                    adjacentPieces.add(new Pair<>(3, 2));
+                    adjacentPieces.add(new Pair<>(4, 3));
+                }
+                break;
+            case 3:
+                if (xpos == 0) {
+                    adjacentPieces.add(new Pair<>(0, 0));
+                    adjacentPieces.add(new Pair<>(0, 6));
+                    adjacentPieces.add(new Pair<>(1, 3));
+                }
+                else if (xpos == 1) {
+                    adjacentPieces.add(new Pair<>(0, 3));
+                    adjacentPieces.add(new Pair<>(1, 1));
+                    adjacentPieces.add(new Pair<>(1, 5));
+                    adjacentPieces.add(new Pair<>(2, 3));
+                }
+                else if (xpos == 2) {
+                    adjacentPieces.add(new Pair<>(1, 3));
+                    adjacentPieces.add(new Pair<>(2, 2));
+                    adjacentPieces.add(new Pair<>(2, 4));
+                }
+                else if (xpos == 4) {
+                    adjacentPieces.add(new Pair<>(5, 3));
+                    adjacentPieces.add(new Pair<>(4, 2));
+                    adjacentPieces.add(new Pair<>(4, 4));
+                }
+                else if (xpos == 5) {
+                    adjacentPieces.add(new Pair<>(4, 3));
+                    adjacentPieces.add(new Pair<>(5, 1));
+                    adjacentPieces.add(new Pair<>(5, 5));
+                    adjacentPieces.add(new Pair<>(6, 3));
+                }
+                else if (xpos == 6) {
+                    adjacentPieces.add(new Pair<>(5, 3));
+                    adjacentPieces.add(new Pair<>(6, 0));
+                    adjacentPieces.add(new Pair<>(6, 6));
+                }
+                break;
+            case 4:
+                if (xpos == 2) {
+                    adjacentPieces.add(new Pair<>(2, 3));
+                    adjacentPieces.add(new Pair<>(2, 4));
+                }
+                else if (xpos == 3) {
+                    adjacentPieces.add(new Pair<>(2, 4));
+                    adjacentPieces.add(new Pair<>(3, 5));
+                    adjacentPieces.add(new Pair<>(4, 4));
+                }
+                else if (xpos == 4) {
+                    adjacentPieces.add(new Pair<>(2, 4));
+                    adjacentPieces.add(new Pair<>(4, 3));
+                }
+                break;
+            case 5:
+                if (xpos == 1) {
+                    adjacentPieces.add(new Pair<>(1, 3));
+                    adjacentPieces.add(new Pair<>(3, 5));
+                }
+                else if (xpos == 3) {
+                    adjacentPieces.add(new Pair<>(3, 6));
+                    adjacentPieces.add(new Pair<>(1, 5));
+                    adjacentPieces.add(new Pair<>(5, 5));
+                    adjacentPieces.add(new Pair<>(3, 4));
+                }
+                else if (xpos == 5) {
+                    adjacentPieces.add(new Pair<>(3, 5));
+                    adjacentPieces.add(new Pair<>(5, 3));
+                }
+                break;
+            case 6:
+                if (xpos == 0) {
+                    adjacentPieces.add(new Pair<>(3, 6));
+                    adjacentPieces.add(new Pair<>(0, 3));
+                }
+                else if (xpos == 3) {
+                    adjacentPieces.add(new Pair<>(0, 6));
+                    adjacentPieces.add(new Pair<>(6, 6));
+                    adjacentPieces.add(new Pair<>(3, 5));
+                }
+                else if (xpos == 6) {
+                    adjacentPieces.add(new Pair<>(3, 6));
+                    adjacentPieces.add(new Pair<>(6, 3));
+                }
+                break;
+            default:
+                adjacentPieces = Collections.emptyList();
+        }
+        return adjacentPieces;
+    }
+
+
 }
