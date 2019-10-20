@@ -114,12 +114,12 @@ public class GameBoardGui extends JFrame {
                     }
                     else if(twoPlayerGame && PlayerPieces.isSelected && aTurn){
                         gamePanel.swapPlayerPiece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer1Piece());
-                        PlayerPieces.isSelected = false;
+                        PlayerPieces.deselectPiece();
                         aTurn = !aTurn;
                     }
                     else if(twoPlayerGame && PlayerPieces.isSelected && !aTurn){
                         gamePanel.swapPlayerPiece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer2Piece());
-                        PlayerPieces.isSelected = false;
+                        PlayerPieces.deselectPiece();
                         aTurn = !aTurn;
                     }
                 }
@@ -137,9 +137,11 @@ public class GameBoardGui extends JFrame {
                         if(isMill)
                             gamePanel.millPlayer1Remove(gamePanel.player1Pieces.get(temp));
                         else if (aTurn && !PlayerPieces.isSelected) {
-                            PlayerPieces.isSelected = true;
+                            gamePanel.player1Pieces.get(temp).selectPiece();
                             gamePanel.setSelectedPiece(gamePanel.player1Pieces.get(temp));
                         }
+                        else if (aTurn && PlayerPieces.isSelected)
+                            PlayerPieces.deselectPiece();
                     }
                 }
             });
@@ -155,9 +157,11 @@ public class GameBoardGui extends JFrame {
                         if(isMill)
                             gamePanel.millPlayer2Remove(gamePanel.player2Pieces.get(temp));
                         else if (!aTurn && !PlayerPieces.isSelected) {
-                            PlayerPieces.isSelected = true;
+                            gamePanel.player2Pieces.get(temp).selectPiece();
                             gamePanel.setSelectedPiece(gamePanel.player2Pieces.get(temp));
                         }
+                        else if (!aTurn && PlayerPieces.isSelected)
+                            PlayerPieces.deselectPiece();
                     }
                 }
             });

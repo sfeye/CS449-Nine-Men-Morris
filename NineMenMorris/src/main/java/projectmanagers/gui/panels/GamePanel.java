@@ -28,7 +28,7 @@ public class GamePanel extends JPanel {
     }
     //TODO: Flying
     public void flyPiece(BoardPieces blackPiece, PlayerPieces playerPiece){
-        
+
     }
     // Method to remove a players piece if they are selected in a mill
     public void millPlayer1Remove(PlayerPieces piece){
