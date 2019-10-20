@@ -44,7 +44,7 @@ public class GamePanel extends JPanel {
         repaint();
     }
     //TODO: Sprint two slide piece
-    public void slidePlayer1Piece(BoardPieces blackPiece, PlayerPieces playerPiece){
+    public void swapPlayerPiece(BoardPieces blackPiece, PlayerPieces playerPiece){
         remove(playerPiece);
         remove(blackPiece);
         swapCoordinates(blackPiece, playerPiece);
@@ -52,19 +52,6 @@ public class GamePanel extends JPanel {
         add(playerPiece, gbc);
         gbc.gridx = blackPiece.getXCoordinate(); gbc.gridy = blackPiece.getYCoordinate();
         add(blackPiece, gbc);
-
-        revalidate();
-        repaint();
-    }
-    public void slidePlayer2Piece(BoardPieces blackPiece, PlayerPieces playerPiece){
-        remove(playerPiece);
-        remove(blackPiece);
-        swapCoordinates(blackPiece, playerPiece);
-        gbc.gridx = playerPiece.getXCoordinate(); gbc.gridy = playerPiece.getYCoordinate();
-        add(playerPiece, gbc);
-        gbc.gridx = blackPiece.getXCoordinate(); gbc.gridy = blackPiece.getYCoordinate();
-        add(blackPiece, gbc);
-
         revalidate();
         repaint();
     }

@@ -102,12 +102,12 @@ public class GameBoardGui extends JFrame {
                         }
                     }
                     else if(twoPlayerGame && PlayerPieces.isSelected && aTurn){
-                        gamePanel.slidePlayer1Piece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer1Piece());
+                        gamePanel.swapPlayerPiece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer1Piece());
                         PlayerPieces.isSelected = false;
                         aTurn = !aTurn;
                     }
                     else if(twoPlayerGame && PlayerPieces.isSelected && !aTurn){
-                        gamePanel.slidePlayer2Piece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer2Piece());
+                        gamePanel.swapPlayerPiece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer2Piece());
                         PlayerPieces.isSelected = false;
                         aTurn = !aTurn;
                     }
