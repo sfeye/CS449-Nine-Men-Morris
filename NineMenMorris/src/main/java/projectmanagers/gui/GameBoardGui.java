@@ -30,7 +30,8 @@ public class GameBoardGui extends JFrame {
         player2Panel = new Player2Panel();
         buildBoard();
         playPiece();
-        movePlayerPiece();
+        movePlayer1Piece();
+        movePlayer2Piece();
     }
 
     public void buildBoard() {
@@ -98,16 +99,20 @@ public class GameBoardGui extends JFrame {
                         }
                     }
                     else if(twoPlayerGame && PlayerPieces.isSelected && aTurn){
-                        gamePanel.slidePiece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer1Piece());
+                        gamePanel.slidePlayer1Piece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer1Piece());
+                        PlayerPieces.isSelected = false;
+                        aTurn = !aTurn;
                     }
                     else if(twoPlayerGame && PlayerPieces.isSelected && !aTurn){
-                        gamePanel.slidePiece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer2Piece());
+                        gamePanel.slidePlayer2Piece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer2Piece());
+                        PlayerPieces.isSelected = false;
+                        aTurn = !aTurn;
                     }
                 }
             });
         }
     }
-    public void movePlayerPiece () {
+    public void movePlayer1Piece () {
         for(int i = 0; i < GamePanel.player1Pieces.size(); i++) {
             final int temp = i;
             gamePanel.player1Pieces.get(i).addMouseListener(new MouseAdapter() {
@@ -116,12 +121,26 @@ public class GameBoardGui extends JFrame {
                     if(!player1Panel.hasTurn() && !player2Panel.hasTurn()) {
                         if(isMill)
                             gamePanel.millPlayer1Remove(gamePanel.player1Pieces.get(temp));
-                        else if (aTurn && !PlayerPieces.isSelected){
-                            gamePanel.player1Pieces.get(temp).selectPiece();
+                        else if (aTurn && !PlayerPieces.isSelected) {
+                            PlayerPieces.isSelected = true;
                             gamePanel.setSelectedPiece(gamePanel.player1Pieces.get(temp));
                         }
+                    }
+                }
+            });
+        }
+    }
+    public void movePlayer2Piece () {
+        for(int i = 0; i < GamePanel.player1Pieces.size(); i++) {
+            final int temp = i;
+            gamePanel.player2Pieces.get(i).addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent me) {
+                    if(!player1Panel.hasTurn() && !player2Panel.hasTurn()) {
+                        if(isMill)
+                            gamePanel.millPlayer2Remove(gamePanel.player2Pieces.get(temp));
                         else if (!aTurn && !PlayerPieces.isSelected) {
-                            gamePanel.player2Pieces.get(temp).selectPiece();
+                            PlayerPieces.isSelected = true;
                             gamePanel.setSelectedPiece(gamePanel.player2Pieces.get(temp));
                         }
                     }

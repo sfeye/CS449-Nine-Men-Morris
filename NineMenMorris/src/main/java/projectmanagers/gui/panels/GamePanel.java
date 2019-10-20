@@ -44,28 +44,40 @@ public class GamePanel extends JPanel {
         repaint();
     }
     //TODO: Sprint two slide piece
-    public void slidePiece(BoardPieces blackPiece, PlayerPieces playerPiece){
-        remove(blackPiece);
+    public void slidePlayer1Piece(BoardPieces blackPiece, PlayerPieces playerPiece){
         remove(playerPiece);
-        gbc.gridx = blackPiece.getXCoordinate(); gbc.gridy = blackPiece.getYCoordinate();
-        add(playerPiece, gbc, 0);
-        gbc.gridx = selectedPiece.getXCoordinate(); gbc.gridy = selectedPiece.getYCoordinate();
-        //add(blackPiece, gbc, 1);
+        remove(blackPiece);
         swapCoordinates(blackPiece, playerPiece);
+        gbc.gridx = playerPiece.getXCoordinate(); gbc.gridy = playerPiece.getYCoordinate();
+        add(playerPiece, gbc);
+        gbc.gridx = blackPiece.getXCoordinate(); gbc.gridy = blackPiece.getYCoordinate();
+        add(blackPiece, gbc);
+
+        revalidate();
+        repaint();
+    }
+    public void slidePlayer2Piece(BoardPieces blackPiece, PlayerPieces playerPiece){
+        remove(playerPiece);
+        remove(blackPiece);
+        swapCoordinates(blackPiece, playerPiece);
+        gbc.gridx = playerPiece.getXCoordinate(); gbc.gridy = playerPiece.getYCoordinate();
+        add(playerPiece, gbc);
+        gbc.gridx = blackPiece.getXCoordinate(); gbc.gridy = blackPiece.getYCoordinate();
+        add(blackPiece, gbc);
 
         revalidate();
         repaint();
     }
     public void swapCoordinates(BoardPieces blackPiece, PlayerPieces playerPiece) {
-        int tempx = blackPiece.getX();  int tempy = blackPiece.getY();
-        blackPiece.setXCoordinate(playerPiece.getX());
+        int tempx = blackPiece.getXCoordinate();  int tempy = blackPiece.getYCoordinate();
+        blackPiece.setXCoordinate(playerPiece.getXCoordinate());
         blackPiece.setYCoordinate(playerPiece.getYCoordinate());
-        playerPiece.setX(tempx);    playerPiece.setY(tempy);
+        playerPiece.setXCoordinate(tempx);    playerPiece.setYCoordinate(tempy);
     }
     public void setSelectedPiece(PlayerPieces piece) {
         selectedPiece = piece;
-        selectedPiece.setX(piece.getX());
-        selectedPiece.setY(piece.getY());
+        selectedPiece.setXCoordinate(piece.getXCoordinate());
+        selectedPiece.setYCoordinate(piece.getYCoordinate());
     }
     public PlayerPieces getSelectedPlayer1Piece() {
         for (PlayerPieces red : player1Pieces) {
@@ -84,8 +96,8 @@ public class GamePanel extends JPanel {
     public void addPlayer1Piece(BoardPieces piece){
         remove(piece);
         gbc.gridx = piece.getXCoordinate(); gbc.gridy = piece.getYCoordinate();
-        player1Pieces.get(RED_PLAYER.getPieces()).setX(piece.getXCoordinate());
-        player1Pieces.get(RED_PLAYER.getPieces()).setY(piece.getYCoordinate());
+        player1Pieces.get(RED_PLAYER.getPieces()).setXCoordinate(piece.getXCoordinate());
+        player1Pieces.get(RED_PLAYER.getPieces()).setYCoordinate(piece.getYCoordinate());
 
         add(player1Pieces.get(RED_PLAYER.getPieces()), gbc);
         Board.placePiece(RED_PLAYER, piece.getXCoordinate(), piece.getYCoordinate());
@@ -95,8 +107,8 @@ public class GamePanel extends JPanel {
     public void addPlayer2Piece(BoardPieces piece){
         remove(piece);
         gbc.gridx = piece.getXCoordinate(); gbc.gridy = piece.getYCoordinate();
-        player2Pieces.get(BLUE_PLAYER.getPieces()).setX(piece.getXCoordinate());
-        player2Pieces.get(BLUE_PLAYER.getPieces()).setY(piece.getYCoordinate());
+        player2Pieces.get(BLUE_PLAYER.getPieces()).setXCoordinate(piece.getXCoordinate());
+        player2Pieces.get(BLUE_PLAYER.getPieces()).setYCoordinate(piece.getYCoordinate());
 
         add(player2Pieces.get(BLUE_PLAYER.getPieces()), gbc);
         Board.placePiece(BLUE_PLAYER, piece.getXCoordinate(), piece.getYCoordinate());

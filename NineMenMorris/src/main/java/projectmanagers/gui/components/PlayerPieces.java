@@ -58,8 +58,8 @@ public class PlayerPieces extends JButton {
         addMouseListener(mouseListener);
         addMouseMotionListener(mouseListener);
     }
-    public void setX(int x){ this.x = x; }
-    public void setY(int y){ this.y = y; }
+    public void setXCoordinate(int x){ this.x = x; }
+    public void setYCoordinate(int y){ this.y = y; }
     public int getXCoordinate(){ return x; }
     public int getYCoordinate(){ return y; }
     public void setBg (Color bg) { this.bg = bg; }
@@ -67,22 +67,9 @@ public class PlayerPieces extends JButton {
     {
         this.outline = outline;
     }
-    private int getDiameter() {
+    public int getDiameter() {
         diameter = Math.min(getWidth(), getHeight());
         return diameter;
-    }
-    public PlayerPieces selectPiece(){
-        this.setOL(Color.yellow);
-        revalidate();
-        repaint();
-        isSelected = true;
-        return this;
-    }
-    public void deselectPiece(){
-        this.setOL(Color.black);
-        revalidate();
-        repaint();
-        isSelected = false;
     }
     @Override
     public boolean contains (int x, int y) {
@@ -97,6 +84,10 @@ public class PlayerPieces extends JButton {
         g.drawOval((getWidth() / 2) - radius, (getHeight() / 2) - radius, diameter, diameter);
         g.setColor(bg);
         g.fillOval((getWidth() / 2) - radius, (getHeight() / 2) - radius, diameter, diameter);
+        if(isSelected == true) {
+            g.setColor(Color.yellow);
+            g.drawOval((getWidth() / 2) - radius, (getHeight() / 2) - radius, diameter, diameter);
+        }
     }
 }
 
