@@ -63,19 +63,29 @@ public class GameBoardGui extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 JOptionPane.showMessageDialog(null, "CPU doesn't exist...", "ERROR", JOptionPane.ERROR_MESSAGE);
-                gamePanel.removeAll();
-                gamePanel.buildBoard();
             }
         });
         twoPlay.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-
-                JOptionPane.showMessageDialog(null, "START!");
+                JLabel label = new JLabel("Who goes first?");
+                JRadioButton red = new JRadioButton("Player 1");
+                red.setSelected(true);
+                JRadioButton blue = new JRadioButton("Player 2");
+                JPanel choice = new JPanel();
+                ButtonGroup group = new ButtonGroup();
+                group.add(red);     group.add(blue);
+                choice.add(label);  choice.add(red);    choice.add(blue);
+                JOptionPane.showMessageDialog(null, choice, "Two player game", JOptionPane.INFORMATION_MESSAGE);
+                if(red.isSelected())
+                    aTurn = true;
+                else
+                    aTurn = false;
                 twoPlayerGame = true;
             }
         });
     }
+    // Method initializes the board JFrame and sets up default GUI
     public static void start() {
         JFrame frame = new JFrame("CS 449 Project");
         frame.setResizable(true);
@@ -84,6 +94,7 @@ public class GameBoardGui extends JFrame {
         frame.setVisible(true);
         frame.pack();
     }
+    // Incorporates additional board piece mouse action listeners
     public void boardPieceActions () {
         for (int i = 0; i < 24; i ++) {
             final int temp = i;
@@ -115,6 +126,7 @@ public class GameBoardGui extends JFrame {
             });
         }
     }
+    // Incorporates additional player piece mouse action listeners
     public void player1PieceActions () {
         for(int i = 0; i < GamePanel.player1Pieces.size(); i++) {
             final int temp = i;

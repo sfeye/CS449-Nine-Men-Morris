@@ -26,7 +26,11 @@ public class GamePanel extends JPanel {
         player2Pieces = new ArrayList<>(9);
         buildBoard();
     }
-    //TODO: Sprint Two mill and remove piece
+    //TODO: Flying
+    public void flyPiece(BoardPieces blackPiece, PlayerPieces playerPiece){
+        
+    }
+    // Method to remove a players piece if they are selected in a mill
     public void millPlayer1Remove(PlayerPieces piece){
         remove(piece);
         gbc.gridx = piece.getXCoordinate(); gbc.gridy = piece.getYCoordinate();
@@ -43,7 +47,7 @@ public class GamePanel extends JPanel {
         revalidate();
         repaint();
     }
-    //TODO: Sprint two slide piece
+    // Method to swap player piece locations with a board location
     public void swapPlayerPiece(BoardPieces blackPiece, PlayerPieces playerPiece){
         remove(playerPiece);
         remove(blackPiece);
@@ -55,7 +59,9 @@ public class GamePanel extends JPanel {
         revalidate();
         repaint();
     }
+    // swaps to coordinates of pieces to keep logic up to date
     public void swapCoordinates(BoardPieces blackPiece, PlayerPieces playerPiece) {
+        // TODO: update logic
         int tempx = blackPiece.getXCoordinate();  int tempy = blackPiece.getYCoordinate();
         blackPiece.setXCoordinate(playerPiece.getXCoordinate());
         blackPiece.setYCoordinate(playerPiece.getYCoordinate());
@@ -66,6 +72,7 @@ public class GamePanel extends JPanel {
         selectedPiece.setXCoordinate(piece.getXCoordinate());
         selectedPiece.setYCoordinate(piece.getYCoordinate());
     }
+    // Methods determine which piece is selected in the player pieces arrays
     public PlayerPieces getSelectedPlayer1Piece() {
         for (PlayerPieces red : player1Pieces) {
             if (red.getXCoordinate() == selectedPiece.getXCoordinate() && red.getYCoordinate() == selectedPiece.getYCoordinate())
@@ -80,6 +87,7 @@ public class GamePanel extends JPanel {
         }
         return null;
     }
+    // Adds a new player piece in the beginning stage of a game
     public void addPlayer1Piece(BoardPieces piece){
         remove(piece);
         gbc.gridx = piece.getXCoordinate(); gbc.gridy = piece.getYCoordinate();
@@ -102,7 +110,7 @@ public class GamePanel extends JPanel {
         revalidate();
         repaint();
     }
-
+    // Builds arrays, lines, and lays out the board
     public void buildBoard () {
         buildArrays();
         gbc = new GridBagConstraints();
