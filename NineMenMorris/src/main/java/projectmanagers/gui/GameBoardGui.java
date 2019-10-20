@@ -29,11 +29,14 @@ public class GameBoardGui extends JFrame {
         player1Panel = new Player1Panel();
         player2Panel = new Player2Panel();
         buildBoard();
-        playPiece();
-        movePlayer1Piece();
-        movePlayer2Piece();
+        pieceActions();
     }
 
+    public void pieceActions () {
+        boardPieceActions();
+        player1PieceActions();
+        player2PieceActions();
+    }
     public void buildBoard() {
         masterPanel.setBackground(new Color(153,133,97));
         masterPanel.setLayout(new BorderLayout());
@@ -81,7 +84,7 @@ public class GameBoardGui extends JFrame {
         frame.setVisible(true);
         frame.pack();
     }
-    public void playPiece () {
+    public void boardPieceActions () {
         for (int i = 0; i < 24; i ++) {
             final int temp = i;
             GamePanel.boardPieces.get(i).addMouseListener(new MouseAdapter() {
@@ -112,7 +115,7 @@ public class GameBoardGui extends JFrame {
             });
         }
     }
-    public void movePlayer1Piece () {
+    public void player1PieceActions () {
         for(int i = 0; i < GamePanel.player1Pieces.size(); i++) {
             final int temp = i;
             gamePanel.player1Pieces.get(i).addMouseListener(new MouseAdapter() {
@@ -130,7 +133,7 @@ public class GameBoardGui extends JFrame {
             });
         }
     }
-    public void movePlayer2Piece () {
+    public void player2PieceActions () {
         for(int i = 0; i < GamePanel.player1Pieces.size(); i++) {
             final int temp = i;
             gamePanel.player2Pieces.get(i).addMouseListener(new MouseAdapter() {
