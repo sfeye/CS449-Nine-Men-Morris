@@ -12,7 +12,7 @@ import java.awt.event.MouseEvent;
 
 public class PlayerPieces extends JButton {
     private Color bg;
-    private static Color outline;
+    private Color outline;
     private int diameter;
     private int x, y;
     public static boolean isSelected = false;
@@ -72,16 +72,6 @@ public class PlayerPieces extends JButton {
         diameter = Math.min(getWidth(), getHeight());
         return diameter;
     }
-    public void selectPiece () {
-            this.setOL(Color.yellow);
-            isSelected = true;
-            revalidate();
-            repaint();
-    }
-    public static void deselectPiece () {
-        outline = Color.black;
-        isSelected = false;
-    }
     @Override
     public boolean contains (int x, int y) {
         int radius = diameter / 2;
@@ -92,6 +82,8 @@ public class PlayerPieces extends JButton {
         diameter = getDiameter();
         int radius = diameter / 2;
         g.setColor(outline);
+        if(isSelected && mouseClicked)
+            g.setColor(Color.yellow);
         g.drawOval((getWidth() / 2) - radius, (getHeight() / 2) - radius, diameter, diameter);
         g.setColor(bg);
         g.fillOval((getWidth() / 2) - radius, (getHeight() / 2) - radius, diameter, diameter);

@@ -17,7 +17,7 @@ public class GamePanel extends JPanel {
     public static ArrayList<BoardPieces> boardPieces;
     public static ArrayList<PlayerPieces> player1Pieces;
     public static ArrayList<PlayerPieces> player2Pieces;
-    private PlayerPieces selectedPiece;
+    public static PlayerPieces selectedPiece;
 
     public GamePanel () {
         super();
@@ -56,6 +56,7 @@ public class GamePanel extends JPanel {
         add(playerPiece, gbc);
         gbc.gridx = blackPiece.getXCoordinate(); gbc.gridy = blackPiece.getYCoordinate();
         add(blackPiece, gbc);
+        deselectPiece(playerPiece);
         revalidate();
         repaint();
     }
@@ -68,9 +69,14 @@ public class GamePanel extends JPanel {
         playerPiece.setXCoordinate(tempx);    playerPiece.setYCoordinate(tempy);
     }
     public void setSelectedPiece(PlayerPieces piece) {
+        PlayerPieces.isSelected = true;
         selectedPiece = piece;
         selectedPiece.setXCoordinate(piece.getXCoordinate());
         selectedPiece.setYCoordinate(piece.getYCoordinate());
+    }
+    public void deselectPiece(PlayerPieces piece) {
+        PlayerPieces.isSelected = false;
+        piece.setOL(Color.black);
     }
     // Methods determine which piece is selected in the player pieces arrays
     public PlayerPieces getSelectedPlayer1Piece() {

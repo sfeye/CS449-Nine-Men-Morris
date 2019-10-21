@@ -76,7 +76,7 @@ public class GameBoardGui extends JFrame {
                 ButtonGroup group = new ButtonGroup();
                 group.add(red);     group.add(blue);
                 choice.add(label);  choice.add(red);    choice.add(blue);
-                JOptionPane.showMessageDialog(null, choice, "Two player game", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, choice, "Two player game", JOptionPane.QUESTION_MESSAGE);
                 if(red.isSelected())
                     aTurn = true;
                 else
@@ -114,12 +114,10 @@ public class GameBoardGui extends JFrame {
                     }
                     else if(twoPlayerGame && PlayerPieces.isSelected && aTurn){
                         gamePanel.swapPlayerPiece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer1Piece());
-                        PlayerPieces.deselectPiece();
                         aTurn = !aTurn;
                     }
                     else if(twoPlayerGame && PlayerPieces.isSelected && !aTurn){
                         gamePanel.swapPlayerPiece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer2Piece());
-                        PlayerPieces.deselectPiece();
                         aTurn = !aTurn;
                     }
                 }
@@ -137,11 +135,10 @@ public class GameBoardGui extends JFrame {
                         if(isMill)
                             gamePanel.millPlayer1Remove(gamePanel.player1Pieces.get(temp));
                         else if (aTurn && !PlayerPieces.isSelected) {
-                            gamePanel.player1Pieces.get(temp).selectPiece();
                             gamePanel.setSelectedPiece(gamePanel.player1Pieces.get(temp));
                         }
                         else if (aTurn && PlayerPieces.isSelected)
-                            PlayerPieces.deselectPiece();
+                            gamePanel.deselectPiece(gamePanel.player1Pieces.get(temp));
                     }
                 }
             });
@@ -157,11 +154,10 @@ public class GameBoardGui extends JFrame {
                         if(isMill)
                             gamePanel.millPlayer2Remove(gamePanel.player2Pieces.get(temp));
                         else if (!aTurn && !PlayerPieces.isSelected) {
-                            gamePanel.player2Pieces.get(temp).selectPiece();
                             gamePanel.setSelectedPiece(gamePanel.player2Pieces.get(temp));
                         }
                         else if (!aTurn && PlayerPieces.isSelected)
-                            PlayerPieces.deselectPiece();
+                            gamePanel.deselectPiece(gamePanel.player2Pieces.get(temp));
                     }
                 }
             });
