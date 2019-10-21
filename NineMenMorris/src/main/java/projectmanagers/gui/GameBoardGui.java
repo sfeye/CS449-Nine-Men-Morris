@@ -98,12 +98,16 @@ public class GameBoardGui extends JFrame {
     }
     public void showTurn () {
         if(aTurn) {
+            player1Panel.player1Txt.setBorder(BorderFactory.createLineBorder(Color.yellow));
+            player2Panel.player2Txt.setBorder(BorderFactory.createEmptyBorder());
             player1Panel.player1Txt.setForeground(Color.red);
             player2Panel.player2Txt.setForeground(Color.black);
             player1Panel.player1Txt.setFont(new Font("Serif", Font.BOLD, 18));
             player2Panel.player2Txt.setFont(new Font("Serif", Font.PLAIN, 18));
         }
         else {
+            player1Panel.player1Txt.setBorder(BorderFactory.createEmptyBorder());
+            player2Panel.player2Txt.setBorder(BorderFactory.createLineBorder(Color.yellow));
             player1Panel.player1Txt.setForeground(Color.black);
             player2Panel.player2Txt.setForeground(Color.blue);
             player1Panel.player1Txt.setFont(new Font("Serif", Font.PLAIN, 18));

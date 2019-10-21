@@ -16,7 +16,7 @@ public class Player2Panel extends JPanel {
     public Player2Panel () {
         pieces = new ArrayList<>(BLUE_PLAYER.getTurns());
         gbc = new GridBagConstraints();
-        player2Txt = new JLabel("Player 2");
+        player2Txt = new JLabel(" Player 2 ");
         player2Txt.setFont(new Font("Serif", Font.PLAIN, 18));
         buildPanel();
     }
@@ -24,7 +24,7 @@ public class Player2Panel extends JPanel {
         gbc.weighty = 1;    gbc.gridy = 0;   gbc.gridx = 0;
         setLayout(new GridBagLayout());
         setBackground(bgc);
-        setPreferredSize(new Dimension(75,600));
+        setPreferredSize(new Dimension(80,600));
         player2Txt.setHorizontalAlignment(SwingConstants.CENTER);
         add(player2Txt, gbc);
         trackTurns();
