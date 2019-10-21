@@ -136,8 +136,8 @@ public class GamePanel extends JPanel {
         gbc.weighty = 0.1; gbc.weightx = 0.1;
         setLayout(new GridBagLayout());
         setBackground(new Color(153,133,97));
-        drawBoardPieces();
         drawBoardLines();
+        drawBoardPieces();
     }
     public void buildArrays (){
         boardPieces.clear();
