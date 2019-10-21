@@ -15,14 +15,14 @@ public class PlayerPieces extends JButton {
     private Color outline;
     private int diameter;
     private int x, y;
-    public static boolean isSelected = false;
-    public static boolean canSelect = false;
+    public static boolean isSelected;
     private boolean mouseClicked = false, mouseOver = false, mousePressed = false;
 
-    public PlayerPieces(Color bg, Color outline) {
+    public PlayerPieces(Color bg, Color outline, boolean isSelected) {
         super();
         this.bg = bg;
         this.outline = outline;
+        this.isSelected = isSelected;
         //Mouse actions to make the circle have button attributes
         MouseAdapter mouseListener = new MouseAdapter() {
             @Override
@@ -68,6 +68,8 @@ public class PlayerPieces extends JButton {
     {
         this.outline = outline;
     }
+    public void selectPiece () { this.isSelected = true;}
+    public void deselectPiece () { this.isSelected = false; }
     public int getDiameter() {
         diameter = Math.min(getWidth(), getHeight());
         return diameter;

@@ -32,7 +32,7 @@ public class Player1Panel extends JPanel {
     public void trackTurns () {
         for (int i = 0; i <= RED_PLAYER.getTurns(); i++) {
             gbc.gridy = i + 1;
-            pieces.add(new PlayerPieces(Color.red, Color.black));
+            pieces.add(new PlayerPieces(Color.red, Color.black, false));
             add(pieces.get(i), gbc);
         }
     }

@@ -118,7 +118,6 @@ public class GameBoardGui extends JFrame {
                 @Override
                 public void mouseClicked(MouseEvent me) {
                     if(twoPlayerGame && (player1Panel.hasTurn() || player2Panel.hasTurn())) {
-                        showTurn();
                         if (aTurn) {
                             gamePanel.addPlayer1Piece(GamePanel.boardPieces.get(temp));
                             player1Panel.decrementTurns();
@@ -137,6 +136,7 @@ public class GameBoardGui extends JFrame {
                         gamePanel.swapPlayerPiece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer2Piece());
                         aTurn = !aTurn;
                     }
+                    showTurn();
                 }
             });
         }
@@ -151,10 +151,10 @@ public class GameBoardGui extends JFrame {
                     if(!player1Panel.hasTurn() && !player2Panel.hasTurn()) {
                         if(isMill)
                             gamePanel.millPlayer1Remove(gamePanel.player1Pieces.get(temp));
-                        else if (aTurn && !PlayerPieces.isSelected) {
+                        else if (aTurn && !gamePanel.player1Pieces.get(temp).isSelected) {
                             gamePanel.setSelectedPiece(gamePanel.player1Pieces.get(temp));
                         }
-                        else if (aTurn && PlayerPieces.isSelected)
+                        else if (aTurn && gamePanel.player1Pieces.get(temp).isSelected)
                             gamePanel.deselectPiece(gamePanel.player1Pieces.get(temp));
                     }
                 }
@@ -170,10 +170,10 @@ public class GameBoardGui extends JFrame {
                     if(!player1Panel.hasTurn() && !player2Panel.hasTurn()) {
                         if(isMill)
                             gamePanel.millPlayer2Remove(gamePanel.player2Pieces.get(temp));
-                        else if (!aTurn && !PlayerPieces.isSelected) {
+                        else if (!aTurn && !gamePanel.player2Pieces.get(temp).isSelected) {
                             gamePanel.setSelectedPiece(gamePanel.player2Pieces.get(temp));
                         }
-                        else if (!aTurn && PlayerPieces.isSelected)
+                        else if (!aTurn && gamePanel.player2Pieces.get(temp).isSelected)
                             gamePanel.deselectPiece(gamePanel.player2Pieces.get(temp));
                     }
                 }

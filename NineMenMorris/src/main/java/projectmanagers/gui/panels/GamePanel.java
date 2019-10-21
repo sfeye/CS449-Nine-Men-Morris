@@ -3,6 +3,9 @@ package main.java.projectmanagers.gui.panels;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
+
+import javafx.util.Pair;
 import main.java.projectmanagers.gui.components.*;
 import main.java.projectmanagers.logic.Board;
 import main.java.projectmanagers.logic.Player;
@@ -47,6 +50,14 @@ public class GamePanel extends JPanel {
         revalidate();
         repaint();
     }
+    //TODO: checking if black piece selected is adjacent
+    public boolean canSwap (BoardPieces blackPiece, PlayerPieces playerPiece) {
+        List<Pair<Integer, Integer>> adjacentPieces = Board.adjacentPieces(playerPiece.getXCoordinate(), playerPiece.getYCoordinate());
+        for(Pair<Integer, Integer> pair : adjacentPieces) {
+
+        }
+        return true;
+    }
     // Method to swap player piece locations with a board location
     public void swapPlayerPiece(BoardPieces blackPiece, PlayerPieces playerPiece){
         remove(playerPiece);
@@ -69,13 +80,13 @@ public class GamePanel extends JPanel {
         playerPiece.setXCoordinate(tempx);    playerPiece.setYCoordinate(tempy);
     }
     public void setSelectedPiece(PlayerPieces piece) {
-        PlayerPieces.isSelected = true;
+        piece.selectPiece();
         selectedPiece = piece;
         selectedPiece.setXCoordinate(piece.getXCoordinate());
         selectedPiece.setYCoordinate(piece.getYCoordinate());
     }
     public void deselectPiece(PlayerPieces piece) {
-        PlayerPieces.isSelected = false;
+        piece.deselectPiece();
         piece.setOL(Color.black);
     }
     // Methods determine which piece is selected in the player pieces arrays
@@ -138,8 +149,8 @@ public class GamePanel extends JPanel {
         }
         for (int i = 0; i < 9; i++)
         {
-            player1Pieces.add(new PlayerPieces(Color.red, Color.black));
-            player2Pieces.add(new PlayerPieces(Color.blue, Color.black));
+            player1Pieces.add(new PlayerPieces(Color.red, Color.black, false));
+            player2Pieces.add(new PlayerPieces(Color.blue, Color.black, false));
         }
     }
     public void drawBoardPieces () {
