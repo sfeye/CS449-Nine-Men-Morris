@@ -51,12 +51,10 @@ public class GamePanel extends JPanel {
         repaint();
     }
     //TODO: checking if black piece selected is adjacent
-    public boolean canSwap (BoardPieces blackPiece, PlayerPieces playerPiece) {
+    public boolean canSlide (BoardPieces blackPiece, PlayerPieces playerPiece) {
+        Pair blackPair = new Pair<Integer, Integer>(blackPiece.getXCoordinate(), blackPiece.getYCoordinate());
         List<Pair<Integer, Integer>> adjacentPieces = Board.adjacentPieces(playerPiece.getXCoordinate(), playerPiece.getYCoordinate());
-        for(Pair<Integer, Integer> pair : adjacentPieces) {
-
-        }
-        return true;
+        return (adjacentPieces.contains(blackPair));
     }
     // Method to swap player piece locations with a board location
     public void swapPlayerPiece(BoardPieces blackPiece, PlayerPieces playerPiece){
