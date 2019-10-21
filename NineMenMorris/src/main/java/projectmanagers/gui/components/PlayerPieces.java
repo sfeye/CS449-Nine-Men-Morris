@@ -68,8 +68,16 @@ public class PlayerPieces extends JButton {
     {
         this.outline = outline;
     }
-    public void selectPiece () { this.isSelected = true;}
-    public void deselectPiece () { this.isSelected = false; }
+    public void selectPiece () {
+        this.isSelected = true;
+        setOL(Color.yellow);
+    }
+    public void deselectPiece () {
+        this.isSelected = false;
+        setOL(Color.black);
+        revalidate();
+        repaint();
+    }
     public int getDiameter() {
         diameter = Math.min(getWidth(), getHeight());
         return diameter;
@@ -84,8 +92,6 @@ public class PlayerPieces extends JButton {
         diameter = getDiameter();
         int radius = diameter / 2;
         g.setColor(outline);
-        if(isSelected && mouseClicked)
-            g.setColor(Color.yellow);
         g.drawOval((getWidth() / 2) - radius, (getHeight() / 2) - radius, diameter, diameter);
         g.setColor(bg);
         g.fillOval((getWidth() / 2) - radius, (getHeight() / 2) - radius, diameter, diameter);

@@ -155,7 +155,7 @@ public class GameBoardGui extends JFrame {
                             gamePanel.setSelectedPiece(gamePanel.player1Pieces.get(temp));
                         }
                         else if (aTurn && gamePanel.player1Pieces.get(temp).isSelected)
-                            gamePanel.deselectPiece(gamePanel.player1Pieces.get(temp));
+                            gamePanel.deselectPiece();
                     }
                 }
             });
@@ -174,7 +174,7 @@ public class GameBoardGui extends JFrame {
                             gamePanel.setSelectedPiece(gamePanel.player2Pieces.get(temp));
                         }
                         else if (!aTurn && gamePanel.player2Pieces.get(temp).isSelected)
-                            gamePanel.deselectPiece(gamePanel.player2Pieces.get(temp));
+                            gamePanel.deselectPiece();
                     }
                 }
             });

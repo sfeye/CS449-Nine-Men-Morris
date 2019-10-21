@@ -67,7 +67,7 @@ public class GamePanel extends JPanel {
         add(playerPiece, gbc);
         gbc.gridx = blackPiece.getXCoordinate(); gbc.gridy = blackPiece.getYCoordinate();
         add(blackPiece, gbc);
-        deselectPiece(playerPiece);
+        deselectPiece();
         revalidate();
         repaint();
     }
@@ -85,9 +85,11 @@ public class GamePanel extends JPanel {
         selectedPiece.setXCoordinate(piece.getXCoordinate());
         selectedPiece.setYCoordinate(piece.getYCoordinate());
     }
-    public void deselectPiece(PlayerPieces piece) {
-        piece.deselectPiece();
-        piece.setOL(Color.black);
+    public void deselectPiece() {
+        for(PlayerPieces piece : player1Pieces)
+            piece.deselectPiece();
+        for(PlayerPieces piece : player2Pieces)
+            piece.deselectPiece();
     }
     // Methods determine which piece is selected in the player pieces arrays
     public PlayerPieces getSelectedPlayer1Piece() {
