@@ -16,11 +16,11 @@ import static main.java.projectmanagers.trackers.PlayerTracking.BLUE_PLAYER;
 import static main.java.projectmanagers.trackers.PlayerTracking.RED_PLAYER;
 
 public class GamePanel extends JPanel {
-    public GridBagConstraints gbc;
+    private GridBagConstraints gbc;
     public static ArrayList<BoardPieces> boardPieces;
     public static ArrayList<PlayerPieces> player1Pieces;
     public static ArrayList<PlayerPieces> player2Pieces;
-    public static PlayerPieces selectedPiece;
+    private static PlayerPieces selectedPiece;
 
     public GamePanel () {
         super();
@@ -130,7 +130,7 @@ public class GamePanel extends JPanel {
         repaint();
     }
     // Builds arrays, lines, and lays out the board
-    public void buildBoard () {
+    private void buildBoard () {
         buildArrays();
         gbc = new GridBagConstraints();
         gbc.weighty = 0.1; gbc.weightx = 0.1;
@@ -139,7 +139,7 @@ public class GamePanel extends JPanel {
         drawBoardLines();
         drawBoardPieces();
     }
-    public void buildArrays (){
+    private void buildArrays (){
         boardPieces.clear();
         player1Pieces.clear();
         player2Pieces.clear();
@@ -155,7 +155,7 @@ public class GamePanel extends JPanel {
             player2Pieces.add(new PlayerPieces(Color.blue, Color.black, false));
         }
     }
-    public void drawBoardPieces () {
+    private void drawBoardPieces () {
         int count = 0;
         for (int i = 0; i < 7 ; i ++) {
             for (int j = 0; j < 7; j++) {
@@ -167,7 +167,7 @@ public class GamePanel extends JPanel {
             }
         }
     }
-    public void drawBoardLines() {
+    private void drawBoardLines() {
         for (int i = 0; i < 7 ; i ++) {
             for (int j = 0; j < 7; j++) {
                 if(Board.position(i, j) == INVALID){

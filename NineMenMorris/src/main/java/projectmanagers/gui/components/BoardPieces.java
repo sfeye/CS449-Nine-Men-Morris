@@ -12,7 +12,7 @@ import java.awt.event.MouseEvent;
 public class BoardPieces extends JButton{
     private int x, y;
     private boolean mouseClicked = false, mouseOver = false, mousePressed = false;
-    public int diameter;
+    private int diameter;
 
     public BoardPieces(int x, int y) {
         this.x = x;
@@ -57,7 +57,6 @@ public class BoardPieces extends JButton{
     public int getYCoordinate () { return y; }
     public void setXCoordinate (int x) { this.x = x; }
     public void setYCoordinate (int y) { this.y = y; }
-    public void setDiameter(int diameter) { this.diameter = diameter;}
     private int getDiameter() {
         diameter = Math.min(getWidth(), getHeight());
         return diameter;

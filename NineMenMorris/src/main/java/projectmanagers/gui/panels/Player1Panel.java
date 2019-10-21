@@ -20,7 +20,7 @@ public class Player1Panel extends JPanel {
         player1Txt.setFont(new Font("Serif", Font.PLAIN, 18));
         buildPanel();
     }
-    public void buildPanel () {
+    private void buildPanel () {
         gbc.weighty = 1;    gbc.gridy = 0;   gbc.gridx = 0;
         setLayout(new GridBagLayout());
         setBackground(bgc);
@@ -29,7 +29,7 @@ public class Player1Panel extends JPanel {
         add(player1Txt, gbc);
         trackTurns();
     }
-    public void trackTurns () {
+    private void trackTurns () {
         for (int i = 0; i <= RED_PLAYER.getTurns(); i++) {
             gbc.gridy = i + 1;
             pieces.add(new PlayerPieces(Color.red, Color.black, false));
@@ -45,9 +45,7 @@ public class Player1Panel extends JPanel {
         }
     }
     public static boolean hasTurn() {
-        if (RED_PLAYER.getTurns() >= 0)
-            return true;
-        return false;
+        return RED_PLAYER.getTurns() >= 0;
     }
 }
 

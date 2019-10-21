@@ -9,7 +9,7 @@ public class ButtonPanel extends JPanel {
         super();
         buildPanel();
     }
-    public void buildPanel() {
+    private void buildPanel() {
         setBackground(new Color(116, 101, 72));
         setPreferredSize(new Dimension(800, 50));
     }

@@ -17,10 +17,10 @@ public class GameBoardGui extends JFrame {
     private boolean isMill = false;
     private boolean twoPlayerGame = false;
 
-    private int MAX_HEIGHT = 600;
-    private int MAX_WIDTH = 800;
+    private final int MAX_HEIGHT = 600;
+    private final int MAX_WIDTH = 800;
 
-    public GameBoardGui () {
+    private GameBoardGui () {
         super();
         masterPanel = new JPanel();
         gamePanel = new GamePanel();
@@ -32,12 +32,12 @@ public class GameBoardGui extends JFrame {
         pieceActions();
     }
 
-    public void pieceActions () {
+    private void pieceActions () {
         boardPieceActions();
         player1PieceActions();
         player2PieceActions();
     }
-    public void buildBoard() {
+    private void buildBoard() {
         masterPanel.setBackground(new Color(153,133,97));
         masterPanel.setLayout(new BorderLayout());
         masterPanel.setBorder(BorderFactory.createRaisedBevelBorder());
@@ -46,7 +46,7 @@ public class GameBoardGui extends JFrame {
         buttonActions();
 
     }
-    public void addPanels() {
+    private void addPanels() {
         masterPanel.add(gamePanel, BorderLayout.CENTER);
         masterPanel.add(titlePanel, BorderLayout.NORTH);
         masterPanel.add(buttonPanel, BorderLayout.SOUTH);
@@ -54,7 +54,7 @@ public class GameBoardGui extends JFrame {
         masterPanel.add(player2Panel, BorderLayout.EAST);
         this.add(masterPanel);
     }
-    public void buttonActions() {
+    private void buttonActions() {
         JButton onePlay = new JButton("Single Player");
         JButton twoPlay = new JButton("Two Player");
         buttonPanel.add(onePlay);
@@ -96,7 +96,7 @@ public class GameBoardGui extends JFrame {
         frame.setVisible(true);
         frame.pack();
     }
-    public void showTurn () {
+    private void showTurn () {
         if(aTurn) {
             player1Panel.player1Txt.setBorder(BorderFactory.createLineBorder(Color.yellow));
             player2Panel.player2Txt.setBorder(BorderFactory.createEmptyBorder());
@@ -115,7 +115,7 @@ public class GameBoardGui extends JFrame {
         }
     }
     // Incorporates additional board piece mouse action listeners
-    public void boardPieceActions () {
+    private void boardPieceActions () {
         for (int i = 0; i < 24; i ++) {
             final int temp = i;
             GamePanel.boardPieces.get(i).addMouseListener(new MouseAdapter() {
@@ -146,7 +146,7 @@ public class GameBoardGui extends JFrame {
         }
     }
     // Incorporates additional player piece mouse action listeners
-    public void player1PieceActions () {
+    private void player1PieceActions () {
         for(int i = 0; i < GamePanel.player1Pieces.size(); i++) {
             final int temp = i;
             gamePanel.player1Pieces.get(i).addMouseListener(new MouseAdapter() {
@@ -165,7 +165,7 @@ public class GameBoardGui extends JFrame {
             });
         }
     }
-    public void player2PieceActions () {
+    private void player2PieceActions () {
         for(int i = 0; i < GamePanel.player1Pieces.size(); i++) {
             final int temp = i;
             gamePanel.player2Pieces.get(i).addMouseListener(new MouseAdapter() {
