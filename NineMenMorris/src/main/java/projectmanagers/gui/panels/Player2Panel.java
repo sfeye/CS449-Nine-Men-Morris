@@ -17,6 +17,7 @@ public class Player2Panel extends JPanel {
         pieces = new ArrayList<>(BLUE_PLAYER.getTurns());
         gbc = new GridBagConstraints();
         player2Txt = new JLabel("Player 2");
+        player2Txt.setFont(new Font("Serif", Font.PLAIN, 18));
         buildPanel();
     }
     public void buildPanel () {

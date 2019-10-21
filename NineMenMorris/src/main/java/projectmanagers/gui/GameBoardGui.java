@@ -44,6 +44,7 @@ public class GameBoardGui extends JFrame {
         masterPanel.setPreferredSize(new Dimension(MAX_WIDTH, MAX_HEIGHT));
         addPanels();
         buttonActions();
+
     }
     public void addPanels() {
         masterPanel.add(gamePanel, BorderLayout.CENTER);
@@ -81,6 +82,7 @@ public class GameBoardGui extends JFrame {
                     aTurn = true;
                 else
                     aTurn = false;
+                showTurn();
                 twoPlayerGame = true;
             }
         });
@@ -94,6 +96,20 @@ public class GameBoardGui extends JFrame {
         frame.setVisible(true);
         frame.pack();
     }
+    public void showTurn () {
+        if(aTurn) {
+            player1Panel.player1Txt.setForeground(Color.red);
+            player2Panel.player2Txt.setForeground(Color.black);
+            player1Panel.player1Txt.setFont(new Font("Serif", Font.BOLD, 18));
+            player2Panel.player2Txt.setFont(new Font("Serif", Font.PLAIN, 18));
+        }
+        else {
+            player1Panel.player1Txt.setForeground(Color.black);
+            player2Panel.player2Txt.setForeground(Color.blue);
+            player1Panel.player1Txt.setFont(new Font("Serif", Font.PLAIN, 18));
+            player2Panel.player2Txt.setFont(new Font("Serif", Font.BOLD, 18));
+        }
+    }
     // Incorporates additional board piece mouse action listeners
     public void boardPieceActions () {
         for (int i = 0; i < 24; i ++) {
@@ -102,6 +118,7 @@ public class GameBoardGui extends JFrame {
                 @Override
                 public void mouseClicked(MouseEvent me) {
                     if(twoPlayerGame && (player1Panel.hasTurn() || player2Panel.hasTurn())) {
+                        showTurn();
                         if (aTurn) {
                             gamePanel.addPlayer1Piece(GamePanel.boardPieces.get(temp));
                             player1Panel.decrementTurns();
