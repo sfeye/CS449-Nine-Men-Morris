@@ -46,6 +46,7 @@ public class GameBoardGui extends JFrame {
         buttonActions();
 
     }
+    // Adding panels to master panel
     private void addPanels() {
         masterPanel.add(gamePanel, BorderLayout.CENTER);
         masterPanel.add(titlePanel, BorderLayout.NORTH);
@@ -54,6 +55,7 @@ public class GameBoardGui extends JFrame {
         masterPanel.add(player2Panel, BorderLayout.EAST);
         this.add(masterPanel);
     }
+    // Action listeners for buttons on South button panel
     private void buttonActions() {
         JButton onePlay = new JButton("Single Player");
         JButton twoPlay = new JButton("Two Player");
@@ -96,6 +98,7 @@ public class GameBoardGui extends JFrame {
         frame.setVisible(true);
         frame.pack();
     }
+    // Visually displays who has the current turn
     private void showTurn () {
         if(aTurn) {
             player1Panel.player1Txt.setBorder(BorderFactory.createLineBorder(Color.yellow));

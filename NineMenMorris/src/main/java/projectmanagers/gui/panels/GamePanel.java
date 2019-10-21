@@ -29,10 +29,6 @@ public class GamePanel extends JPanel {
         player2Pieces = new ArrayList<>(9);
         buildBoard();
     }
-    //TODO: Flying
-    public void flyPiece(BoardPieces blackPiece, PlayerPieces playerPiece){
-
-    }
     // Method to remove a players piece if they are selected in a mill
     public void millPlayer1Remove(PlayerPieces piece){
         remove(piece);
@@ -50,7 +46,7 @@ public class GamePanel extends JPanel {
         revalidate();
         repaint();
     }
-    //TODO: checking if black piece selected is adjacent
+    //TODO: @Nate -> automated tests for this
     public boolean canSlide (BoardPieces blackPiece, PlayerPieces playerPiece) {
         Pair blackPair = new Pair<Integer, Integer>(blackPiece.getXCoordinate(), blackPiece.getYCoordinate());
         List<Pair<Integer, Integer>> adjacentPieces = Board.adjacentPieces(playerPiece.getXCoordinate(), playerPiece.getYCoordinate());
@@ -71,7 +67,7 @@ public class GamePanel extends JPanel {
     }
     // swaps to coordinates of pieces to keep logic up to date
     public void swapCoordinates(BoardPieces blackPiece, PlayerPieces playerPiece) {
-        // TODO: update logic
+        // TODO: @Nate -> update logic
         int tempx = blackPiece.getXCoordinate();  int tempy = blackPiece.getYCoordinate();
         blackPiece.setXCoordinate(playerPiece.getXCoordinate());
         blackPiece.setYCoordinate(playerPiece.getYCoordinate());
