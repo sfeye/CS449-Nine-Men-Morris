@@ -11,7 +11,7 @@ public class TitlePanel extends JPanel {
         title = new JLabel("Nine Men's Morris");
         buildPanel();
     }
-    public void buildPanel () {
+    private void buildPanel () {
         setBackground(new Color(116,101,72));
         setPreferredSize(new Dimension(800, 50));
         title.setFont(new Font (title.getName(), Font.BOLD, 25));

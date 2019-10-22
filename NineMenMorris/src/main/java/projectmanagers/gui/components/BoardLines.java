@@ -4,11 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class BoardLines extends JComponent {
-    private static final int HORIZONTAL = 2;
-    private static final int LEFT_HORIZONTAL = 1;
-    private static final int RIGHT_HORIZONTAL = 5;
     private static final int TOP_VERTICAL = 0;
+    private static final int LEFT_HORIZONTAL = 1;
+    private static final int HORIZONTAL = 2;
     private static final int VERTICAL = 3;
+    private static final int RIGHT_HORIZONTAL = 5;
     private static final int BOTTOM_VERTICAL = 6;
     private int type;
 

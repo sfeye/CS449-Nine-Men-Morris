@@ -3,8 +3,12 @@ package main.java.projectmanagers.gui.panels;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
+
+import javafx.util.Pair;
 import main.java.projectmanagers.gui.components.*;
 import main.java.projectmanagers.logic.Board;
+import main.java.projectmanagers.logic.Player;
 
 import static main.java.projectmanagers.logic.GameStatuses.ColorStatus.EMPTY;
 import static main.java.projectmanagers.logic.GameStatuses.ColorStatus.INVALID;
@@ -12,10 +16,11 @@ import static main.java.projectmanagers.trackers.PlayerTracking.BLUE_PLAYER;
 import static main.java.projectmanagers.trackers.PlayerTracking.RED_PLAYER;
 
 public class GamePanel extends JPanel {
-    public GridBagConstraints gbc;
+    private GridBagConstraints gbc;
     public static ArrayList<BoardPieces> boardPieces;
     public static ArrayList<PlayerPieces> player1Pieces;
     public static ArrayList<PlayerPieces> player2Pieces;
+    private static PlayerPieces selectedPiece;
 
     public GamePanel () {
         super();
@@ -24,7 +29,7 @@ public class GamePanel extends JPanel {
         player2Pieces = new ArrayList<>(9);
         buildBoard();
     }
-    //TODO: Sprint Two mill and remove piece
+    // Method to remove a players piece if they are selected in a mill
     public void millPlayer1Remove(PlayerPieces piece){
         remove(piece);
         gbc.gridx = piece.getXCoordinate(); gbc.gridy = piece.getYCoordinate();
@@ -41,15 +46,66 @@ public class GamePanel extends JPanel {
         revalidate();
         repaint();
     }
-    //TODO: Sprint two slide piece
-    public void slidePiece(PlayerPieces piece){
-
+    //TODO: @Nate -> automated tests for this
+    public boolean canSlide (BoardPieces blackPiece, PlayerPieces playerPiece) {
+        Pair blackPair = new Pair<Integer, Integer>(blackPiece.getXCoordinate(), blackPiece.getYCoordinate());
+        List<Pair<Integer, Integer>> adjacentPieces = Board.adjacentPieces(playerPiece.getXCoordinate(), playerPiece.getYCoordinate());
+        return (adjacentPieces.contains(blackPair));
     }
+    // Method to swap player piece locations with a board location
+    public void swapPlayerPiece(BoardPieces blackPiece, PlayerPieces playerPiece){
+        remove(playerPiece);
+        remove(blackPiece);
+        swapCoordinates(blackPiece, playerPiece);
+        gbc.gridx = playerPiece.getXCoordinate(); gbc.gridy = playerPiece.getYCoordinate();
+        add(playerPiece, gbc);
+        gbc.gridx = blackPiece.getXCoordinate(); gbc.gridy = blackPiece.getYCoordinate();
+        add(blackPiece, gbc);
+        deselectPiece();
+        revalidate();
+        repaint();
+    }
+    // swaps to coordinates of pieces to keep logic up to date
+    public void swapCoordinates(BoardPieces blackPiece, PlayerPieces playerPiece) {
+        // TODO: @Nate -> update logic
+        int tempx = blackPiece.getXCoordinate();  int tempy = blackPiece.getYCoordinate();
+        blackPiece.setXCoordinate(playerPiece.getXCoordinate());
+        blackPiece.setYCoordinate(playerPiece.getYCoordinate());
+        playerPiece.setXCoordinate(tempx);    playerPiece.setYCoordinate(tempy);
+    }
+    public void setSelectedPiece(PlayerPieces piece) {
+        piece.selectPiece();
+        selectedPiece = piece;
+        selectedPiece.setXCoordinate(piece.getXCoordinate());
+        selectedPiece.setYCoordinate(piece.getYCoordinate());
+    }
+    public void deselectPiece() {
+        for(PlayerPieces piece : player1Pieces)
+            piece.deselectPiece();
+        for(PlayerPieces piece : player2Pieces)
+            piece.deselectPiece();
+    }
+    // Methods determine which piece is selected in the player pieces arrays
+    public PlayerPieces getSelectedPlayer1Piece() {
+        for (PlayerPieces red : player1Pieces) {
+            if (red.getXCoordinate() == selectedPiece.getXCoordinate() && red.getYCoordinate() == selectedPiece.getYCoordinate())
+                return red;
+        }
+        return null;
+    }
+    public PlayerPieces getSelectedPlayer2Piece() {
+        for (PlayerPieces blue : player2Pieces) {
+            if (blue.getXCoordinate() == selectedPiece.getXCoordinate() && blue.getYCoordinate() == selectedPiece.getYCoordinate())
+                return blue;
+        }
+        return null;
+    }
+    // Adds a new player piece in the beginning stage of a game
     public void addPlayer1Piece(BoardPieces piece){
         remove(piece);
         gbc.gridx = piece.getXCoordinate(); gbc.gridy = piece.getYCoordinate();
-        player1Pieces.get(RED_PLAYER.getPieces()).setX(piece.getXCoordinate());
-        player1Pieces.get(RED_PLAYER.getPieces()).setY(piece.getYCoordinate());
+        player1Pieces.get(RED_PLAYER.getPieces()).setXCoordinate(piece.getXCoordinate());
+        player1Pieces.get(RED_PLAYER.getPieces()).setYCoordinate(piece.getYCoordinate());
 
         add(player1Pieces.get(RED_PLAYER.getPieces()), gbc);
         Board.placePiece(RED_PLAYER, piece.getXCoordinate(), piece.getYCoordinate());
@@ -59,25 +115,25 @@ public class GamePanel extends JPanel {
     public void addPlayer2Piece(BoardPieces piece){
         remove(piece);
         gbc.gridx = piece.getXCoordinate(); gbc.gridy = piece.getYCoordinate();
-        player2Pieces.get(BLUE_PLAYER.getPieces()).setX(piece.getXCoordinate());
-        player2Pieces.get(BLUE_PLAYER.getPieces()).setY(piece.getYCoordinate());
+        player2Pieces.get(BLUE_PLAYER.getPieces()).setXCoordinate(piece.getXCoordinate());
+        player2Pieces.get(BLUE_PLAYER.getPieces()).setYCoordinate(piece.getYCoordinate());
 
         add(player2Pieces.get(BLUE_PLAYER.getPieces()), gbc);
         Board.placePiece(BLUE_PLAYER, piece.getXCoordinate(), piece.getYCoordinate());
         revalidate();
         repaint();
     }
-
-    public void buildBoard () {
+    // Builds arrays, lines, and lays out the board
+    private void buildBoard () {
         buildArrays();
         gbc = new GridBagConstraints();
         gbc.weighty = 0.1; gbc.weightx = 0.1;
         setLayout(new GridBagLayout());
         setBackground(new Color(153,133,97));
-        drawBoardPieces();
         drawBoardLines();
+        drawBoardPieces();
     }
-    public void buildArrays (){
+    private void buildArrays (){
         boardPieces.clear();
         player1Pieces.clear();
         player2Pieces.clear();
@@ -89,11 +145,11 @@ public class GamePanel extends JPanel {
         }
         for (int i = 0; i < 9; i++)
         {
-            player1Pieces.add(new PlayerPieces(Color.red, Color.black));
-            player2Pieces.add(new PlayerPieces(Color.blue, Color.black));
+            player1Pieces.add(new PlayerPieces(Color.red, Color.black, false));
+            player2Pieces.add(new PlayerPieces(Color.blue, Color.black, false));
         }
     }
-    public void drawBoardPieces () {
+    private void drawBoardPieces () {
         int count = 0;
         for (int i = 0; i < 7 ; i ++) {
             for (int j = 0; j < 7; j++) {
@@ -105,7 +161,7 @@ public class GamePanel extends JPanel {
             }
         }
     }
-    public void drawBoardLines() {
+    private void drawBoardLines() {
         for (int i = 0; i < 7 ; i ++) {
             for (int j = 0; j < 7; j++) {
                 if(Board.position(i, j) == INVALID){

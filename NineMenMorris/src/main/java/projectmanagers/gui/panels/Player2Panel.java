@@ -16,22 +16,23 @@ public class Player2Panel extends JPanel {
     public Player2Panel () {
         pieces = new ArrayList<>(BLUE_PLAYER.getTurns());
         gbc = new GridBagConstraints();
-        player2Txt = new JLabel("Player 2");
+        player2Txt = new JLabel(" Player 2 ");
+        player2Txt.setFont(new Font("Serif", Font.PLAIN, 18));
         buildPanel();
     }
-    public void buildPanel () {
+    private void buildPanel () {
         gbc.weighty = 1;    gbc.gridy = 0;   gbc.gridx = 0;
         setLayout(new GridBagLayout());
         setBackground(bgc);
-        setPreferredSize(new Dimension(75,600));
+        setPreferredSize(new Dimension(80,600));
         player2Txt.setHorizontalAlignment(SwingConstants.CENTER);
         add(player2Txt, gbc);
         trackTurns();
     }
-    public void trackTurns () {
+    private void trackTurns () {
         for (int i = 0; i <= BLUE_PLAYER.getTurns(); i++) {
             gbc.gridy = i + 1;
-            pieces.add(new PlayerPieces(Color.blue, Color.black));
+            pieces.add(new PlayerPieces(Color.blue, Color.black, false));
             add(pieces.get(i), gbc);
         }
     }
@@ -44,9 +45,7 @@ public class Player2Panel extends JPanel {
         }
     }
     public static boolean hasTurn () {
-        if (BLUE_PLAYER.getTurns() >= 0)
-            return true;
-        return false;
+        return BLUE_PLAYER.getTurns() >= 0;
     }
 }
 

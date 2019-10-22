@@ -1,6 +1,7 @@
 package main.java.projectmanagers.gui.components;
 
 import main.java.projectmanagers.logic.MillConditions;
+import main.java.projectmanagers.logic.Player;
 
 import javax.swing.*;
 import java.awt.Graphics;
@@ -12,14 +13,16 @@ import java.awt.event.MouseEvent;
 public class PlayerPieces extends JButton {
     private Color bg;
     private Color outline;
-    public int diameter;
+    private int diameter;
     private int x, y;
+    public static boolean isSelected;
     private boolean mouseClicked = false, mouseOver = false, mousePressed = false;
 
-    public PlayerPieces(Color bg, Color outline) {
+    public PlayerPieces(Color bg, Color outline, boolean isSelected) {
         super();
         this.bg = bg;
         this.outline = outline;
+        this.isSelected = isSelected;
         //Mouse actions to make the circle have button attributes
         MouseAdapter mouseListener = new MouseAdapter() {
             @Override
@@ -56,8 +59,8 @@ public class PlayerPieces extends JButton {
         addMouseListener(mouseListener);
         addMouseMotionListener(mouseListener);
     }
-    public void setX(int x){ this.x = x; }
-    public void setY(int y){ this.y = y; }
+    public void setXCoordinate(int x){ this.x = x; }
+    public void setYCoordinate(int y){ this.y = y; }
     public int getXCoordinate(){ return x; }
     public int getYCoordinate(){ return y; }
     public void setBg (Color bg) { this.bg = bg; }
@@ -65,7 +68,17 @@ public class PlayerPieces extends JButton {
     {
         this.outline = outline;
     }
-    private int getDiameter() {
+    public void selectPiece () {
+        this.isSelected = true;
+        setOL(Color.yellow);
+    }
+    public void deselectPiece () {
+        this.isSelected = false;
+        setOL(Color.black);
+        revalidate();
+        repaint();
+    }
+    public int getDiameter() {
         diameter = Math.min(getWidth(), getHeight());
         return diameter;
     }
