@@ -14,7 +14,6 @@ public class GameBoardGui extends JFrame {
     private ButtonPanel buttonPanel;
     private Player1Panel player1Panel;
     private Player2Panel player2Panel;
-    private boolean aTurn = true;
     private GameStatuses.Turns turn;
     private GameStatuses.PlayerPlay player1Play = GameStatuses.PlayerPlay.DESELECTED;
     private GameStatuses.PlayerPlay player2Play = GameStatuses.PlayerPlay.DESELECTED;
