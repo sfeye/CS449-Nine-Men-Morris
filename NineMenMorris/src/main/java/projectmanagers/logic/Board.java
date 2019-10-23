@@ -254,7 +254,7 @@ public class Board {
             case 4:
                 if (xpos == 2) {
                     adjacentPieces.add(new Pair<>(2, 3));
-                    adjacentPieces.add(new Pair<>(2, 4));
+                    adjacentPieces.add(new Pair<>(3, 4));
                 }
                 else if (xpos == 3) {
                     adjacentPieces.add(new Pair<>(2, 4));
@@ -262,7 +262,7 @@ public class Board {
                     adjacentPieces.add(new Pair<>(4, 4));
                 }
                 else if (xpos == 4) {
-                    adjacentPieces.add(new Pair<>(2, 4));
+                    adjacentPieces.add(new Pair<>(3, 4));
                     adjacentPieces.add(new Pair<>(4, 3));
                 }
                 break;

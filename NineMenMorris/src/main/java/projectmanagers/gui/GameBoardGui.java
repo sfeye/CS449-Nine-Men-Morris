@@ -188,6 +188,7 @@ public class GameBoardGui extends JFrame {
             gamePanel.player1Pieces.get(i).addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent me) {
+                    gamePlay = GameStatuses.getGamePlay();
                     switch(gamePlay) {
                         case MIDDLE:
                             switch(player1Play){
@@ -219,6 +220,7 @@ public class GameBoardGui extends JFrame {
             gamePanel.player2Pieces.get(i).addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent me) {
+                    gamePlay = GameStatuses.getGamePlay();
                     switch(gamePlay) {
                         case MIDDLE:
                             switch(player2Play){
