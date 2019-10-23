@@ -1,6 +1,7 @@
 package main.java.projectmanagers.gui;
 import main.java.projectmanagers.gui.components.PlayerPieces;
 import main.java.projectmanagers.gui.panels.*;
+import main.java.projectmanagers.logic.GameStatuses;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +16,8 @@ public class GameBoardGui extends JFrame {
     private Player2Panel player2Panel;
     private boolean aTurn = true;
     private boolean isMill = false;
-    private boolean twoPlayerGame = false;
+    private GameStatuses.GamePlay gamePlay;
+    private GameStatuses.GameType gameType;
 
     private final int MAX_HEIGHT = 600;
     private final int MAX_WIDTH = 800;
@@ -66,6 +68,7 @@ public class GameBoardGui extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 JOptionPane.showMessageDialog(null, "CPU doesn't exist...", "ERROR", JOptionPane.ERROR_MESSAGE);
+                gameType = GameStatuses.GameType.SINGLE_PLAYER;
             }
         });
         twoPlay.addActionListener(new ActionListener() {
@@ -85,7 +88,7 @@ public class GameBoardGui extends JFrame {
                 else
                     aTurn = false;
                 showTurn();
-                twoPlayerGame = true;
+                gameType = GameStatuses.GameType.TWO_PLAYER;
             }
         });
     }
@@ -124,24 +127,35 @@ public class GameBoardGui extends JFrame {
             GamePanel.boardPieces.get(i).addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent me) {
-                    if(twoPlayerGame && (player1Panel.hasTurn() || player2Panel.hasTurn())) {
-                        if (aTurn) {
-                            gamePanel.addPlayer1Piece(GamePanel.boardPieces.get(temp));
-                            player1Panel.decrementTurns();
-                            aTurn = !aTurn;
-                        } else{
-                            gamePanel.addPlayer2Piece(GamePanel.boardPieces.get(temp));
-                            player2Panel.decrementTurns();
-                            aTurn = !aTurn;
-                        }
-                    }
-                    else if(PlayerPieces.isSelected && aTurn && gamePanel.canSlide(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer1Piece())) {
-                        gamePanel.swapPlayerPiece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer1Piece());
-                        aTurn = !aTurn;
-                    }
-                    else if(PlayerPieces.isSelected && !aTurn && gamePanel.canSlide(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer2Piece())) {
-                        gamePanel.swapPlayerPiece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer2Piece());
-                        aTurn = !aTurn;
+                    gamePlay = GameStatuses.getGamePlay();
+                    switch (gameType) {
+                        case TWO_PLAYER:
+                            switch (gamePlay) {
+                                case BEGINNING:
+                                    if (aTurn) {
+                                        gamePanel.addPlayer1Piece(GamePanel.boardPieces.get(temp));
+                                        player1Panel.decrementTurns();
+                                        aTurn = !aTurn;
+                                    } else {
+                                        gamePanel.addPlayer2Piece(GamePanel.boardPieces.get(temp));
+                                        player2Panel.decrementTurns();
+                                        aTurn = !aTurn;
+                                    }
+                                    break;
+                                case MIDDLE:
+                                    if (PlayerPieces.isSelected && aTurn && gamePanel.canSlide(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer1Piece())) {
+                                        gamePanel.swapPlayerPiece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer1Piece());
+                                        aTurn = !aTurn;
+                                    } else if (PlayerPieces.isSelected && !aTurn && gamePanel.canSlide(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer2Piece())) {
+                                        gamePanel.swapPlayerPiece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer2Piece());
+                                        aTurn = !aTurn;
+                                    }
+                                    break;
+                                case END:
+                                    JOptionPane.showMessageDialog(null, "Game Over");
+                                    break;
+                            }
+                            break;
                     }
                     showTurn();
                 }
