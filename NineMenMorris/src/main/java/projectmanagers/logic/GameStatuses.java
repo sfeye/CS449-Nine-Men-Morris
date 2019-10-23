@@ -8,7 +8,7 @@ public class GameStatuses {
     public enum ColorStatus {EMPTY, BLUE, RED, INVALID}
     public enum GameType {SINGLE_PLAYER, TWO_PLAYER}
     public enum GamePlay {BEGINNING, MIDDLE, END}
-    public enum PlayerPlay {MILL, SELECTED, DESELECTED}
+    public enum PlayerPlay {MILL, SELECTED, DESELECTED, WIN, LOSE}
     public enum Turns {PLAYER1, PLAYER2}
 
     public static GamePlay getGamePlay () {
@@ -26,5 +26,11 @@ public class GameStatuses {
         else
             currTurn = Turns.PLAYER1;
         return currTurn;
+    }
+    public static PlayerPlay getWinner (Turns currTurn) {
+        if (currTurn.equals(Turns.PLAYER1))
+            return PlayerPlay.WIN;
+        else
+            return PlayerPlay.LOSE;
     }
 }

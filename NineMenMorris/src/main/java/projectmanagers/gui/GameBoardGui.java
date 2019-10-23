@@ -169,8 +169,15 @@ public class GameBoardGui extends JFrame {
                                     }
                                     break;
                                 case END:
-                                    JOptionPane.showMessageDialog(null, "Game Over");
-                                    break;
+                                    player1Play = GameStatuses.getWinner(turn);
+                                    switch (player1Play) {
+                                        case WIN:
+                                            JOptionPane.showMessageDialog(null, "Player 1 Wins, Game Over");
+                                            break;
+                                        case LOSE:
+                                            JOptionPane.showMessageDialog(null, "Player 2 Wins, Game Over");
+                                            break;
+                                    }
                             }
                             break;
                         case SINGLE_PLAYER:
