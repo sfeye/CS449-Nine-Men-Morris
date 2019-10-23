@@ -153,14 +153,28 @@ public class GameBoardGui extends JFrame {
                                 case MIDDLE:
                                     switch(turn) {
                                         case PLAYER1:
-                                            if(player1Play.equals(GameStatuses.PlayerPlay.SELECTED) && gamePanel.canSlide(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer1Piece())) {
+                                            //FLY
+                                            if(player1Play.equals(GameStatuses.PlayerPlay.SELECTED) && GamePanel.player1Pieces.size() == 3) {
+                                                gamePanel.swapPlayerPiece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer1Piece());
+                                                player1Play = GameStatuses.PlayerPlay.DESELECTED;
+                                                turn = GameStatuses.changeTurn(turn);
+                                            }
+                                            //SLIDE
+                                            else if(player1Play.equals(GameStatuses.PlayerPlay.SELECTED) && gamePanel.canSlide(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer1Piece())) {
                                                 gamePanel.swapPlayerPiece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer1Piece());
                                                 player1Play = GameStatuses.PlayerPlay.DESELECTED;
                                                 turn = GameStatuses.changeTurn(turn);
                                             }
                                             break;
                                         case PLAYER2:
-                                            if(player2Play.equals(GameStatuses.PlayerPlay.SELECTED) && gamePanel.canSlide(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer2Piece())) {
+                                            //FLY
+                                            if(player2Play.equals(GameStatuses.PlayerPlay.SELECTED) && GamePanel.player2Pieces.size() == 3) {
+                                                gamePanel.swapPlayerPiece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer2Piece());
+                                                player2Play = GameStatuses.PlayerPlay.DESELECTED;
+                                                turn = GameStatuses.changeTurn(turn);
+                                            }
+                                            //SLIDE
+                                            else if(player2Play.equals(GameStatuses.PlayerPlay.SELECTED) && gamePanel.canSlide(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer2Piece())) {
                                                 gamePanel.swapPlayerPiece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer2Piece());
                                                 player2Play = GameStatuses.PlayerPlay.DESELECTED;
                                                 turn = GameStatuses.changeTurn(turn);
@@ -169,12 +183,11 @@ public class GameBoardGui extends JFrame {
                                     }
                                     break;
                                 case END:
-                                    player1Play = GameStatuses.getWinner(turn);
-                                    switch (player1Play) {
-                                        case WIN:
+                                    switch (turn) {
+                                        case PLAYER1:
                                             JOptionPane.showMessageDialog(null, "Player 1 Wins, Game Over");
                                             break;
-                                        case LOSE:
+                                        case PLAYER2:
                                             JOptionPane.showMessageDialog(null, "Player 2 Wins, Game Over");
                                             break;
                                     }
