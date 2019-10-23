@@ -1,6 +1,6 @@
 package main.java.projectmanagers.gui;
-import main.java.projectmanagers.gui.components.PlayerPieces;
 import main.java.projectmanagers.gui.panels.*;
+import main.java.projectmanagers.logic.GameStatuses;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,9 +13,11 @@ public class GameBoardGui extends JFrame {
     private ButtonPanel buttonPanel;
     private Player1Panel player1Panel;
     private Player2Panel player2Panel;
-    private boolean aTurn = true;
-    private boolean isMill = false;
-    private boolean twoPlayerGame = false;
+    private GameStatuses.Turns turn;
+    private GameStatuses.PlayerPlay player1Play = GameStatuses.PlayerPlay.DESELECTED;
+    private GameStatuses.PlayerPlay player2Play = GameStatuses.PlayerPlay.DESELECTED;
+    private GameStatuses.GamePlay gamePlay;
+    private GameStatuses.GameType gameType;
 
     private final int MAX_HEIGHT = 600;
     private final int MAX_WIDTH = 800;
@@ -66,6 +68,9 @@ public class GameBoardGui extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 JOptionPane.showMessageDialog(null, "CPU doesn't exist...", "ERROR", JOptionPane.ERROR_MESSAGE);
+                gameType = GameStatuses.GameType.SINGLE_PLAYER;
+                onePlay.setEnabled(false);
+                twoPlay.setEnabled(false);
             }
         });
         twoPlay.addActionListener(new ActionListener() {
@@ -81,11 +86,13 @@ public class GameBoardGui extends JFrame {
                 choice.add(label);  choice.add(red);    choice.add(blue);
                 JOptionPane.showMessageDialog(null, choice, "Two player game", JOptionPane.QUESTION_MESSAGE);
                 if(red.isSelected())
-                    aTurn = true;
+                    turn = GameStatuses.Turns.PLAYER1;
                 else
-                    aTurn = false;
+                    turn = GameStatuses.Turns.PLAYER2;
                 showTurn();
-                twoPlayerGame = true;
+                gameType = GameStatuses.GameType.TWO_PLAYER;
+                onePlay.setEnabled(false);
+                twoPlay.setEnabled(false);
             }
         });
     }
@@ -100,7 +107,7 @@ public class GameBoardGui extends JFrame {
     }
     // Visually displays who has the current turn
     private void showTurn () {
-        if(aTurn) {
+        if(turn.equals(GameStatuses.Turns.PLAYER1)) {
             player1Panel.player1Txt.setBorder(BorderFactory.createLineBorder(Color.yellow));
             player2Panel.player2Txt.setBorder(BorderFactory.createEmptyBorder());
             player1Panel.player1Txt.setForeground(Color.red);
@@ -124,24 +131,69 @@ public class GameBoardGui extends JFrame {
             GamePanel.boardPieces.get(i).addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent me) {
-                    if(twoPlayerGame && (player1Panel.hasTurn() || player2Panel.hasTurn())) {
-                        if (aTurn) {
-                            gamePanel.addPlayer1Piece(GamePanel.boardPieces.get(temp));
-                            player1Panel.decrementTurns();
-                            aTurn = !aTurn;
-                        } else{
-                            gamePanel.addPlayer2Piece(GamePanel.boardPieces.get(temp));
-                            player2Panel.decrementTurns();
-                            aTurn = !aTurn;
-                        }
-                    }
-                    else if(PlayerPieces.isSelected && aTurn && gamePanel.canSlide(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer1Piece())) {
-                        gamePanel.swapPlayerPiece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer1Piece());
-                        aTurn = !aTurn;
-                    }
-                    else if(PlayerPieces.isSelected && !aTurn && gamePanel.canSlide(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer2Piece())) {
-                        gamePanel.swapPlayerPiece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer2Piece());
-                        aTurn = !aTurn;
+                    gamePlay = GameStatuses.getGamePlay();
+                    switch (gameType) {
+                        case TWO_PLAYER:
+                            switch (gamePlay) {
+                                case BEGINNING:
+                                    switch(turn) {
+                                        case PLAYER1:
+                                            gamePanel.addPlayer1Piece(GamePanel.boardPieces.get(temp));
+                                            player1Panel.decrementTurns();
+                                            turn = GameStatuses.changeTurn(turn);
+                                            break;
+                                        case PLAYER2:
+                                            gamePanel.addPlayer2Piece(GamePanel.boardPieces.get(temp));
+                                            player2Panel.decrementTurns();
+                                            turn = GameStatuses.changeTurn(turn);
+                                            break;
+                                    }
+                                    break;
+                                case MIDDLE:
+                                    switch(turn) {
+                                        case PLAYER1:
+                                            //FLY
+                                            if(player1Play.equals(GameStatuses.PlayerPlay.SELECTED) && GamePanel.player1Pieces.size() == 3) {
+                                                gamePanel.swapPlayerPiece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer1Piece());
+                                                player1Play = GameStatuses.PlayerPlay.DESELECTED;
+                                                turn = GameStatuses.changeTurn(turn);
+                                            }
+                                            //SLIDE
+                                            else if(player1Play.equals(GameStatuses.PlayerPlay.SELECTED) && gamePanel.canSlide(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer1Piece())) {
+                                                gamePanel.swapPlayerPiece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer1Piece());
+                                                player1Play = GameStatuses.PlayerPlay.DESELECTED;
+                                                turn = GameStatuses.changeTurn(turn);
+                                            }
+                                            break;
+                                        case PLAYER2:
+                                            //FLY
+                                            if(player2Play.equals(GameStatuses.PlayerPlay.SELECTED) && GamePanel.player2Pieces.size() == 3) {
+                                                gamePanel.swapPlayerPiece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer2Piece());
+                                                player2Play = GameStatuses.PlayerPlay.DESELECTED;
+                                                turn = GameStatuses.changeTurn(turn);
+                                            }
+                                            //SLIDE
+                                            else if(player2Play.equals(GameStatuses.PlayerPlay.SELECTED) && gamePanel.canSlide(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer2Piece())) {
+                                                gamePanel.swapPlayerPiece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer2Piece());
+                                                player2Play = GameStatuses.PlayerPlay.DESELECTED;
+                                                turn = GameStatuses.changeTurn(turn);
+                                            }
+                                            break;
+                                    }
+                                    break;
+                                case END:
+                                    switch (turn) {
+                                        case PLAYER1:
+                                            JOptionPane.showMessageDialog(null, "Player 1 Wins, Game Over");
+                                            break;
+                                        case PLAYER2:
+                                            JOptionPane.showMessageDialog(null, "Player 2 Wins, Game Over");
+                                            break;
+                                    }
+                            }
+                            break;
+                        case SINGLE_PLAYER:
+                            break;
                     }
                     showTurn();
                 }
@@ -152,36 +204,64 @@ public class GameBoardGui extends JFrame {
     private void player1PieceActions () {
         for(int i = 0; i < GamePanel.player1Pieces.size(); i++) {
             final int temp = i;
-            gamePanel.player1Pieces.get(i).addMouseListener(new MouseAdapter() {
+            GamePanel.player1Pieces.get(i).addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent me) {
-                    if(!player1Panel.hasTurn() && !player2Panel.hasTurn()) {
-                        if(isMill)
-                            gamePanel.millPlayer1Remove(gamePanel.player1Pieces.get(temp));
-                        else if (aTurn && !gamePanel.player1Pieces.get(temp).isSelected) {
-                            gamePanel.setSelectedPiece(gamePanel.player1Pieces.get(temp));
+                    gamePlay = GameStatuses.getGamePlay();
+                    if(gamePlay.equals(GameStatuses.GamePlay.MIDDLE)) {
+                        switch(player1Play){
+                            case MILL:
+                                if(turn.equals(GameStatuses.Turns.PLAYER2)) {
+                                    player1Play = GameStatuses.PlayerPlay.DESELECTED;
+                                    gamePanel.millPlayer1Remove(GamePanel.player1Pieces.get(temp));
+                                }
+                                break;
+                            case SELECTED:
+                                if(turn.equals(GameStatuses.Turns.PLAYER1)) {
+                                    player1Play = GameStatuses.PlayerPlay.DESELECTED;
+                                    gamePanel.deselectPiece();
+                                }
+                                break;
+                            case DESELECTED:
+                                if(turn.equals(GameStatuses.Turns.PLAYER1)) {
+                                    player1Play = GameStatuses.PlayerPlay.SELECTED;
+                                    gamePanel.setSelectedPiece(GamePanel.player1Pieces.get(temp));
+                                }
+                                break;
                         }
-                        else if (aTurn && gamePanel.player1Pieces.get(temp).isSelected)
-                            gamePanel.deselectPiece();
-                    }
+                }
                 }
             });
         }
     }
     private void player2PieceActions () {
-        for(int i = 0; i < GamePanel.player1Pieces.size(); i++) {
+        for(int i = 0; i < GamePanel.player2Pieces.size(); i++) {
             final int temp = i;
-            gamePanel.player2Pieces.get(i).addMouseListener(new MouseAdapter() {
+            GamePanel.player2Pieces.get(i).addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent me) {
-                    if(!player1Panel.hasTurn() && !player2Panel.hasTurn()) {
-                        if(isMill)
-                            gamePanel.millPlayer2Remove(gamePanel.player2Pieces.get(temp));
-                        else if (!aTurn && !gamePanel.player2Pieces.get(temp).isSelected) {
-                            gamePanel.setSelectedPiece(gamePanel.player2Pieces.get(temp));
+                    gamePlay = GameStatuses.getGamePlay();
+                    if(gamePlay.equals(GameStatuses.GamePlay.MIDDLE)) {
+                        switch(player2Play){
+                            case MILL:
+                                if(turn.equals(GameStatuses.Turns.PLAYER1)) {
+                                    player2Play = GameStatuses.PlayerPlay.DESELECTED;
+                                    gamePanel.millPlayer2Remove(GamePanel.player2Pieces.get(temp));
+                                }
+                                break;
+                            case SELECTED:
+                                if(turn.equals(GameStatuses.Turns.PLAYER2)) {
+                                    player2Play = GameStatuses.PlayerPlay.DESELECTED;
+                                    gamePanel.deselectPiece();
+                                }
+                                break;
+                            case DESELECTED:
+                                if(turn.equals(GameStatuses.Turns.PLAYER2)) {
+                                    player2Play = GameStatuses.PlayerPlay.SELECTED;
+                                    gamePanel.setSelectedPiece(GamePanel.player2Pieces.get(temp));
+                                }
+                                break;
                         }
-                        else if (!aTurn && gamePanel.player2Pieces.get(temp).isSelected)
-                            gamePanel.deselectPiece();
                     }
                 }
             });
