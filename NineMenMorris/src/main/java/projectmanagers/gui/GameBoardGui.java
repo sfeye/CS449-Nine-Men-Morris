@@ -200,8 +200,10 @@ public class GameBoardGui extends JFrame {
                         case MIDDLE:
                             switch(player1Play){
                                 case MILL:
-                                    player1Play = GameStatuses.PlayerPlay.DESELECTED;
-                                    gamePanel.millPlayer1Remove(GamePanel.player1Pieces.get(temp));
+                                    if(turn.equals(GameStatuses.Turns.PLAYER2)) {
+                                        player1Play = GameStatuses.PlayerPlay.DESELECTED;
+                                        gamePanel.millPlayer1Remove(GamePanel.player1Pieces.get(temp));
+                                    }
                                     break;
                                 case SELECTED:
                                     if(turn.equals(GameStatuses.Turns.PLAYER1)) {
@@ -232,8 +234,10 @@ public class GameBoardGui extends JFrame {
                         case MIDDLE:
                             switch(player2Play){
                                 case MILL:
-                                    player2Play = GameStatuses.PlayerPlay.DESELECTED;
-                                    gamePanel.millPlayer2Remove(GamePanel.player2Pieces.get(temp));
+                                    if(turn.equals(GameStatuses.Turns.PLAYER1)) {
+                                        player2Play = GameStatuses.PlayerPlay.DESELECTED;
+                                        gamePanel.millPlayer2Remove(GamePanel.player2Pieces.get(temp));
+                                    }
                                     break;
                                 case SELECTED:
                                     if(turn.equals(GameStatuses.Turns.PLAYER2)) {

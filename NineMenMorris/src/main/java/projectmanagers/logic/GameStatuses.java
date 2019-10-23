@@ -19,13 +19,11 @@ public class GameStatuses {
         else
             return GamePlay.END;
     }
-
     public static Turns changeTurn (Turns currTurn) {
         if (currTurn.equals(Turns.PLAYER1))
-            currTurn = Turns.PLAYER2;
+            return Turns.PLAYER2;
         else
-            currTurn = Turns.PLAYER1;
-        return currTurn;
+             return Turns.PLAYER1;
     }
     public static PlayerPlay getWinner (Turns currTurn) {
         if (currTurn.equals(Turns.PLAYER1))
