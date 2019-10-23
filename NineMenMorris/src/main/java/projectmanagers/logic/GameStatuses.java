@@ -8,7 +8,8 @@ public class GameStatuses {
     public enum ColorStatus {EMPTY, BLUE, RED, INVALID}
     public enum GameType {SINGLE_PLAYER, TWO_PLAYER}
     public enum GamePlay {BEGINNING, MIDDLE, END}
-    public enum PlayerPlay {MILL, SELECTED, DESELECTED, FLY}
+    public enum PlayerPlay {MILL, SELECTED, DESELECTED}
+    public enum Turns {PLAYER1, PLAYER2}
 
     public static GamePlay getGamePlay () {
         if (Player1Panel.hasTurn() || Player2Panel.hasTurn())
@@ -19,5 +20,11 @@ public class GameStatuses {
             return GamePlay.END;
     }
 
-
+    public static Turns changeTurn (Turns currTurn) {
+        if (currTurn.equals(Turns.PLAYER1))
+            currTurn = Turns.PLAYER2;
+        else
+            currTurn = Turns.PLAYER1;
+        return currTurn;
+    }
 }
