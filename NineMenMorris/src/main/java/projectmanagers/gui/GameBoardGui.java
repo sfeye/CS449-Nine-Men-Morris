@@ -70,6 +70,8 @@ public class GameBoardGui extends JFrame {
             public void actionPerformed(ActionEvent actionEvent) {
                 JOptionPane.showMessageDialog(null, "CPU doesn't exist...", "ERROR", JOptionPane.ERROR_MESSAGE);
                 gameType = GameStatuses.GameType.SINGLE_PLAYER;
+                onePlay.setEnabled(false);
+                twoPlay.setEnabled(false);
             }
         });
         twoPlay.addActionListener(new ActionListener() {
@@ -90,6 +92,8 @@ public class GameBoardGui extends JFrame {
                     turn = GameStatuses.Turns.PLAYER2;
                 showTurn();
                 gameType = GameStatuses.GameType.TWO_PLAYER;
+                onePlay.setEnabled(false);
+                twoPlay.setEnabled(false);
             }
         });
     }
