@@ -8,7 +8,7 @@ public class GameStatuses {
     public enum ColorStatus {EMPTY, BLUE, RED, INVALID}
     public enum GameType {SINGLE_PLAYER, TWO_PLAYER}
     public enum GamePlay {BEGINNING, MIDDLE, END}
-    public enum PlayerPlay {MILL, SELECTED, FLY}
+    public enum PlayerPlay {MILL, SELECTED, DESELECTED, FLY}
 
     public static GamePlay getGamePlay () {
         if (Player1Panel.hasTurn() || Player2Panel.hasTurn())

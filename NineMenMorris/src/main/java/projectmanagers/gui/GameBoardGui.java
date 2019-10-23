@@ -16,6 +16,8 @@ public class GameBoardGui extends JFrame {
     private Player2Panel player2Panel;
     private boolean aTurn = true;
     private boolean isMill = false;
+    private GameStatuses.PlayerPlay player1Play = GameStatuses.PlayerPlay.DESELECTED;
+    private GameStatuses.PlayerPlay player2Play = GameStatuses.PlayerPlay.DESELECTED;
     private GameStatuses.GamePlay gamePlay;
     private GameStatuses.GameType gameType;
 
@@ -145,9 +147,11 @@ public class GameBoardGui extends JFrame {
                                 case MIDDLE:
                                     if (PlayerPieces.isSelected && aTurn && gamePanel.canSlide(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer1Piece())) {
                                         gamePanel.swapPlayerPiece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer1Piece());
+                                        player1Play = GameStatuses.PlayerPlay.DESELECTED;
                                         aTurn = !aTurn;
                                     } else if (PlayerPieces.isSelected && !aTurn && gamePanel.canSlide(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer2Piece())) {
                                         gamePanel.swapPlayerPiece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer2Piece());
+                                        player1Play = GameStatuses.PlayerPlay.DESELECTED;
                                         aTurn = !aTurn;
                                     }
                                     break;
@@ -155,6 +159,8 @@ public class GameBoardGui extends JFrame {
                                     JOptionPane.showMessageDialog(null, "Game Over");
                                     break;
                             }
+                            break;
+                        case SINGLE_PLAYER:
                             break;
                     }
                     showTurn();
@@ -169,33 +175,57 @@ public class GameBoardGui extends JFrame {
             gamePanel.player1Pieces.get(i).addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent me) {
-                    if(!player1Panel.hasTurn() && !player2Panel.hasTurn()) {
-                        if(isMill)
-                            gamePanel.millPlayer1Remove(gamePanel.player1Pieces.get(temp));
-                        else if (aTurn && !gamePanel.player1Pieces.get(temp).isSelected) {
-                            gamePanel.setSelectedPiece(gamePanel.player1Pieces.get(temp));
-                        }
-                        else if (aTurn && gamePanel.player1Pieces.get(temp).isSelected)
-                            gamePanel.deselectPiece();
+                    switch(gamePlay) {
+                        case MIDDLE:
+                            switch(player1Play){
+                                case MILL:
+                                    player1Play = GameStatuses.PlayerPlay.DESELECTED;
+                                    gamePanel.millPlayer1Remove(GamePanel.player1Pieces.get(temp));
+                                    break;
+                                case SELECTED:
+                                    if(aTurn) {
+                                        player1Play = GameStatuses.PlayerPlay.DESELECTED;
+                                        gamePanel.deselectPiece();
+                                    }
+                                    break;
+                                case DESELECTED:
+                                    if(aTurn) {
+                                        player1Play = GameStatuses.PlayerPlay.SELECTED;
+                                        gamePanel.setSelectedPiece(GamePanel.player1Pieces.get(temp));
+                                    }
+                                    break;
+                            }
                     }
                 }
             });
         }
     }
     private void player2PieceActions () {
-        for(int i = 0; i < GamePanel.player1Pieces.size(); i++) {
+        for(int i = 0; i < GamePanel.player2Pieces.size(); i++) {
             final int temp = i;
             gamePanel.player2Pieces.get(i).addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent me) {
-                    if(!player1Panel.hasTurn() && !player2Panel.hasTurn()) {
-                        if(isMill)
-                            gamePanel.millPlayer2Remove(gamePanel.player2Pieces.get(temp));
-                        else if (!aTurn && !gamePanel.player2Pieces.get(temp).isSelected) {
-                            gamePanel.setSelectedPiece(gamePanel.player2Pieces.get(temp));
-                        }
-                        else if (!aTurn && gamePanel.player2Pieces.get(temp).isSelected)
-                            gamePanel.deselectPiece();
+                    switch(gamePlay) {
+                        case MIDDLE:
+                            switch(player2Play){
+                                case MILL:
+                                    player2Play = GameStatuses.PlayerPlay.DESELECTED;
+                                    gamePanel.millPlayer2Remove(GamePanel.player2Pieces.get(temp));
+                                    break;
+                                case SELECTED:
+                                    if(!aTurn) {
+                                        player2Play = GameStatuses.PlayerPlay.DESELECTED;
+                                        gamePanel.deselectPiece();
+                                    }
+                                    break;
+                                case DESELECTED:
+                                    if(!aTurn) {
+                                        player2Play = GameStatuses.PlayerPlay.SELECTED;
+                                        gamePanel.setSelectedPiece(GamePanel.player2Pieces.get(temp));
+                                    }
+                                    break;
+                            }
                     }
                 }
             });
