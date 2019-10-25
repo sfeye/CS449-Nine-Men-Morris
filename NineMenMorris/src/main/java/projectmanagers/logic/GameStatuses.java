@@ -10,6 +10,7 @@ public class GameStatuses {
     public enum GamePlay {BEGINNING, MIDDLE, END}
     public enum PlayerPlay {MILL, SELECTED, DESELECTED}
     public enum Turns {PLAYER1, PLAYER2}
+    public static Turns turn;
 
     public static GamePlay getGamePlay () {
         if (Player1Panel.hasTurn() || Player2Panel.hasTurn())
@@ -19,10 +20,10 @@ public class GameStatuses {
         else
             return GamePlay.END;
     }
-    public static Turns changeTurn (Turns currTurn) {
-        if (currTurn.equals(Turns.PLAYER1))
-            return Turns.PLAYER2;
+    public static void changeTurn () {
+        if (turn.equals(Turns.PLAYER1))
+            turn = Turns.PLAYER2;
         else
-             return Turns.PLAYER1;
+             turn = Turns.PLAYER1;
     }
 }

@@ -57,6 +57,8 @@ public class GamePanel extends JPanel {
         remove(playerPiece);
         remove(blackPiece);
         swapCoordinates(blackPiece, playerPiece);
+        Board.placePiece(playerPiece.getXCoordinate(), playerPiece.getYCoordinate());
+        Board.remove(blackPiece.getXCoordinate(), blackPiece.getYCoordinate());
         gbc.gridx = playerPiece.getXCoordinate(); gbc.gridy = playerPiece.getYCoordinate();
         add(playerPiece, gbc);
         gbc.gridx = blackPiece.getXCoordinate(); gbc.gridy = blackPiece.getYCoordinate();
@@ -108,7 +110,7 @@ public class GamePanel extends JPanel {
         player1Pieces.get(RED_PLAYER.getPieces()).setYCoordinate(piece.getYCoordinate());
 
         add(player1Pieces.get(RED_PLAYER.getPieces()), gbc);
-        Board.placePiece(RED_PLAYER, piece.getXCoordinate(), piece.getYCoordinate());
+        Board.placePiece(piece.getXCoordinate(), piece.getYCoordinate());
         revalidate();
         repaint();
     }
@@ -119,7 +121,7 @@ public class GamePanel extends JPanel {
         player2Pieces.get(BLUE_PLAYER.getPieces()).setYCoordinate(piece.getYCoordinate());
 
         add(player2Pieces.get(BLUE_PLAYER.getPieces()), gbc);
-        Board.placePiece(BLUE_PLAYER, piece.getXCoordinate(), piece.getYCoordinate());
+        Board.placePiece(piece.getXCoordinate(), piece.getYCoordinate());
         revalidate();
         repaint();
     }
