@@ -87,9 +87,9 @@ public class GameBoardGui extends JFrame {
                 choice.add(label);  choice.add(red);    choice.add(blue);
                 JOptionPane.showMessageDialog(null, choice, "Two player game", JOptionPane.QUESTION_MESSAGE);
                 if(red.isSelected())
-                    GameStatuses.turn = GameStatuses.Turns.PLAYER1;
+                    GameStatuses.turn = GameStatuses.TurnsEnum.PLAYER1;
                 else
-                    GameStatuses.turn = GameStatuses.Turns.PLAYER2;
+                    GameStatuses.turn = GameStatuses.TurnsEnum.PLAYER2;
                 showTurn();
                 gameType = GameStatuses.GameType.TWO_PLAYER;
                 onePlay.setEnabled(false);
@@ -108,7 +108,7 @@ public class GameBoardGui extends JFrame {
     }
     // Visually displays who has the current turn
     private void showTurn () {
-        if(GameStatuses.turn.equals(GameStatuses.Turns.PLAYER1)) {
+        if(GameStatuses.turn.equals(GameStatuses.TurnsEnum.PLAYER1)) {
             player1Panel.player1Txt.setBorder(BorderFactory.createLineBorder(Color.yellow));
             player2Panel.player2Txt.setBorder(BorderFactory.createEmptyBorder());
             player1Panel.player1Txt.setForeground(Color.red);
@@ -191,7 +191,7 @@ public class GameBoardGui extends JFrame {
                             break;
                     }
                     if(Board.isPositionMilled(GamePanel.boardPieces.get(temp).getXCoordinate(), GamePanel.boardPieces.get(temp).getYCoordinate())) {
-                        if(GameStatuses.turn.equals(GameStatuses.Turns.PLAYER1))
+                        if(GameStatuses.turn.equals(GameStatuses.TurnsEnum.PLAYER1))
                             player2Play = GameStatuses.PlayerPlay.MILL;
                         else
                             player1Play = GameStatuses.PlayerPlay.MILL;
@@ -218,13 +218,13 @@ public class GameBoardGui extends JFrame {
                                 gamePanel.millPlayer1Remove(GamePanel.player1Pieces.get(temp));
                                 break;
                             case SELECTED:
-                                if(GameStatuses.turn.equals(GameStatuses.Turns.PLAYER1)) {
+                                if(GameStatuses.turn.equals(GameStatuses.TurnsEnum.PLAYER1)) {
                                     player1Play = GameStatuses.PlayerPlay.DESELECTED;
                                     gamePanel.deselectPiece();
                                 }
                                 break;
                             case DESELECTED:
-                                if(GameStatuses.turn.equals(GameStatuses.Turns.PLAYER1)) {
+                                if(GameStatuses.turn.equals(GameStatuses.TurnsEnum.PLAYER1)) {
                                     player1Play = GameStatuses.PlayerPlay.SELECTED;
                                     gamePanel.setSelectedPiece(GamePanel.player1Pieces.get(temp));
                                 }
@@ -249,13 +249,13 @@ public class GameBoardGui extends JFrame {
                                 gamePanel.millPlayer2Remove(GamePanel.player2Pieces.get(temp));
                                 break;
                             case SELECTED:
-                                if(GameStatuses.turn.equals(GameStatuses.Turns.PLAYER2)) {
+                                if(GameStatuses.turn.equals(GameStatuses.TurnsEnum.PLAYER2)) {
                                     player2Play = GameStatuses.PlayerPlay.DESELECTED;
                                     gamePanel.deselectPiece();
                                 }
                                 break;
                             case DESELECTED:
-                                if(GameStatuses.turn.equals(GameStatuses.Turns.PLAYER2)) {
+                                if(GameStatuses.turn.equals(GameStatuses.TurnsEnum.PLAYER2)) {
                                     player2Play = GameStatuses.PlayerPlay.SELECTED;
                                     gamePanel.setSelectedPiece(GamePanel.player2Pieces.get(temp));
                                 }

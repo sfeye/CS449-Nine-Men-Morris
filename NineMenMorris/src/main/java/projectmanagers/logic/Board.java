@@ -6,8 +6,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static main.java.projectmanagers.logic.GameStatuses.ColorStatus;
-import static main.java.projectmanagers.logic.GameStatuses.ColorStatus.EMPTY;
-import static main.java.projectmanagers.logic.GameStatuses.ColorStatus.INVALID;
+import static main.java.projectmanagers.logic.GameStatuses.ColorStatus.*;
+import static main.java.projectmanagers.logic.GameStatuses.TurnsEnum;
 import static main.java.projectmanagers.trackers.PlayerTracking.*;
 
 public class Board {
@@ -81,22 +81,21 @@ public class Board {
     }
 
     static public boolean placePiece(int xpos, int ypos) {
-        if(GameStatuses.turn == GameStatuses.Turns.PLAYER1) {
-            if ((boardArray.get(xpos).get(ypos).getStatus() == EMPTY) && (boardArray.get(xpos).get(ypos).getStatus() != INVALID)) {
-                boardArray.get(xpos).get(ypos).setStatus(RED_PLAYER.getColor());
-                RED_PLAYER.incrementPieces();
-                return boardArray.get(xpos).get(ypos).determineMills();
-            }
-            else return false;
+        ColorStatus updateColor;
+        if (GameStatuses.turn == TurnsEnum.PLAYER1) {
+            updateColor = RED;
+        } else {
+            updateColor = BLUE;
         }
-        else {
-                if ((boardArray.get(xpos).get(ypos).getStatus() == EMPTY) && (boardArray.get(xpos).get(ypos).getStatus() != INVALID)) {
-                    boardArray.get(xpos).get(ypos).setStatus(BLUE_PLAYER.getColor());
-                    BLUE_PLAYER.incrementPieces();
-                    return boardArray.get(xpos).get(ypos).determineMills();
-                }
-                else return false;
-            }
+
+        if ((boardArray.get(xpos).get(ypos).getStatus() == EMPTY) && (boardArray.get(xpos).get(ypos).getStatus() != INVALID)) {
+            boardArray.get(xpos).get(ypos).setStatus(updateColor);
+            PLAYER_LOOKUP.get(updateColor).incrementPieces();
+
+            return boardArray.get(xpos).get(ypos).determineMills();
+        } else {
+            return false;
+        }
     }
 
     static public boolean remove(int xpos, int ypos) {
