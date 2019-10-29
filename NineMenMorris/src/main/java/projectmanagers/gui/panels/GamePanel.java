@@ -8,7 +8,6 @@ import java.util.List;
 import javafx.util.Pair;
 import main.java.projectmanagers.gui.components.*;
 import main.java.projectmanagers.logic.Board;
-import main.java.projectmanagers.logic.Player;
 
 import static main.java.projectmanagers.logic.GameStatuses.ColorStatus.EMPTY;
 import static main.java.projectmanagers.logic.GameStatuses.ColorStatus.INVALID;
@@ -33,7 +32,7 @@ public class GamePanel extends JPanel {
     public void millPlayer1Remove(PlayerPieces piece){
         remove(piece);
         gbc.gridx = piece.getXCoordinate(); gbc.gridy = piece.getYCoordinate();
-        add(new BoardPieces(piece.getXCoordinate(), piece.getYCoordinate()), gbc);
+        add(getOrigin(piece), gbc);
         RED_PLAYER.decrementPieces();
         revalidate();
         repaint();
@@ -41,10 +40,17 @@ public class GamePanel extends JPanel {
     public void millPlayer2Remove(PlayerPieces piece){
         remove(piece);
         gbc.gridx = piece.getXCoordinate(); gbc.gridy = piece.getYCoordinate();
-        add(new BoardPieces(piece.getXCoordinate(), piece.getYCoordinate()), gbc);
+        add(getOrigin(piece), gbc);
         BLUE_PLAYER.decrementPieces();
         revalidate();
         repaint();
+    }
+    public BoardPieces getOrigin (PlayerPieces playerPiece) {
+        for (BoardPieces blackPiece : boardPieces) {
+            if (blackPiece.getXCoordinate() == playerPiece.getXCoordinate() && blackPiece.getYCoordinate() == playerPiece.getYCoordinate())
+                return blackPiece;
+        }
+        return null;
     }
     //TODO: @Nate -> automated tests for this
     public boolean canSlide (BoardPieces blackPiece, PlayerPieces playerPiece) {
