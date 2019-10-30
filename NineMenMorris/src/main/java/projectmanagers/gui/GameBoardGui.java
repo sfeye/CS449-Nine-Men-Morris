@@ -66,37 +66,30 @@ public class GameBoardGui extends JFrame {
         JButton twoPlay = new JButton("Two Player");
         buttonPanel.add(onePlay);
         buttonPanel.add(twoPlay);
-        // TODO: addActionListeners here are some examples
-        onePlay.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                JOptionPane.showMessageDialog(null, "CPU doesn't exist...", "ERROR", JOptionPane.ERROR_MESSAGE);
-                gameType = GameStatuses.GameType.SINGLE_PLAYER;
-                onePlay.setEnabled(false);
-                twoPlay.setEnabled(false);
-            }
+        onePlay.addActionListener(actionEvent -> {
+            JOptionPane.showMessageDialog(null, "CPU doesn't exist...", "ERROR", JOptionPane.ERROR_MESSAGE);
+            gameType = GameStatuses.GameType.SINGLE_PLAYER;
+            onePlay.setEnabled(false);
+            twoPlay.setEnabled(true);
         });
-        twoPlay.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                JLabel label = new JLabel("Who goes first?");
-                JRadioButton red = new JRadioButton("Player 1");
-                red.setSelected(true);
-                JRadioButton blue = new JRadioButton("Player 2");
-                JPanel choice = new JPanel();
-                ButtonGroup group = new ButtonGroup();
-                group.add(red);     group.add(blue);
-                choice.add(label);  choice.add(red);    choice.add(blue);
-                JOptionPane.showMessageDialog(null, choice, "Two player game", JOptionPane.QUESTION_MESSAGE);
-                if(red.isSelected())
-                    GameStatuses.turn = GameStatuses.TurnsEnum.PLAYER1;
-                else
-                    GameStatuses.turn = GameStatuses.TurnsEnum.PLAYER2;
-                showTurn();
-                gameType = GameStatuses.GameType.TWO_PLAYER;
-                onePlay.setEnabled(false);
-                twoPlay.setEnabled(false);
-            }
+        twoPlay.addActionListener(actionEvent -> {
+            JLabel label = new JLabel("Who goes first?");
+            JRadioButton red = new JRadioButton("Player 1");
+            red.setSelected(true);
+            JRadioButton blue = new JRadioButton("Player 2");
+            JPanel choice = new JPanel();
+            ButtonGroup group = new ButtonGroup();
+            group.add(red);     group.add(blue);
+            choice.add(label);  choice.add(red);    choice.add(blue);
+            JOptionPane.showMessageDialog(null, choice, "Two player game", JOptionPane.QUESTION_MESSAGE);
+            if(red.isSelected())
+                GameStatuses.turn = GameStatuses.TurnsEnum.PLAYER1;
+            else
+                GameStatuses.turn = GameStatuses.TurnsEnum.PLAYER2;
+            showTurn();
+            gameType = GameStatuses.GameType.TWO_PLAYER;
+            onePlay.setEnabled(false);
+            twoPlay.setEnabled(false);
         });
     }
     // Method initializes the board JFrame and sets up default GUI

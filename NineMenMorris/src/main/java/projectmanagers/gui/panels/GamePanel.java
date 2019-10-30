@@ -47,7 +47,7 @@ public class GamePanel extends JPanel {
         revalidate();
         repaint();
     }
-    public BoardPieces getOrigin (PlayerPieces playerPiece) {
+    private BoardPieces getOrigin (PlayerPieces playerPiece) {
         for (BoardPieces blackPiece : boardPieces) {
             if (blackPiece.getXCoordinate() == playerPiece.getXCoordinate() && blackPiece.getYCoordinate() == playerPiece.getYCoordinate())
                 return blackPiece;
@@ -55,6 +55,13 @@ public class GamePanel extends JPanel {
         BoardPieces newPiece = new BoardPieces(playerPiece.getXCoordinate(), playerPiece.getYCoordinate());
         boardPieces.add(newPiece);
         return newPiece;
+    }
+    //TODO: determine which pieces are currently in a mill then change ol to green
+    private void showPiecesInMills() {
+    }
+    //TODO: if pieces are in a mill then cannot remove them
+    public boolean canMill(PlayerPieces playerPiece) {
+        return true;
     }
     //TODO: @Nate -> automated tests for this
     public boolean canSlide (BoardPieces blackPiece, PlayerPieces playerPiece) {
