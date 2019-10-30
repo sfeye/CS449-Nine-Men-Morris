@@ -34,6 +34,7 @@ public class GamePanel extends JPanel {
         gbc.gridx = piece.getXCoordinate(); gbc.gridy = piece.getYCoordinate();
         add(getOrigin(piece), gbc);
         Board.remove(piece.getXCoordinate(), piece.getYCoordinate());
+        piece.setXCoordinate(8); piece.setYCoordinate(8);
         revalidate();
         repaint();
     }
@@ -42,6 +43,7 @@ public class GamePanel extends JPanel {
         gbc.gridx = piece.getXCoordinate(); gbc.gridy = piece.getYCoordinate();
         add(getOrigin(piece), gbc);
         Board.remove(piece.getXCoordinate(), piece.getYCoordinate());
+        piece.setXCoordinate(8); piece.setYCoordinate(8);
         revalidate();
         repaint();
     }
