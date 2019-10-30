@@ -52,9 +52,7 @@ public class GamePanel extends JPanel {
             if (blackPiece.getXCoordinate() == playerPiece.getXCoordinate() && blackPiece.getYCoordinate() == playerPiece.getYCoordinate())
                 return blackPiece;
         }
-        BoardPieces newPiece = new BoardPieces(playerPiece.getXCoordinate(), playerPiece.getYCoordinate());
-        boardPieces.add(newPiece);
-        return newPiece;
+        return (new BoardPieces(playerPiece.getXCoordinate(), playerPiece.getYCoordinate()));
     }
     //TODO: determine which pieces are currently in a mill then change ol to green
     private void showPiecesInMills() {
@@ -73,18 +71,17 @@ public class GamePanel extends JPanel {
     public void swapPlayerPiece(BoardPieces blackPiece, PlayerPieces playerPiece){
         remove(playerPiece);
         remove(blackPiece);
-        // swaps to coordinates of pieces to keep logic up to date
-        int tempx = blackPiece.getXCoordinate();  int tempy = blackPiece.getYCoordinate();
-        blackPiece.setXCoordinate(playerPiece.getXCoordinate());
-        blackPiece.setYCoordinate(playerPiece.getYCoordinate());
-        playerPiece.setXCoordinate(tempx);    playerPiece.setYCoordinate(tempy);
-        // update logic
-        Board.remove(blackPiece.getXCoordinate(), blackPiece.getYCoordinate());
-        Board.placePiece(playerPiece.getXCoordinate(), playerPiece.getYCoordinate());
-        gbc.gridx = playerPiece.getXCoordinate(); gbc.gridy = playerPiece.getYCoordinate();
-        add(playerPiece, gbc);
+        // pre-place update logic
+        Board.remove(playerPiece.getXCoordinate(), playerPiece.getYCoordinate());
+        // place pieces on board, with opposite coordinates
         gbc.gridx = blackPiece.getXCoordinate(); gbc.gridy = blackPiece.getYCoordinate();
-        add(blackPiece, gbc);
+        add(playerPiece, gbc);
+        gbc.gridx = playerPiece.getXCoordinate(); gbc.gridy = playerPiece.getYCoordinate();
+        add(getOrigin(playerPiece), gbc);
+        // update playerPiece coordinates
+        playerPiece.setXCoordinate(blackPiece.getXCoordinate());    playerPiece.setYCoordinate(blackPiece.getYCoordinate());
+        // post-place update logic
+        Board.placePiece(playerPiece.getXCoordinate(), playerPiece.getYCoordinate());
         deselectPiece();
         revalidate();
         repaint();

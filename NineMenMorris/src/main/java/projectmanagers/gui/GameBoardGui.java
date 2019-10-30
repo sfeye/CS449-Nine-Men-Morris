@@ -164,6 +164,10 @@ public class GameBoardGui extends JFrame {
                                                 //FLY
                                                 if (player1Play.equals(GameStatuses.PlayerPlay.SELECTED) && RED_PLAYER.getPieces() == 3) {
                                                     gamePanel.swapPlayerPiece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer1Piece());
+                                                    if(Board.isPositionMilled(gamePanel.getSelectedPlayer1Piece().getXCoordinate(), gamePanel.getSelectedPlayer1Piece().getYCoordinate())) {
+                                                        player2Play = GameStatuses.PlayerPlay.MILL;
+                                                        isMill = true;
+                                                    }
                                                     player1Play = GameStatuses.PlayerPlay.DESELECTED;
                                                     if(!isMill)
                                                         GameStatuses.changeTurn();
@@ -184,6 +188,11 @@ public class GameBoardGui extends JFrame {
                                                 //FLY
                                                 if (player2Play.equals(GameStatuses.PlayerPlay.SELECTED) && BLUE_PLAYER.getPieces() == 3) {
                                                     gamePanel.swapPlayerPiece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer2Piece());
+                                                    player2Play = GameStatuses.PlayerPlay.DESELECTED;
+                                                    if(Board.isPositionMilled(gamePanel.getSelectedPlayer2Piece().getXCoordinate(), gamePanel.getSelectedPlayer2Piece().getYCoordinate())) {
+                                                        player1Play = GameStatuses.PlayerPlay.MILL;
+                                                        isMill = true;
+                                                    }
                                                     player2Play = GameStatuses.PlayerPlay.DESELECTED;
                                                     if(!isMill)
                                                         GameStatuses.changeTurn();
