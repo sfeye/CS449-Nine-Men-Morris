@@ -56,9 +56,20 @@ public class GamePanel extends JPanel {
     }
     //TODO: determine which pieces are currently in a mill then change ol to green
     public void showMills() {
+        for(PlayerPieces red : player1Pieces) {
+            if(!canMill(red))
+                red.setOL(Color.orange);
+        }
+        for(PlayerPieces blue : player2Pieces) {
+            if(!canMill(blue))
+                blue.setOL(Color.orange);
+        }
     }
     //TODO: if pieces are in a mill then cannot remove them
     public static boolean canMill(PlayerPieces playerPiece) {
+        Pair pairToMill = new Pair<Integer, Integer>(playerPiece.getXCoordinate(), playerPiece.getYCoordinate());
+        List<Pair<Integer, Integer>> pairsInMills;
+        //return (pairsInMills.contains(pairToMill));
         return true;
     }
     //TODO: @Nate -> automated tests for this
