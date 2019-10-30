@@ -41,6 +41,10 @@ public class Position {
     }
 
     public boolean isMilled() {
+        if (colorStatus == INVALID) {
+            return false;
+        }
+
         boolean mill1 = millConditionsX.isMilled();
         boolean mill2 = millConditionsY.isMilled();
         return (mill1 || mill2);

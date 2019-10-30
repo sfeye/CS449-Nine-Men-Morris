@@ -1,7 +1,11 @@
 package main.java.projectmanagers.logic;
 
+import javafx.util.Pair;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static main.java.projectmanagers.logic.GameStatuses.ColorStatus.*;
 import static main.java.projectmanagers.logic.GameStatuses.TurnsEnum.PLAYER1;
@@ -124,5 +128,23 @@ public class BoardTest {
         Board.placePiece(0, 6);
 
         assertFalse(Board.isPositionMilled(3, 0));
+    }
+
+    @Test
+    public void getMilledPositions_returnsMilledPieces() {
+        Board.placePiece(0, 0);
+        Board.placePiece(0, 3);
+        Board.placePiece(0, 6);
+
+        List<Pair<Integer, Integer>> output = Board.getMilledPieces();
+
+        // Set up expected output
+        List<Pair<Integer, Integer>> expectedOutput = new ArrayList<>();
+        expectedOutput.add(new Pair<>(0, 0));
+        expectedOutput.add(new Pair<>(0, 3));
+        expectedOutput.add(new Pair<>(0, 6));
+
+        assertEquals(expectedOutput, output);
+
     }
 }
