@@ -2,6 +2,8 @@ package main.java.projectmanagers.gui;
 import main.java.projectmanagers.gui.panels.*;
 import main.java.projectmanagers.logic.Board;
 import main.java.projectmanagers.logic.GameStatuses;
+import static main.java.projectmanagers.trackers.PlayerTracking.BLUE_PLAYER;
+import static main.java.projectmanagers.trackers.PlayerTracking.RED_PLAYER;
 
 import javax.swing.*;
 import java.awt.*;
@@ -157,7 +159,7 @@ public class GameBoardGui extends JFrame {
                                         switch (GameStatuses.turn) {
                                             case PLAYER1:
                                                 //FLY
-                                                if (player1Play.equals(GameStatuses.PlayerPlay.SELECTED) && GamePanel.player1Pieces.size() == 3) {
+                                                if (player1Play.equals(GameStatuses.PlayerPlay.SELECTED) && RED_PLAYER.getPieces() == 3) {
                                                     gamePanel.swapPlayerPiece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer1Piece());
                                                     player1Play = GameStatuses.PlayerPlay.DESELECTED;
                                                     if(!isMill)
@@ -177,7 +179,7 @@ public class GameBoardGui extends JFrame {
                                                 break;
                                             case PLAYER2:
                                                 //FLY
-                                                if (player2Play.equals(GameStatuses.PlayerPlay.SELECTED) && GamePanel.player2Pieces.size() == 3) {
+                                                if (player2Play.equals(GameStatuses.PlayerPlay.SELECTED) && BLUE_PLAYER.getPieces() == 3) {
                                                     gamePanel.swapPlayerPiece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPlayer2Piece());
                                                     player2Play = GameStatuses.PlayerPlay.DESELECTED;
                                                     if(!isMill)

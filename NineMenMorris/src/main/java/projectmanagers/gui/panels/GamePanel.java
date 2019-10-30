@@ -33,7 +33,7 @@ public class GamePanel extends JPanel {
         remove(piece);
         gbc.gridx = piece.getXCoordinate(); gbc.gridy = piece.getYCoordinate();
         add(getOrigin(piece), gbc);
-        RED_PLAYER.decrementPieces();
+        Board.remove(piece.getXCoordinate(), piece.getYCoordinate());
         revalidate();
         repaint();
     }
@@ -41,7 +41,7 @@ public class GamePanel extends JPanel {
         remove(piece);
         gbc.gridx = piece.getXCoordinate(); gbc.gridy = piece.getYCoordinate();
         add(getOrigin(piece), gbc);
-        BLUE_PLAYER.decrementPieces();
+        Board.remove(piece.getXCoordinate(), piece.getYCoordinate());
         revalidate();
         repaint();
     }
@@ -64,9 +64,14 @@ public class GamePanel extends JPanel {
     public void swapPlayerPiece(BoardPieces blackPiece, PlayerPieces playerPiece){
         remove(playerPiece);
         remove(blackPiece);
-        swapCoordinates(blackPiece, playerPiece);
-        Board.placePiece(playerPiece.getXCoordinate(), playerPiece.getYCoordinate());
+        // swaps to coordinates of pieces to keep logic up to date
+        int tempx = blackPiece.getXCoordinate();  int tempy = blackPiece.getYCoordinate();
+        blackPiece.setXCoordinate(playerPiece.getXCoordinate());
+        blackPiece.setYCoordinate(playerPiece.getYCoordinate());
+        playerPiece.setXCoordinate(tempx);    playerPiece.setYCoordinate(tempy);
+        // update logic
         Board.remove(blackPiece.getXCoordinate(), blackPiece.getYCoordinate());
+        Board.placePiece(playerPiece.getXCoordinate(), playerPiece.getYCoordinate());
         gbc.gridx = playerPiece.getXCoordinate(); gbc.gridy = playerPiece.getYCoordinate();
         add(playerPiece, gbc);
         gbc.gridx = blackPiece.getXCoordinate(); gbc.gridy = blackPiece.getYCoordinate();
@@ -74,13 +79,6 @@ public class GamePanel extends JPanel {
         deselectPiece();
         revalidate();
         repaint();
-    }
-    // swaps to coordinates of pieces to keep logic up to date
-    public void swapCoordinates(BoardPieces blackPiece, PlayerPieces playerPiece) {
-        int tempx = blackPiece.getXCoordinate();  int tempy = blackPiece.getYCoordinate();
-        blackPiece.setXCoordinate(playerPiece.getXCoordinate());
-        blackPiece.setYCoordinate(playerPiece.getYCoordinate());
-        playerPiece.setXCoordinate(tempx);    playerPiece.setYCoordinate(tempy);
     }
     public void setSelectedPiece(PlayerPieces piece) {
         piece.selectPiece();
