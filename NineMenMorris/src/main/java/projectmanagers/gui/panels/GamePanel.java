@@ -50,7 +50,9 @@ public class GamePanel extends JPanel {
             if (blackPiece.getXCoordinate() == playerPiece.getXCoordinate() && blackPiece.getYCoordinate() == playerPiece.getYCoordinate())
                 return blackPiece;
         }
-        return null;
+        BoardPieces newPiece = new BoardPieces(playerPiece.getXCoordinate(), playerPiece.getYCoordinate());
+        boardPieces.add(newPiece);
+        return newPiece;
     }
     //TODO: @Nate -> automated tests for this
     public boolean canSlide (BoardPieces blackPiece, PlayerPieces playerPiece) {
@@ -75,7 +77,6 @@ public class GamePanel extends JPanel {
     }
     // swaps to coordinates of pieces to keep logic up to date
     public void swapCoordinates(BoardPieces blackPiece, PlayerPieces playerPiece) {
-        // TODO: @Nate -> update logic
         int tempx = blackPiece.getXCoordinate();  int tempy = blackPiece.getYCoordinate();
         blackPiece.setXCoordinate(playerPiece.getXCoordinate());
         blackPiece.setYCoordinate(playerPiece.getYCoordinate());

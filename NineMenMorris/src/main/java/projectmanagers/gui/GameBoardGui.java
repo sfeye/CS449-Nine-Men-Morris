@@ -127,7 +127,7 @@ public class GameBoardGui extends JFrame {
     }
     // Incorporates additional board piece mouse action listeners
     private void boardPieceActions () {
-        for (int i = 0; i < 24; i ++) {
+        for (int i = 0; i < GamePanel.boardPieces.size(); i ++) {
             final int temp = i;
             GamePanel.boardPieces.get(i).addMouseListener(new MouseAdapter() {
                 @Override
@@ -142,13 +142,13 @@ public class GameBoardGui extends JFrame {
                                             case PLAYER1:
                                                 gamePanel.addPlayer1Piece(GamePanel.boardPieces.get(temp));
                                                 player1Panel.decrementTurns();
-                                                if(!isMill)
+                                                if(!(Board.isPositionMilled(GamePanel.boardPieces.get(temp).getXCoordinate(), GamePanel.boardPieces.get(temp).getYCoordinate())))
                                                     GameStatuses.changeTurn();
                                                 break;
                                             case PLAYER2:
                                                 gamePanel.addPlayer2Piece(GamePanel.boardPieces.get(temp));
                                                 player2Panel.decrementTurns();
-                                                if(!isMill)
+                                                if(!(Board.isPositionMilled(GamePanel.boardPieces.get(temp).getXCoordinate(), GamePanel.boardPieces.get(temp).getYCoordinate())))
                                                     GameStatuses.changeTurn();
                                                 break;
                                         }
