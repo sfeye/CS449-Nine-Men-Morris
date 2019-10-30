@@ -251,7 +251,7 @@ public class GameBoardGui extends JFrame {
                     gamePlay = GameStatuses.getGamePlay();
                     switch (gamePlay) {
                         case BEGINNING:
-                            if(player1Play.equals(GameStatuses.PlayerPlay.MILLABLE) && gamePanel.canMill(GamePanel.player1Pieces.get(temp))) {
+                            if(player1Play.equals(GameStatuses.PlayerPlay.MILLABLE) && GamePanel.canMill(GamePanel.player1Pieces.get(temp))) {
                                 player1Play = GameStatuses.PlayerPlay.DESELECTED;
                                 gamePanel.millPlayer1Remove(GamePanel.player1Pieces.get(temp));
                                 GameStatuses.changeTurn();
@@ -262,7 +262,7 @@ public class GameBoardGui extends JFrame {
                         case MIDDLE:
                             switch(player1Play){
                                 case MILLABLE:
-                                    if(gamePanel.canMill(GamePanel.player1Pieces.get(temp))) {
+                                    if(GamePanel.canMill(GamePanel.player1Pieces.get(temp))) {
                                         player1Play = GameStatuses.PlayerPlay.DESELECTED;
                                         gamePanel.millPlayer1Remove(GamePanel.player1Pieces.get(temp));
                                         GameStatuses.changeTurn();
@@ -298,7 +298,7 @@ public class GameBoardGui extends JFrame {
                     gamePlay = GameStatuses.getGamePlay();
                     switch (gamePlay) {
                         case BEGINNING:
-                            if(player2Play.equals(GameStatuses.PlayerPlay.MILLABLE) && gamePanel.canMill(GamePanel.player2Pieces.get(temp))) {
+                            if(player2Play.equals(GameStatuses.PlayerPlay.MILLABLE) && GamePanel.canMill(GamePanel.player2Pieces.get(temp))) {
                                 player2Play = GameStatuses.PlayerPlay.DESELECTED;
                                 gamePanel.millPlayer2Remove(GamePanel.player2Pieces.get(temp));
                                 GameStatuses.changeTurn();
@@ -309,7 +309,7 @@ public class GameBoardGui extends JFrame {
                         case MIDDLE:
                             switch(player2Play){
                                 case MILLABLE:
-                                    if(gamePanel.canMill(GamePanel.player2Pieces.get(temp))) {
+                                    if(GamePanel.canMill(GamePanel.player2Pieces.get(temp))) {
                                         player2Play = GameStatuses.PlayerPlay.DESELECTED;
                                         gamePanel.millPlayer2Remove(GamePanel.player2Pieces.get(temp));
                                         GameStatuses.changeTurn();
