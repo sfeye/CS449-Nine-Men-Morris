@@ -252,4 +252,16 @@ public class Board {
         }
         return adjacentPieces;
     }
+
+    static public List<Pair<Integer, Integer>> getMilledPieces() {
+        List<Pair<Integer, Integer>> mills = new ArrayList<>();
+        for (int xpos = 0; xpos < 7; xpos++) {
+            for (int ypos = 0; ypos < 7; ypos++) {
+                if (Board.boardArray.get(xpos).get(ypos).isMilled()){
+                    mills.add(new Pair<>(xpos, ypos));
+                }
+            }
+        }
+        return mills;
+    }
 }
