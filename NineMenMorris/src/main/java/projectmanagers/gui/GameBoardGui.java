@@ -158,12 +158,14 @@ public class GameBoardGui extends JFrame {
                                                 player1Panel.decrementTurns();
                                                 if(!(Board.isPositionMilled(GamePanel.boardPieces.get(temp).getXCoordinate(), GamePanel.boardPieces.get(temp).getYCoordinate())))
                                                     GameStatuses.changeTurn();
+                                                gamePanel.showMills();
                                                 break;
                                             case PLAYER2:
                                                 gamePanel.addPlayer2Piece(GamePanel.boardPieces.get(temp));
                                                 player2Panel.decrementTurns();
                                                 if(!(Board.isPositionMilled(GamePanel.boardPieces.get(temp).getXCoordinate(), GamePanel.boardPieces.get(temp).getYCoordinate())))
                                                     GameStatuses.changeTurn();
+                                                gamePanel.showMills();
                                                 break;
                                         }
                                         break;
@@ -176,6 +178,7 @@ public class GameBoardGui extends JFrame {
                                                     if(Board.isPositionMilled(gamePanel.getSelectedPlayer1Piece().getXCoordinate(), gamePanel.getSelectedPlayer1Piece().getYCoordinate())) {
                                                         player2Play = GameStatuses.PlayerPlay.MILLABLE;
                                                         P1hasMill = true;
+                                                        gamePanel.showMills();
                                                     }
                                                     player1Play = GameStatuses.PlayerPlay.DESELECTED;
                                                     if(!P1hasMill)
@@ -187,6 +190,7 @@ public class GameBoardGui extends JFrame {
                                                     if(Board.isPositionMilled(gamePanel.getSelectedPlayer1Piece().getXCoordinate(), gamePanel.getSelectedPlayer1Piece().getYCoordinate())) {
                                                         player2Play = GameStatuses.PlayerPlay.MILLABLE;
                                                         P1hasMill = true;
+                                                        gamePanel.showMills();
                                                     }
                                                     player1Play = GameStatuses.PlayerPlay.DESELECTED;
                                                     if(!P1hasMill)
@@ -201,6 +205,7 @@ public class GameBoardGui extends JFrame {
                                                     if(Board.isPositionMilled(gamePanel.getSelectedPlayer2Piece().getXCoordinate(), gamePanel.getSelectedPlayer2Piece().getYCoordinate())) {
                                                         player1Play = GameStatuses.PlayerPlay.MILLABLE;
                                                         P2hasMill = true;
+                                                        gamePanel.showMills();
                                                     }
                                                     player2Play = GameStatuses.PlayerPlay.DESELECTED;
                                                     if(!P2hasMill)
@@ -212,6 +217,7 @@ public class GameBoardGui extends JFrame {
                                                     if(Board.isPositionMilled(gamePanel.getSelectedPlayer2Piece().getXCoordinate(), gamePanel.getSelectedPlayer2Piece().getYCoordinate())) {
                                                         player1Play = GameStatuses.PlayerPlay.MILLABLE;
                                                         P2hasMill = true;
+                                                        gamePanel.showMills();
                                                     }
                                                     player2Play = GameStatuses.PlayerPlay.DESELECTED;
                                                     if(!P2hasMill)
@@ -229,14 +235,15 @@ public class GameBoardGui extends JFrame {
                         if(GameStatuses.turn.equals(GameStatuses.TurnsEnum.PLAYER1)) {
                             player2Play = GameStatuses.PlayerPlay.MILLABLE;
                             P1hasMill = true;
+                            gamePanel.showMills();
                         }
                         else{
                             player1Play = GameStatuses.PlayerPlay.MILLABLE;
                             P2hasMill = true;
+                            gamePanel.showMills();
                         }
                     }
                     showTurn();
-                    gamePanel.showMills();
                 }
             });
         }
@@ -251,7 +258,7 @@ public class GameBoardGui extends JFrame {
                     gamePlay = GameStatuses.getGamePlay();
                     switch (gamePlay) {
                         case BEGINNING:
-                            if(player1Play.equals(GameStatuses.PlayerPlay.MILLABLE) && GamePanel.canMill(GamePanel.player1Pieces.get(temp))) {
+                            if(player1Play.equals(GameStatuses.PlayerPlay.MILLABLE) && !GamePanel.inMill(GamePanel.player1Pieces.get(temp))) {
                                 player1Play = GameStatuses.PlayerPlay.DESELECTED;
                                 gamePanel.millPlayer1Remove(GamePanel.player1Pieces.get(temp));
                                 GameStatuses.changeTurn();
@@ -262,7 +269,7 @@ public class GameBoardGui extends JFrame {
                         case MIDDLE:
                             switch(player1Play){
                                 case MILLABLE:
-                                    if(GamePanel.canMill(GamePanel.player1Pieces.get(temp))) {
+                                    if(!GamePanel.inMill(GamePanel.player1Pieces.get(temp))) {
                                         player1Play = GameStatuses.PlayerPlay.DESELECTED;
                                         gamePanel.millPlayer1Remove(GamePanel.player1Pieces.get(temp));
                                         GameStatuses.changeTurn();
@@ -284,7 +291,6 @@ public class GameBoardGui extends JFrame {
                             }
                     }
                     showTurn();
-                    gamePanel.showMills();
                 }
             });
         }
@@ -298,7 +304,7 @@ public class GameBoardGui extends JFrame {
                     gamePlay = GameStatuses.getGamePlay();
                     switch (gamePlay) {
                         case BEGINNING:
-                            if(player2Play.equals(GameStatuses.PlayerPlay.MILLABLE) && GamePanel.canMill(GamePanel.player2Pieces.get(temp))) {
+                            if(player2Play.equals(GameStatuses.PlayerPlay.MILLABLE) && !GamePanel.inMill(GamePanel.player2Pieces.get(temp))) {
                                 player2Play = GameStatuses.PlayerPlay.DESELECTED;
                                 gamePanel.millPlayer2Remove(GamePanel.player2Pieces.get(temp));
                                 GameStatuses.changeTurn();
@@ -309,7 +315,7 @@ public class GameBoardGui extends JFrame {
                         case MIDDLE:
                             switch(player2Play){
                                 case MILLABLE:
-                                    if(GamePanel.canMill(GamePanel.player2Pieces.get(temp))) {
+                                    if(!GamePanel.inMill(GamePanel.player2Pieces.get(temp))) {
                                         player2Play = GameStatuses.PlayerPlay.DESELECTED;
                                         gamePanel.millPlayer2Remove(GamePanel.player2Pieces.get(temp));
                                         GameStatuses.changeTurn();
@@ -331,7 +337,6 @@ public class GameBoardGui extends JFrame {
                             }
                         }
                     showTurn();
-                    gamePanel.showMills();
                 }
             });
         }

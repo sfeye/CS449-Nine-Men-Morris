@@ -57,20 +57,23 @@ public class GamePanel extends JPanel {
     //TODO: determine which pieces are currently in a mill then change ol to green
     public void showMills() {
         for(PlayerPieces red : player1Pieces) {
-            if(!canMill(red))
-                red.setOL(Color.orange);
+            if(inMill(red))
+                red.setOL(Color.green);
+            else
+                red.setOL(Color.black);
         }
         for(PlayerPieces blue : player2Pieces) {
-            if(!canMill(blue))
-                blue.setOL(Color.orange);
+            if(inMill(blue))
+                blue.setOL(Color.green);
+            else
+                blue.setOL(Color.black);
         }
     }
     //TODO: if pieces are in a mill then cannot remove them
-    public static boolean canMill(PlayerPieces playerPiece) {
+    public static boolean inMill(PlayerPieces playerPiece) {
         Pair pairToMill = new Pair<Integer, Integer>(playerPiece.getXCoordinate(), playerPiece.getYCoordinate());
-        List<Pair<Integer, Integer>> pairsInMills;
-        //return (pairsInMills.contains(pairToMill));
-        return true;
+        List<Pair<Integer, Integer>> pairsInMills = Board.getMilledPieces();
+        return (pairsInMills.contains(pairToMill));
     }
     //TODO: @Nate -> automated tests for this
     public boolean canSlide (BoardPieces blackPiece, PlayerPieces playerPiece) {
