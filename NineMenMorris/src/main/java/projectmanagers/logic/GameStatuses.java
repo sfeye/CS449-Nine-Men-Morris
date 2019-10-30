@@ -8,11 +8,11 @@ import static main.java.projectmanagers.trackers.PlayerTracking.RED_PLAYER;
 
 public class GameStatuses {
     public enum ColorStatus {EMPTY, BLUE, RED, INVALID}
-    public enum GameType {SINGLE_PLAYER, TWO_PLAYER}
+    public enum GameType {SINGLE_PLAYER, TWO_PLAYER, MENU}
     public enum GamePlay {BEGINNING, MIDDLE, END}
-    public enum PlayerPlay {MILL, SELECTED, DESELECTED}
-    public enum TurnsEnum {PLAYER1, PLAYER2}
-    public static TurnsEnum turn;
+    public enum PlayerPlay {MILLABLE, SELECTED, DESELECTED}
+    public enum TurnsEnum {PLAYER1, PLAYER2, MENU}
+    public static TurnsEnum turn = TurnsEnum.MENU;
 
     public static GamePlay getGamePlay () {
         if (Player1Panel.hasTurn() || Player2Panel.hasTurn())

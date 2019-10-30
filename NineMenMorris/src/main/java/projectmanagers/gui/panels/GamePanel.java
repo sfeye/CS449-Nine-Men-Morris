@@ -55,10 +55,10 @@ public class GamePanel extends JPanel {
         return (new BoardPieces(playerPiece.getXCoordinate(), playerPiece.getYCoordinate()));
     }
     //TODO: determine which pieces are currently in a mill then change ol to green
-    private void showPiecesInMills() {
+    public void showMills() {
     }
     //TODO: if pieces are in a mill then cannot remove them
-    public boolean canMill(PlayerPieces playerPiece) {
+    public static boolean canMill(PlayerPieces playerPiece) {
         return true;
     }
     //TODO: @Nate -> automated tests for this
@@ -71,7 +71,7 @@ public class GamePanel extends JPanel {
     public void swapPlayerPiece(BoardPieces blackPiece, PlayerPieces playerPiece){
         remove(playerPiece);
         remove(blackPiece);
-        // pre-place update logic
+        // pre-remove update logic
         Board.remove(playerPiece.getXCoordinate(), playerPiece.getYCoordinate());
         // place pieces on board, with opposite coordinates
         gbc.gridx = blackPiece.getXCoordinate(); gbc.gridy = blackPiece.getYCoordinate();

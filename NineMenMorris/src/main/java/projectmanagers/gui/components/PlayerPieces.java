@@ -1,5 +1,7 @@
 package main.java.projectmanagers.gui.components;
 
+import main.java.projectmanagers.gui.GameBoardGui;
+import main.java.projectmanagers.gui.panels.GamePanel;
 import main.java.projectmanagers.logic.GameStatuses;
 import main.java.projectmanagers.logic.MillConditions;
 import main.java.projectmanagers.logic.Player;
@@ -94,8 +96,10 @@ public class PlayerPieces extends JButton {
         int radius = diameter / 2;
         g.setColor(outline);
         //Highlight the pieces in a mill
-        if(false)
-            g.setColor(Color.green);
+        if(GameBoardGui.P1hasMill && bg.equals(Color.blue) && mouseOver && !outline.equals(Color.orange))
+            g.setColor(Color.yellow);
+        else if(GameBoardGui.P2hasMill && bg.equals(Color.red) && mouseOver && !outline.equals(Color.orange))
+            g.setColor(Color.yellow);
         g.drawOval((getWidth() / 2) - radius, (getHeight() / 2) - radius, diameter, diameter);
         g.setColor(bg);
         g.fillOval((getWidth() / 2) - radius, (getHeight() / 2) - radius, diameter, diameter);
