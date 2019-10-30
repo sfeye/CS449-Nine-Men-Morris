@@ -111,10 +111,10 @@ public class GamePanel extends JPanel {
     public void addPlayer1Piece(BoardPieces piece){
         remove(piece);
         gbc.gridx = piece.getXCoordinate(); gbc.gridy = piece.getYCoordinate();
-        player1Pieces.get(RED_PLAYER.getPieces()).setXCoordinate(piece.getXCoordinate());
-        player1Pieces.get(RED_PLAYER.getPieces()).setYCoordinate(piece.getYCoordinate());
+        player1Pieces.get(RED_PLAYER.getTurns()).setXCoordinate(piece.getXCoordinate());
+        player1Pieces.get(RED_PLAYER.getTurns()).setYCoordinate(piece.getYCoordinate());
 
-        add(player1Pieces.get(RED_PLAYER.getPieces()), gbc);
+        add(player1Pieces.get(RED_PLAYER.getTurns()), gbc);
         Board.placePiece(piece.getXCoordinate(), piece.getYCoordinate());
         revalidate();
         repaint();
@@ -122,10 +122,10 @@ public class GamePanel extends JPanel {
     public void addPlayer2Piece(BoardPieces piece){
         remove(piece);
         gbc.gridx = piece.getXCoordinate(); gbc.gridy = piece.getYCoordinate();
-        player2Pieces.get(BLUE_PLAYER.getPieces()).setXCoordinate(piece.getXCoordinate());
-        player2Pieces.get(BLUE_PLAYER.getPieces()).setYCoordinate(piece.getYCoordinate());
+        player2Pieces.get(BLUE_PLAYER.getTurns()).setXCoordinate(piece.getXCoordinate());
+        player2Pieces.get(BLUE_PLAYER.getTurns()).setYCoordinate(piece.getYCoordinate());
 
-        add(player2Pieces.get(BLUE_PLAYER.getPieces()), gbc);
+        add(player2Pieces.get(BLUE_PLAYER.getTurns()), gbc);
         Board.placePiece(piece.getXCoordinate(), piece.getYCoordinate());
         revalidate();
         repaint();

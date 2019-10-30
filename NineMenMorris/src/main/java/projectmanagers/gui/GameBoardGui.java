@@ -16,7 +16,7 @@ public class GameBoardGui extends JFrame {
     private ButtonPanel buttonPanel;
     private Player1Panel player1Panel;
     private Player2Panel player2Panel;
-    boolean isMill = false;
+    static boolean isMill = false;
     private GameStatuses.PlayerPlay player1Play = GameStatuses.PlayerPlay.DESELECTED;
     private GameStatuses.PlayerPlay player2Play = GameStatuses.PlayerPlay.DESELECTED;
     private GameStatuses.GamePlay gamePlay;
@@ -126,6 +126,16 @@ public class GameBoardGui extends JFrame {
             player1Panel.player1Txt.setFont(new Font("Serif", Font.PLAIN, 18));
             player2Panel.player2Txt.setFont(new Font("Serif", Font.BOLD, 18));
         }
+        if(GameStatuses.getGamePlay() == GameStatuses.GamePlay.END){
+            switch (GameStatuses.turn) {
+                case PLAYER1:
+                    JOptionPane.showMessageDialog(null, "Player 2 Wins, Game Over");
+                    break;
+                case PLAYER2:
+                    JOptionPane.showMessageDialog(null, "Player 1 Wins, Game Over");
+                    break;
+            }
+        }
     }
     // Incorporates additional board piece mouse action listeners
     private void boardPieceActions () {
@@ -202,10 +212,10 @@ public class GameBoardGui extends JFrame {
                                     case END:
                                         switch (GameStatuses.turn) {
                                             case PLAYER1:
-                                                JOptionPane.showMessageDialog(null, "Player 1 Wins, Game Over");
+                                                JOptionPane.showMessageDialog(null, "Player 2 Wins, Game Over");
                                                 break;
                                             case PLAYER2:
-                                                JOptionPane.showMessageDialog(null, "Player 2 Wins, Game Over");
+                                                JOptionPane.showMessageDialog(null, "Player 1 Wins, Game Over");
                                                 break;
                                         }
                                 }
