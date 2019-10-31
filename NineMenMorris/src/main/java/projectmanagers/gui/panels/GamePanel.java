@@ -54,22 +54,36 @@ public class GamePanel extends JPanel {
         }
         return (new BoardPieces(playerPiece.getXCoordinate(), playerPiece.getYCoordinate()));
     }
-    //TODO: determine which pieces are currently in a mill then change ol to green
     public void showMills() {
         for(PlayerPieces red : player1Pieces) {
-            if(inMill(red))
+            if(inMill(red) && !red.isSelected())
                 red.setOL(Color.green);
-            else
+            else if (!red.isSelected())
                 red.setOL(Color.black);
         }
         for(PlayerPieces blue : player2Pieces) {
-            if(inMill(blue))
+            if(inMill(blue) && !blue.isSelected())
                 blue.setOL(Color.green);
-            else
+            else if (!blue.isSelected())
                 blue.setOL(Color.black);
         }
     }
-    //TODO: if pieces are in a mill then cannot remove them
+    public static boolean noRemainingP1Millable() {
+
+        for(PlayerPieces red : player1Pieces) {
+            if(!inMill(red) && red.getXCoordinate() != 8)
+                return false;
+        }
+        return true;
+    }
+    public static boolean noRemainingP2Millable() {
+        for(PlayerPieces blue : player2Pieces) {
+            if(!inMill(blue) && blue.getXCoordinate() != 8)
+                return false;
+        }
+        return true;
+    }
+    // if pieces are in a mill then return true
     public static boolean inMill(PlayerPieces playerPiece) {
         Pair pairToMill = new Pair<Integer, Integer>(playerPiece.getXCoordinate(), playerPiece.getYCoordinate());
         List<Pair<Integer, Integer>> pairsInMills = Board.getMilledPieces();
