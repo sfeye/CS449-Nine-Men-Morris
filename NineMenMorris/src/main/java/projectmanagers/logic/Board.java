@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static main.java.projectmanagers.logic.GameStatuses.ColorStatus;
+import static main.java.projectmanagers.logic.GameStatuses.*;
 import static main.java.projectmanagers.logic.GameStatuses.ColorStatus.*;
-import static main.java.projectmanagers.logic.GameStatuses.TurnsEnum;
+import static main.java.projectmanagers.logic.GameStatuses.TurnsEnum.PLAYER1;
 import static main.java.projectmanagers.trackers.PlayerTracking.*;
 
 public class Board {
@@ -82,7 +82,7 @@ public class Board {
 
     static public boolean placePiece(int xpos, int ypos) {
         ColorStatus updateColor;
-        if (GameStatuses.turn == TurnsEnum.PLAYER1) {
+        if (turn == PLAYER1) {
             updateColor = RED;
         } else {
             updateColor = BLUE;
@@ -114,6 +114,28 @@ public class Board {
 
     static public boolean isPositionMilled(int xpos, int ypos) {
         return boardArray.get(xpos).get(ypos).isMilled();
+    }
+
+    static public boolean noEmptyAdjacentPositions() {
+        ColorStatus playerTurn;
+        int emptySpaces = 0;
+        if (turn == PLAYER1) {
+            playerTurn = RED;
+        } else {
+            playerTurn = BLUE;
+        }
+
+        for (int xpos = 0; xpos < 7; xpos++) {
+            for (int ypos = 0; ypos < 7; ypos++) {
+                List<Pair<Integer, Integer>> adjacent = adjacentPieces(xpos, ypos);
+                for (Pair<Integer, Integer> pair : adjacent){
+                    if ((Board.position(xpos, ypos) == playerTurn) && Board.position(pair.getKey(), pair.getValue()) == EMPTY){
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     static public List<Pair<Integer, Integer>> adjacentPieces(int xpos, int ypos) {

@@ -147,4 +147,21 @@ public class BoardTest {
         assertEquals(expectedOutput, output);
 
     }
+
+    @Test
+    public void noAdjacentEmptyPositions_fullBoard() {
+        Board.placePiece(0, 0);
+        changeTurn();
+        Board.placePiece(0 ,3);
+        Board.placePiece(3, 0);
+        changeTurn();
+        assertTrue(Board.noEmptyAdjacentPositions());
+    }
+    @Test
+
+    public void noAdjacentEmptyPositions_emptyAdjacent() {
+        Board.placePiece(0, 0);
+
+        assertFalse(Board.noEmptyAdjacentPositions());
+    }
 }
