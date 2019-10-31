@@ -16,7 +16,7 @@ public class GameStatuses {
     public static GamePlay getGamePlay () {
         if (Player1Panel.hasTurn() || Player2Panel.hasTurn())
             return GamePlay.BEGINNING;
-        else if (RED_PLAYER.getPieces() >= 3 &&  BLUE_PLAYER.getPieces() >= 3)
+        else if (!Board.noEmptyAdjacentPositions() && RED_PLAYER.getPieces() >= 3 &&  BLUE_PLAYER.getPieces() >= 3)
             return GamePlay.MIDDLE;
         else
             return GamePlay.END;
