@@ -1,6 +1,5 @@
 package main.java.projectmanagers.logic;
 
-import main.java.projectmanagers.gui.panels.GamePanel;
 import main.java.projectmanagers.gui.panels.Player1Panel;
 import main.java.projectmanagers.gui.panels.Player2Panel;
 import static main.java.projectmanagers.trackers.PlayerTracking.BLUE_PLAYER;

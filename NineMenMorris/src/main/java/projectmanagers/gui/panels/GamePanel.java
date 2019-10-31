@@ -69,7 +69,6 @@ public class GamePanel extends JPanel {
         }
     }
     public static boolean noRemainingP1Millable() {
-
         for(PlayerPieces red : player1Pieces) {
             if(!inMill(red) && red.getXCoordinate() != 8)
                 return false;

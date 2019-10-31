@@ -2,9 +2,6 @@ package main.java.projectmanagers.gui.components;
 
 import main.java.projectmanagers.gui.GameBoardGui;
 import main.java.projectmanagers.gui.panels.GamePanel;
-import main.java.projectmanagers.logic.GameStatuses;
-import main.java.projectmanagers.logic.MillConditions;
-import main.java.projectmanagers.logic.Player;
 
 import javax.swing.*;
 import java.awt.Graphics;
