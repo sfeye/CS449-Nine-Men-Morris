@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static main.java.projectmanagers.logic.GameStatuses.ColorStatus.*;
@@ -145,7 +146,6 @@ public class BoardTest {
         expectedOutput.add(new Pair<>(0, 6));
 
         assertEquals(expectedOutput, output);
-
     }
 
     @Test
@@ -163,5 +163,16 @@ public class BoardTest {
         Board.placePiece(0, 0);
 
         assertFalse(Board.noEmptyAdjacentPositions());
+
+    }
+
+    @Test
+    public void position_returnsInvalidOnBadInput() {
+        assertEquals(INVALID, Board.position(1, 0));
+    }
+
+    @Test
+    public void adjacentPieces_returnsEmptyListOnBadInput() {
+        assertEquals(Collections.emptyList(), Board.adjacentPieces(1, 0));
     }
 }

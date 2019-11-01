@@ -5,6 +5,7 @@ import main.java.projectmanagers.gui.panels.Player2Panel;
 import static main.java.projectmanagers.trackers.PlayerTracking.BLUE_PLAYER;
 import static main.java.projectmanagers.trackers.PlayerTracking.RED_PLAYER;
 
+// Class to hold enums for game tracking
 public class GameStatuses {
     public enum ColorStatus {EMPTY, BLUE, RED, INVALID}
     public enum GameType {SINGLE_PLAYER, TWO_PLAYER, MENU}
@@ -13,6 +14,7 @@ public class GameStatuses {
     public enum TurnsEnum {PLAYER1, PLAYER2, MENU}
     public static TurnsEnum turn = TurnsEnum.MENU;
 
+    // Returns the stage of the game
     public static GamePlay getGamePlay () {
         if (Player1Panel.hasTurn() || Player2Panel.hasTurn())
             return GamePlay.BEGINNING;
@@ -21,6 +23,8 @@ public class GameStatuses {
         else
             return GamePlay.END;
     }
+
+    // Cycles the turn between players
     public static void changeTurn () {
         if (turn.equals(TurnsEnum.PLAYER1))
             turn = TurnsEnum.PLAYER2;

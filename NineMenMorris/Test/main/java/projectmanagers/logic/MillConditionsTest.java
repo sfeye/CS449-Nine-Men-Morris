@@ -3,7 +3,6 @@ package main.java.projectmanagers.logic;
 import org.junit.Before;
 import org.junit.Test;
 
-import static main.java.projectmanagers.trackers.PlayerTracking.BLUE_PLAYER;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 

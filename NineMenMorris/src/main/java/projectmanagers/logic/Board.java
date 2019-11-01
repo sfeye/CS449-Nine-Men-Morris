@@ -10,6 +10,7 @@ import static main.java.projectmanagers.logic.GameStatuses.ColorStatus.*;
 import static main.java.projectmanagers.logic.GameStatuses.TurnsEnum.PLAYER1;
 import static main.java.projectmanagers.trackers.PlayerTracking.*;
 
+// Contains the logic and data for the Board values
 public class Board {
 
     static private List<List<Position>> boardArray = new ArrayList<>();
@@ -19,6 +20,7 @@ public class Board {
         startingBoard();
     }
 
+    // Constructs the data structure for the initial board
     static void startingBoard() {
 
         for (int i = 0; i < 7; i++){
@@ -47,39 +49,40 @@ public class Board {
         boardMills.add(15, new MillConditions(0, 6, 3, 6, 6, 6));
 
         // xpos, ypos
-        boardArray.get(0).get(0).initialize(EMPTY, boardMills.get(0), boardMills.get(8));
-        boardArray.get(0).get(3).initialize(EMPTY, boardMills.get(0), boardMills.get(11));
-        boardArray.get(0).get(6).initialize(EMPTY, boardMills.get(0), boardMills.get(15));
+        boardArray.get(0).get(0).initialize(boardMills.get(0), boardMills.get(8));
+        boardArray.get(0).get(3).initialize(boardMills.get(0), boardMills.get(11));
+        boardArray.get(0).get(6).initialize(boardMills.get(0), boardMills.get(15));
 
-        boardArray.get(1).get(1).initialize(EMPTY, boardMills.get(1), boardMills.get(9));
-        boardArray.get(1).get(3).initialize(EMPTY, boardMills.get(1), boardMills.get(11));
-        boardArray.get(1).get(5).initialize(EMPTY, boardMills.get(1), boardMills.get(14));
+        boardArray.get(1).get(1).initialize(boardMills.get(1), boardMills.get(9));
+        boardArray.get(1).get(3).initialize(boardMills.get(1), boardMills.get(11));
+        boardArray.get(1).get(5).initialize(boardMills.get(1), boardMills.get(14));
 
-        boardArray.get(2).get(2).initialize(EMPTY, boardMills.get(2), boardMills.get(10));
-        boardArray.get(2).get(3).initialize(EMPTY, boardMills.get(2), boardMills.get(11));
-        boardArray.get(2).get(4).initialize(EMPTY, boardMills.get(2), boardMills.get(13));
+        boardArray.get(2).get(2).initialize(boardMills.get(2), boardMills.get(10));
+        boardArray.get(2).get(3).initialize(boardMills.get(2), boardMills.get(11));
+        boardArray.get(2).get(4).initialize(boardMills.get(2), boardMills.get(13));
 
-        boardArray.get(3).get(0).initialize(EMPTY, boardMills.get(3), boardMills.get(8));
-        boardArray.get(3).get(1).initialize(EMPTY, boardMills.get(3), boardMills.get(9));
-        boardArray.get(3).get(2).initialize(EMPTY, boardMills.get(3), boardMills.get(10));
-        boardArray.get(3).get(4).initialize(EMPTY, boardMills.get(4), boardMills.get(13));
-        boardArray.get(3).get(5).initialize(EMPTY, boardMills.get(4), boardMills.get(14));
-        boardArray.get(3).get(6).initialize(EMPTY, boardMills.get(4), boardMills.get(15));
+        boardArray.get(3).get(0).initialize(boardMills.get(3), boardMills.get(8));
+        boardArray.get(3).get(1).initialize(boardMills.get(3), boardMills.get(9));
+        boardArray.get(3).get(2).initialize(boardMills.get(3), boardMills.get(10));
+        boardArray.get(3).get(4).initialize(boardMills.get(4), boardMills.get(13));
+        boardArray.get(3).get(5).initialize(boardMills.get(4), boardMills.get(14));
+        boardArray.get(3).get(6).initialize(boardMills.get(4), boardMills.get(15));
 
-        boardArray.get(4).get(2).initialize(EMPTY, boardMills.get(5), boardMills.get(10));
-        boardArray.get(4).get(3).initialize(EMPTY, boardMills.get(5), boardMills.get(12));
-        boardArray.get(4).get(4).initialize(EMPTY, boardMills.get(5), boardMills.get(13));
+        boardArray.get(4).get(2).initialize(boardMills.get(5), boardMills.get(10));
+        boardArray.get(4).get(3).initialize(boardMills.get(5), boardMills.get(12));
+        boardArray.get(4).get(4).initialize(boardMills.get(5), boardMills.get(13));
 
-        boardArray.get(5).get(1).initialize(EMPTY, boardMills.get(6), boardMills.get(9));
-        boardArray.get(5).get(3).initialize(EMPTY, boardMills.get(6), boardMills.get(12));
-        boardArray.get(5).get(5).initialize(EMPTY, boardMills.get(6), boardMills.get(14));
+        boardArray.get(5).get(1).initialize(boardMills.get(6), boardMills.get(9));
+        boardArray.get(5).get(3).initialize(boardMills.get(6), boardMills.get(12));
+        boardArray.get(5).get(5).initialize(boardMills.get(6), boardMills.get(14));
 
-        boardArray.get(6).get(0).initialize(EMPTY, boardMills.get(7), boardMills.get(8));
-        boardArray.get(6).get(3).initialize(EMPTY, boardMills.get(7), boardMills.get(12));
-        boardArray.get(6).get(6).initialize(EMPTY, boardMills.get(7), boardMills.get(15));
+        boardArray.get(6).get(0).initialize(boardMills.get(7), boardMills.get(8));
+        boardArray.get(6).get(3).initialize(boardMills.get(7), boardMills.get(12));
+        boardArray.get(6).get(6).initialize(boardMills.get(7), boardMills.get(15));
 
     }
 
+    // Places a colored piece on the given xpos and ypos based on the current turn
     static public boolean placePiece(int xpos, int ypos) {
         ColorStatus updateColor;
         if (turn == PLAYER1) {
@@ -98,6 +101,7 @@ public class Board {
         }
     }
 
+    // Removes the given piece and replaces it with EMPTY
     static public boolean remove(int xpos, int ypos) {
         if (boardArray.get(xpos).get(ypos).getStatus() != EMPTY && boardArray.get(xpos).get(ypos).getStatus() != INVALID) {
             PLAYER_LOOKUP.get(boardArray.get(xpos).get(ypos).getStatus()).decrementPieces();
@@ -108,14 +112,17 @@ public class Board {
         }
     }
 
+    // Returns the ColorStatus of the given xpos ypos
     static public ColorStatus position(int xpos, int ypos) {
         return boardArray.get(xpos).get(ypos).getStatus();
     }
 
+    // Returns the isMilled status of the given xpos ypos
     static public boolean isPositionMilled(int xpos, int ypos) {
         return boardArray.get(xpos).get(ypos).isMilled();
     }
 
+    // Returns whether or not any positions of the turn color have an open adjacent position
     static public boolean noEmptyAdjacentPositions() {
         ColorStatus playerTurn;
         int emptySpaces = 0;
@@ -138,6 +145,7 @@ public class Board {
         return true;
     }
 
+    // Returns the adjacent positions to a given xpos ypos
     static public List<Pair<Integer, Integer>> adjacentPieces(int xpos, int ypos) {
 
         List<Pair<Integer, Integer>> adjacentPieces = new ArrayList<>();
@@ -275,6 +283,7 @@ public class Board {
         return adjacentPieces;
     }
 
+    // Returns all pieces in a milled position on the board
     static public List<Pair<Integer, Integer>> getMilledPieces() {
         List<Pair<Integer, Integer>> mills = new ArrayList<>();
         for (int xpos = 0; xpos < 7; xpos++) {
