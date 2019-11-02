@@ -20,6 +20,7 @@ public class Player1Panel extends JPanel {
         player1Txt.setFont(new Font("Serif", Font.PLAIN, 18));
         buildPanel();
     }
+    // setups the side panels to show number of pieces to place and title of player number
     private void buildPanel () {
         gbc.weighty = 1;    gbc.gridy = 0;   gbc.gridx = 0;
         setLayout(new GridBagLayout());
@@ -29,6 +30,7 @@ public class Player1Panel extends JPanel {
         add(player1Txt, gbc);
         trackTurns();
     }
+    // keeps track of the number of player pieces they can place still
     private void trackTurns () {
         for (int i = 0; i <= RED_PLAYER.getTurns(); i++) {
             gbc.gridy = i + 1;
@@ -36,6 +38,7 @@ public class Player1Panel extends JPanel {
             add(pieces.get(i), gbc);
         }
     }
+    // decrements the number of turns that a player can place
     public void decrementTurns() {
         if (RED_PLAYER.getTurns() >= 0) {
             pieces.get(RED_PLAYER.getTurns()).setBg(bgc);
@@ -44,8 +47,17 @@ public class Player1Panel extends JPanel {
             repaint();
         }
     }
+    // checks to see if a place has any remaining pieces to place
     public static boolean hasTurn() {
         return RED_PLAYER.getTurns() >= 0;
+    }
+    public void reset() {
+        for(PlayerPieces piece : pieces) {
+            piece.setBg(Color.red);
+            piece.setOL(Color.black);
+        }
+        revalidate();
+        repaint();
     }
 }
 

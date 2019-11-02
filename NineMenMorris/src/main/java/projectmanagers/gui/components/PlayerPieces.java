@@ -68,11 +68,13 @@ public class PlayerPieces extends JButton {
     {
         this.outline = outline;
     }
-    public void selectPiece () {
+    // when a player piece is selected then the ol will be set to yellow
+    public void selectPiece() {
         this.isSelected = true;
         setOL(Color.yellow);
     }
-    public void deselectPiece () {
+    // what a piece is deselected and not in a mill then set color ol to black
+    public void deselectPiece() {
         this.isSelected = false;
         if(GamePanel.inMill(this))
             setOL(Color.green);
@@ -81,7 +83,7 @@ public class PlayerPieces extends JButton {
         revalidate();
         repaint();
     }
-    public int getDiameter() {
+    private int getDiameter() {
         diameter = Math.min(getWidth(), getHeight());
         return diameter;
     }
@@ -95,10 +97,11 @@ public class PlayerPieces extends JButton {
         diameter = getDiameter();
         int radius = diameter / 2;
         g.setColor(outline);
-        //Highlight the pieces in a mill
-        if(GameBoardGui.P1hasMill && bg.equals(Color.blue) && mouseOver && (!outline.equals(Color.green) || GamePanel.noRemainingP2Millable()))
+        // highlight the pieces in a mill
+        if(GameBoardGui.P1hasMill && bg.equals(Color.blue) && mouseOver && (!outline.equals(Color.green) || GamePanel.noRemainingMillable()))
             g.setColor(Color.yellow);
-        else if(GameBoardGui.P2hasMill && bg.equals(Color.red) && mouseOver && (!outline.equals(Color.green) || GamePanel.noRemainingP1Millable()))
+        //
+        else if(GameBoardGui.P2hasMill && bg.equals(Color.red) && mouseOver && (!outline.equals(Color.green) || GamePanel.noRemainingMillable()))
             g.setColor(Color.yellow);
         g.drawOval((getWidth() / 2) - radius, (getHeight() / 2) - radius, diameter, diameter);
         g.setColor(bg);

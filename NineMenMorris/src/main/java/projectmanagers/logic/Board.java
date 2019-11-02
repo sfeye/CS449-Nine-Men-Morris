@@ -20,6 +20,11 @@ public class Board {
         startingBoard();
     }
 
+    public static void reset() {
+        boardArray.clear();
+        startingBoard();
+    }
+    // Constructs the data structure for the initial board
     // Constructs the data structure for the initial board
     static void startingBoard() {
 

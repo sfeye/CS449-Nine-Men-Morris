@@ -54,10 +54,9 @@ public class BoardPieces extends JButton{
         addMouseListener(mouseListener);
         addMouseMotionListener(mouseListener);
     }
+    // accessor methods for board piece coordinates
     public int getXCoordinate () { return x; }
     public int getYCoordinate () { return y; }
-    public void setXCoordinate (int x) { this.x = x; }
-    public void setYCoordinate (int y) { this.y = y; }
     private int getDiameter() {
         diameter = Math.min(getWidth(), getHeight());
         return diameter;
