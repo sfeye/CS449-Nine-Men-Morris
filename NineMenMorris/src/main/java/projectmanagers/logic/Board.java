@@ -13,7 +13,7 @@ import static main.java.projectmanagers.trackers.PlayerTracking.*;
 // Contains the logic and data for the Board values
 public class Board {
 
-    static private List<List<Position>> boardArray = new ArrayList<>();
+    static public List<List<Position>> boardArray = new ArrayList<>();
     static public List<MillConditions> boardMills = new ArrayList<>();
 
     public Board() {

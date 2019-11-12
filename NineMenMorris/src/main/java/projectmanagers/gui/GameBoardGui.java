@@ -1,5 +1,7 @@
 package main.java.projectmanagers.gui;
+import javafx.util.Pair;
 import main.java.projectmanagers.gui.panels.*;
+import main.java.projectmanagers.logic.AI;
 import main.java.projectmanagers.logic.Board;
 import main.java.projectmanagers.logic.GameStatuses;
 import static main.java.projectmanagers.trackers.PlayerTracking.BLUE_PLAYER;
@@ -8,20 +10,22 @@ import static main.java.projectmanagers.trackers.PlayerTracking.RED_PLAYER;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
 
 public class GameBoardGui extends JFrame {
     private JPanel masterPanel;
     private GamePanel gamePanel;
     private TitlePanel titlePanel;
     private ButtonPanel buttonPanel;
-    private Player1Panel player1Panel;
-    private Player2Panel player2Panel;
+    private static Player1Panel player1Panel;
+    public static Player2Panel player2Panel;
     public static boolean P1hasMill = false;
     public static boolean P2hasMill = false;
     private GameStatuses.PlayerPlay player1Play = GameStatuses.PlayerPlay.DESELECTED;
     private GameStatuses.PlayerPlay player2Play = GameStatuses.PlayerPlay.DESELECTED;
     private GameStatuses.GamePlay gamePlay = GameStatuses.getGamePlay();
     private GameStatuses.GameType gameType = GameStatuses.GameType.MENU;
+
 
     private final int MAX_HEIGHT = 600;
     private final int MAX_WIDTH = 800;
@@ -71,17 +75,10 @@ public class GameBoardGui extends JFrame {
         buttonPanel.add(twoPlay);
         buttonPanel.add(reset);
         onePlay.addActionListener(actionEvent -> {
-            JLabel label = new JLabel("Select difficulty: ");
-            JRadioButton easy = new JRadioButton("Easy");
-            easy.setSelected(true);
-            JRadioButton medium = new JRadioButton("Medium");
-            JRadioButton hard = new JRadioButton("Hard");
-            JPanel choice = new JPanel();
-            ButtonGroup group = new ButtonGroup();
-            group.add(easy);     group.add(medium);     group.add(hard);
-            choice.add(label);  choice.add(easy);    choice.add(medium);    choice.add(hard);
-            JOptionPane.showMessageDialog(null, choice, "Difficulty", JOptionPane.QUESTION_MESSAGE);
+            player2Panel.player2Txt.setText(" CPU ");
+            GameStatuses.turn = GameStatuses.TurnsEnum.PLAYER1;
             gameType = GameStatuses.GameType.SINGLE_PLAYER;
+            showTurn();
             onePlay.setEnabled(false);
             twoPlay.setEnabled(false);
             reset.setEnabled(true);
@@ -114,7 +111,12 @@ public class GameBoardGui extends JFrame {
             pieceActions();
             gameType = GameStatuses.GameType.MENU;
             GameStatuses.turn = GameStatuses.TurnsEnum.MENU;
+            player1Play = GameStatuses.PlayerPlay.DESELECTED;
+            player2Play = GameStatuses.PlayerPlay.DESELECTED;
+            alertMessages();
+            P1hasMill = false;  P2hasMill = false;
             showTurn();
+            player2Panel.player2Txt.setText("Player 2");
             onePlay.setEnabled(true);
             twoPlay.setEnabled(true);
             reset.setEnabled(false);
@@ -143,7 +145,7 @@ public class GameBoardGui extends JFrame {
         frame.pack();
     }
     // Visually displays who has the current turn
-    private void showTurn () {
+    public static void showTurn () {
         switch (GameStatuses.turn) {
             case PLAYER1:
                 player1Panel.player1Txt.setBorder(BorderFactory.createLineBorder(Color.yellow));
@@ -244,7 +246,44 @@ public class GameBoardGui extends JFrame {
                                         }
                                         break;
                                 }
+                                break;
                             case SINGLE_PLAYER:
+                                if(GameStatuses.turn.equals(GameStatuses.TurnsEnum.PLAYER1)) {
+                                    switch (gamePlay) {
+                                        case BEGINNING:
+                                            gamePanel.showMills();
+                                            gamePanel.addPlayer1Piece(GamePanel.boardPieces.get(temp));
+                                            player1Panel.decrementTurns();
+                                            if (!(Board.isPositionMilled(x, y))) {
+                                                GameStatuses.changeTurn();
+                                                Pair<Integer, Integer> pair = AI.AIPlacePiece();
+                                                gamePanel.cpuAddPiece(pair);
+                                                if (Board.isPositionMilled(pair.getKey(), pair.getValue())) {
+                                                    gamePanel.cpuRemovePiece(AI.AIRemovePiece());
+                                                }
+                                            }
+                                            gamePanel.showMills();
+                                            break;
+                                        case MIDDLE:
+                                            if (player1Play.equals(GameStatuses.PlayerPlay.SELECTED) && (gamePanel.canSlide(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPiece()) || RED_PLAYER.getPieces() == 3)) {
+                                                gamePanel.swapPlayerPiece(GamePanel.boardPieces.get(temp), gamePanel.getSelectedPiece());
+                                                if (Board.isPositionMilled(gamePanel.getSelectedPiece().getXCoordinate(), gamePanel.getSelectedPiece().getYCoordinate())) {
+                                                    player2Play = GameStatuses.PlayerPlay.MILLABLE;
+                                                    P1hasMill = true;
+                                                    gamePanel.showMills();
+                                                }
+                                                player1Play = GameStatuses.PlayerPlay.DESELECTED;
+                                                if (!P1hasMill) {
+                                                    GameStatuses.changeTurn();
+                                                    showTurn();
+                                                    List<Pair<Integer, Integer>> list = AI.AIMovePiece(false);
+                                                    gamePanel.cpuSelectPiece(list.get(0));
+                                                    gamePanel.cpuSwapPiece(list.get(1));
+                                                }
+                                            }
+                                            break;
+                                    }
+                                }
                                 break;
                         }
                     }
@@ -254,10 +293,13 @@ public class GameBoardGui extends JFrame {
                             P1hasMill = true;
                         }
                         else {
-                            player1Play = GameStatuses.PlayerPlay.MILLABLE;
-                            P2hasMill = true;
+                            if(!gameType.equals(GameStatuses.GameType.SINGLE_PLAYER)) {
+                                player1Play = GameStatuses.PlayerPlay.MILLABLE;
+                                P2hasMill = true;
+                            }
                         }
                     }
+                    gamePanel.showMills();
                     showTurn();
                     alertMessages();
                 }
@@ -272,45 +314,45 @@ public class GameBoardGui extends JFrame {
                 @Override
                 public void mouseClicked(MouseEvent me) {
                     gamePlay = GameStatuses.getGamePlay();
-                    switch (gamePlay) {
-                        case BEGINNING:
-                            if(player1Play.equals(GameStatuses.PlayerPlay.MILLABLE) && (!GamePanel.inMill(GamePanel.player1Pieces.get(temp)) || GamePanel.noRemainingMillable())) {
-                                player1Play = GameStatuses.PlayerPlay.DESELECTED;
-                                gamePanel.millRemove(GamePanel.player1Pieces.get(temp));
-                                GameStatuses.changeTurn();
-                                P2hasMill = false;
-                                gamePanel.showMills();
+                        switch (gamePlay) {
+                            case BEGINNING:
+                                if (player1Play.equals(GameStatuses.PlayerPlay.MILLABLE) && (!GamePanel.inMill(GamePanel.player1Pieces.get(temp)) || GamePanel.noRemainingMillable())) {
+                                    player1Play = GameStatuses.PlayerPlay.DESELECTED;
+                                    gamePanel.millRemove(GamePanel.player1Pieces.get(temp));
+                                    GameStatuses.changeTurn();
+                                    P2hasMill = false;
+                                    gamePanel.showMills();
+                                    break;
+                                }
                                 break;
-                            }
-                            break;
-                        case MIDDLE:
-                            switch(player1Play) {
-                                case MILLABLE:
-                                    if(!GamePanel.inMill(GamePanel.player1Pieces.get(temp)) || GamePanel.noRemainingMillable()) {
-                                        player1Play = GameStatuses.PlayerPlay.DESELECTED;
-                                        gamePanel.millRemove(GamePanel.player1Pieces.get(temp));
-                                        GameStatuses.changeTurn();
-                                        P2hasMill = false;
-                                        gamePanel.showMills();
-                                    }
-                                    break;
-                                case SELECTED:
-                                    if(GameStatuses.turn.equals(GameStatuses.TurnsEnum.PLAYER1)) {
-                                        player1Play = GameStatuses.PlayerPlay.DESELECTED;
-                                        gamePanel.deselectPiece();
-                                    }
-                                    break;
-                                case DESELECTED:
-                                    if(GameStatuses.turn.equals(GameStatuses.TurnsEnum.PLAYER1) && !P1hasMill) {
-                                        player1Play = GameStatuses.PlayerPlay.SELECTED;
-                                        gamePanel.setSelectedPiece(GamePanel.player1Pieces.get(temp));
-                                    }
-                                    break;
-                            }
+                            case MIDDLE:
+                                switch (player1Play) {
+                                    case MILLABLE:
+                                        if (!GamePanel.inMill(GamePanel.player1Pieces.get(temp)) || GamePanel.noRemainingMillable()) {
+                                            player1Play = GameStatuses.PlayerPlay.DESELECTED;
+                                            gamePanel.millRemove(GamePanel.player1Pieces.get(temp));
+                                            GameStatuses.changeTurn();
+                                            P2hasMill = false;
+                                            gamePanel.showMills();
+                                        }
+                                        break;
+                                    case SELECTED:
+                                        if (GameStatuses.turn.equals(GameStatuses.TurnsEnum.PLAYER1)) {
+                                            player1Play = GameStatuses.PlayerPlay.DESELECTED;
+                                            gamePanel.deselectPiece();
+                                        }
+                                        break;
+                                    case DESELECTED:
+                                        if (GameStatuses.turn.equals(GameStatuses.TurnsEnum.PLAYER1) && !P1hasMill) {
+                                            player1Play = GameStatuses.PlayerPlay.SELECTED;
+                                            gamePanel.setSelectedPiece(GamePanel.player1Pieces.get(temp));
+                                        }
+                                        break;
+                                }
+                        }
+                        showTurn();
+                        alertMessages();
                     }
-                    showTurn();
-                    alertMessages();
-                }
             });
         }
     }
@@ -321,41 +363,48 @@ public class GameBoardGui extends JFrame {
                 @Override
                 public void mouseClicked(MouseEvent me) {
                     gamePlay = GameStatuses.getGamePlay();
-                    switch (gamePlay) {
-                        case BEGINNING:
-                            if(player2Play.equals(GameStatuses.PlayerPlay.MILLABLE) && (!GamePanel.inMill(GamePanel.player2Pieces.get(temp)) || GamePanel.noRemainingMillable())) {
-                                player2Play = GameStatuses.PlayerPlay.DESELECTED;
-                                gamePanel.millRemove(GamePanel.player2Pieces.get(temp));
-                                GameStatuses.changeTurn();
-                                P1hasMill = false;
-                                gamePanel.showMills();
+                        switch (gamePlay) {
+                            case BEGINNING:
+                                if (player2Play.equals(GameStatuses.PlayerPlay.MILLABLE) && (!GamePanel.inMill(GamePanel.player2Pieces.get(temp)) || GamePanel.noRemainingMillable())) {
+                                    player2Play = GameStatuses.PlayerPlay.DESELECTED;
+                                    gamePanel.millRemove(GamePanel.player2Pieces.get(temp));
+                                    GameStatuses.changeTurn();
+                                    P1hasMill = false;
+                                    if(gameType.equals(GameStatuses.GameType.SINGLE_PLAYER)) {
+                                        Pair<Integer, Integer> pair = AI.AIPlacePiece();
+                                        gamePanel.cpuAddPiece(pair);
+                                    }
+                                    break;
+                                }
                                 break;
-                            }
-                            break;
-                        case MIDDLE:
-                            switch(player2Play) {
-                                case MILLABLE:
-                                    if(!GamePanel.inMill(GamePanel.player2Pieces.get(temp)) || GamePanel.noRemainingMillable()) {
-                                        player2Play = GameStatuses.PlayerPlay.DESELECTED;
-                                        gamePanel.millRemove(GamePanel.player2Pieces.get(temp));
-                                        GameStatuses.changeTurn();
-                                        P1hasMill = false;
-                                        gamePanel.showMills();
-                                    }
-                                    break;
-                                case SELECTED:
-                                    if(GameStatuses.turn.equals(GameStatuses.TurnsEnum.PLAYER2)) {
-                                        player2Play = GameStatuses.PlayerPlay.DESELECTED;
-                                        gamePanel.deselectPiece();
-                                    }
-                                    break;
-                                case DESELECTED:
-                                    if(GameStatuses.turn.equals(GameStatuses.TurnsEnum.PLAYER2) && !P2hasMill) {
-                                        player2Play = GameStatuses.PlayerPlay.SELECTED;
-                                        gamePanel.setSelectedPiece(GamePanel.player2Pieces.get(temp));
-                                    }
-                                    break;
-                            }
+                            case MIDDLE:
+                                switch (player2Play) {
+                                    case MILLABLE:
+                                        if (!GamePanel.inMill(GamePanel.player2Pieces.get(temp)) || GamePanel.noRemainingMillable()) {
+                                            player2Play = GameStatuses.PlayerPlay.DESELECTED;
+                                            gamePanel.millRemove(GamePanel.player2Pieces.get(temp));
+                                            GameStatuses.changeTurn();
+                                            P1hasMill = false;
+                                            if(gameType.equals(GameStatuses.GameType.SINGLE_PLAYER)) {
+                                                List<Pair<Integer, Integer>> list = AI.AIMovePiece(false);
+                                                gamePanel.cpuSelectPiece(list.get(0));
+                                                gamePanel.cpuSwapPiece(list.get(1));
+                                            }
+                                        }
+                                        break;
+                                    case SELECTED:
+                                        if (GameStatuses.turn.equals(GameStatuses.TurnsEnum.PLAYER2)) {
+                                            player2Play = GameStatuses.PlayerPlay.DESELECTED;
+                                            gamePanel.deselectPiece();
+                                        }
+                                        break;
+                                    case DESELECTED:
+                                        if (GameStatuses.turn.equals(GameStatuses.TurnsEnum.PLAYER2) && !P2hasMill && !gameType.equals(GameStatuses.GameType.SINGLE_PLAYER)) {
+                                            player2Play = GameStatuses.PlayerPlay.SELECTED;
+                                            gamePanel.setSelectedPiece(GamePanel.player2Pieces.get(temp));
+                                        }
+                                        break;
+                                }
                         }
                     showTurn();
                     alertMessages();

@@ -13,6 +13,7 @@ public class GameStatuses {
     public enum PlayerPlay {MILLABLE, SELECTED, DESELECTED}
     public enum TurnsEnum {PLAYER1, PLAYER2, MENU}
     public static TurnsEnum turn = TurnsEnum.MENU;
+    public static int turnCounter = 1;
 
     // Returns the stage of the game
     public static GamePlay getGamePlay () {
