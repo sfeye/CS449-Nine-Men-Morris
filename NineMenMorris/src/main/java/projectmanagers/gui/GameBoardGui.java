@@ -75,8 +75,23 @@ public class GameBoardGui extends JFrame {
         buttonPanel.add(twoPlay);
         buttonPanel.add(reset);
         onePlay.addActionListener(actionEvent -> {
+            JLabel label = new JLabel("Who goes first?");
+            JRadioButton red = new JRadioButton("Player 1");
+            red.setSelected(true);
+            JRadioButton blue = new JRadioButton("CPU");
+            JPanel choice = new JPanel();
+            ButtonGroup group = new ButtonGroup();
+            group.add(red);     group.add(blue);
+            choice.add(label);  choice.add(red);    choice.add(blue);
+            JOptionPane.showMessageDialog(null, choice, "Single player game", JOptionPane.QUESTION_MESSAGE);
+            if(red.isSelected())
+                GameStatuses.turn = GameStatuses.TurnsEnum.PLAYER1;
+            else {
+                Pair<Integer, Integer> pair = AI.AIPlacePiece();
+                gamePanel.cpuAddPiece(pair);
+                GameStatuses.turn = GameStatuses.TurnsEnum.PLAYER2;
+            }
             player2Panel.player2Txt.setText("  CPU   ");
-            GameStatuses.turn = GameStatuses.TurnsEnum.PLAYER1;
             gameType = GameStatuses.GameType.SINGLE_PLAYER;
             showTurn();
             onePlay.setEnabled(false);
@@ -264,8 +279,16 @@ public class GameBoardGui extends JFrame {
                                             player1Panel.decrementTurns();
                                             if (!(Board.isPositionMilled(x, y))) {
                                                 GameStatuses.changeTurn();
-                                                Pair<Integer, Integer> pair = AI.AIPlacePiece();
-                                                gamePanel.cpuAddPiece(pair);
+                                                showTurn();
+                                                if (Player2Panel.hasTurn()) {
+                                                    Pair<Integer, Integer> pair = AI.AIPlacePiece();
+                                                    gamePanel.cpuAddPiece(pair);
+                                                }
+                                                else {
+                                                    Pair<Pair<Integer, Integer>, Pair<Integer, Integer>> movePair = AI.AIMovePiece();
+                                                    gamePanel.cpuSelectPiece(movePair.getKey());
+                                                    gamePanel.cpuSwapPiece(movePair.getValue());
+                                                }
                                             }
                                             gamePanel.showMills();
                                             break;
