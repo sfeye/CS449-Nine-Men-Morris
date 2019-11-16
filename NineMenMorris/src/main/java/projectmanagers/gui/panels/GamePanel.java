@@ -9,7 +9,7 @@ import java.util.Timer;
 import javafx.util.Pair;
 import main.java.projectmanagers.gui.GameBoardGui;
 import main.java.projectmanagers.gui.components.*;
-import main.java.projectmanagers.logic.AI;
+import main.java.projectmanagers.CPUPlayer.AI;
 import main.java.projectmanagers.logic.Board;
 import main.java.projectmanagers.logic.GameStatuses;
 
@@ -23,7 +23,7 @@ public class GamePanel extends JPanel {
     public static ArrayList<BoardPieces> boardPieces;
     public static ArrayList<PlayerPieces> player1Pieces;
     public static ArrayList<PlayerPieces> player2Pieces;
-    private static PlayerPieces selectedPiece;
+    public static PlayerPieces selectedPiece;
     private Timer timer;
 
     public GamePanel () {
@@ -38,14 +38,17 @@ public class GamePanel extends JPanel {
     public void cpuAddPiece(Pair<Integer, Integer> pair) {
         for(BoardPieces blackPiece : boardPieces){
             if(blackPiece.getXCoordinate() == pair.getKey() && blackPiece.getYCoordinate() == pair.getValue()) {
+                blackPiece.beforeMove();
                 timer = new Timer();
                 timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
+                        blackPiece.afterMove();
                         addPlayer2Piece(blackPiece);
                         GameBoardGui.player2Panel.decrementTurns();
                         if(Board.isPositionMilled(pair.getKey(), pair.getValue())) {
                             showMills();
+                            GameBoardGui.cpuAlert(true);
                             cpuRemovePiece(AI.AIRemovePiece());
                         }
                         else {
@@ -53,7 +56,7 @@ public class GamePanel extends JPanel {
                             GameBoardGui.showTurn();
                         }
                     }
-                }, 1000);
+                }, 800);
             }
         }
     }
@@ -61,8 +64,9 @@ public class GamePanel extends JPanel {
     public void cpuSelectPiece (Pair<Integer, Integer> pair) {
         deselectPiece();
         for (PlayerPieces playerPiece : player2Pieces) {
-            if (playerPiece.getXCoordinate() == pair.getKey() && playerPiece.getYCoordinate() == pair.getValue())
+            if (playerPiece.getXCoordinate() == pair.getKey() && playerPiece.getYCoordinate() == pair.getValue()) {
                 setSelectedPiece(playerPiece);
+            }
         }
     }
     // takes a pair for AI coordinates to determine board piece to swap with previously selected piece
@@ -70,14 +74,16 @@ public class GamePanel extends JPanel {
     public void cpuSwapPiece (Pair<Integer, Integer> pair) {
         for(BoardPieces blackPiece : boardPieces){
             if(blackPiece.getXCoordinate() == pair.getKey() && blackPiece.getYCoordinate() == pair.getValue()) {
+                blackPiece.beforeMove();
                 timer = new Timer();
                 timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
-                        deselectPiece();
+                        blackPiece.afterMove();
                         swapPlayerPiece(blackPiece, getSelectedPiece());
                         if(Board.isPositionMilled(pair.getKey(), pair.getValue())) {
                             showMills();
+                            GameBoardGui.cpuAlert(true);
                             cpuRemovePiece(AI.AIRemovePiece());
                         }
                         else {
@@ -85,7 +91,7 @@ public class GamePanel extends JPanel {
                             GameBoardGui.showTurn();
                         }
                     }
-                }, 2000);
+                }, 1500);
             }
         }
     }
@@ -103,8 +109,9 @@ public class GamePanel extends JPanel {
                         millRemove(playerPiece);
                         GameStatuses.changeTurn();
                         GameBoardGui.showTurn();
+                        GameBoardGui.cpuAlert(false);
                     }
-                }, 2000);
+                }, 1500);
             }
         }
     }
@@ -221,6 +228,7 @@ public class GamePanel extends JPanel {
     // Adds a new player piece in the beginning stage of a game
     public void addPlayer1Piece(BoardPieces piece) {
         remove(piece);
+        deselectPiece();
         gbc.gridx = piece.getXCoordinate(); gbc.gridy = piece.getYCoordinate();
         player1Pieces.get(RED_PLAYER.getTurns()).setXCoordinate(piece.getXCoordinate());
         player1Pieces.get(RED_PLAYER.getTurns()).setYCoordinate(piece.getYCoordinate());
@@ -237,6 +245,8 @@ public class GamePanel extends JPanel {
         player2Pieces.get(BLUE_PLAYER.getTurns()).setYCoordinate(piece.getYCoordinate());
         player2Pieces.get(BLUE_PLAYER.getTurns()).setOL(Color.black);
         add(player2Pieces.get(BLUE_PLAYER.getTurns()), gbc);
+        if(GameBoardGui.gameType.equals(GameStatuses.GameType.SINGLE_PLAYER))
+            setSelectedPiece(player2Pieces.get(BLUE_PLAYER.getTurns()));
         Board.placePiece(piece.getXCoordinate(), piece.getYCoordinate());
         revalidate();
         repaint();
@@ -255,6 +265,7 @@ public class GamePanel extends JPanel {
         buildArrays();
         gbc = new GridBagConstraints();
         gbc.weighty = 0.1; gbc.weightx = 0.1;
+        gbc.fill = GridBagConstraints.BOTH;
         setLayout(new GridBagLayout());
         setBackground(new Color(153,133,97));
         drawBoardLines();
@@ -294,24 +305,20 @@ public class GamePanel extends JPanel {
                 if(Board.position(i, j) == INVALID){
                     gbc.gridx = i; gbc.gridy = j;
                     if ((j == 0 || j == 1 || j == 5 || j == 6) && (i != 0 && i != 6)) {
-                        gbc.fill = GridBagConstraints.HORIZONTAL;
                         add(new BoardLines(2), gbc);
                     }
                     else if (j != 3 && i != 3){
-                        gbc.fill = GridBagConstraints.VERTICAL;
                         add(new BoardLines(3), gbc);
                     }
                 }
                 else {
                     gbc.gridx = i; gbc.gridy = j;
-                    gbc.fill = GridBagConstraints.HORIZONTAL;
                     if (((i == 1 || i == 5) && j == 3) || (i == 3 && j != 3))
                         add(new BoardLines(7), gbc);
                     else if ( (i == 0 || i == 1 || (i == 4 && j == 3) || (i == 2 && j != 3)))
                         add(new BoardLines(1), gbc);
                     else if ( (i == 5 || i == 6 || (i == 2 && j == 3) || (i == 4 && j != 3)))
                         add(new BoardLines(5), gbc);
-                    gbc.fill = GridBagConstraints.VERTICAL;
                     if ((j == 1 || j == 2) && i != 3 || (j == 4 && i == 3) || (j == 0 && (i == 0 || i == 3 || i == 6)))
                         add(new BoardLines(0), gbc);
                     else if ((( j == 5 || j == 4) && i != 3) || (j == 2 && i == 3) || (j == 6 && (i == 0 || i == 3 || i == 6)))
@@ -321,6 +328,5 @@ public class GamePanel extends JPanel {
                 }
             }
         }
-        gbc.fill = GridBagConstraints.NONE;
     }
 }

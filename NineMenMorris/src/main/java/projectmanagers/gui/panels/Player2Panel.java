@@ -23,6 +23,7 @@ public class Player2Panel extends JPanel {
     // setups the side panels to show number of pieces to place and title of player number
     private void buildPanel () {
         gbc.weighty = 1;    gbc.gridy = 0;   gbc.gridx = 0;
+        gbc.fill = GridBagConstraints.BOTH;
         setLayout(new GridBagLayout());
         setBackground(bgc);
         setPreferredSize(new Dimension(80,600));

@@ -1,7 +1,7 @@
 package main.java.projectmanagers.gui;
 import javafx.util.Pair;
 import main.java.projectmanagers.gui.panels.*;
-import main.java.projectmanagers.logic.AI;
+import main.java.projectmanagers.CPUPlayer.AI;
 import main.java.projectmanagers.logic.Board;
 import main.java.projectmanagers.logic.GameStatuses;
 import static main.java.projectmanagers.trackers.PlayerTracking.BLUE_PLAYER;
@@ -15,7 +15,7 @@ import java.util.List;
 public class GameBoardGui extends JFrame {
     private JPanel masterPanel;
     private GamePanel gamePanel;
-    private TitlePanel titlePanel;
+    private static TitlePanel titlePanel;
     private ButtonPanel buttonPanel;
     private static Player1Panel player1Panel;
     public static Player2Panel player2Panel;
@@ -24,7 +24,7 @@ public class GameBoardGui extends JFrame {
     private GameStatuses.PlayerPlay player1Play = GameStatuses.PlayerPlay.DESELECTED;
     private GameStatuses.PlayerPlay player2Play = GameStatuses.PlayerPlay.DESELECTED;
     private GameStatuses.GamePlay gamePlay = GameStatuses.getGamePlay();
-    private GameStatuses.GameType gameType = GameStatuses.GameType.MENU;
+    public static GameStatuses.GameType gameType = GameStatuses.GameType.MENU;
 
 
     private final int MAX_HEIGHT = 600;
@@ -75,7 +75,7 @@ public class GameBoardGui extends JFrame {
         buttonPanel.add(twoPlay);
         buttonPanel.add(reset);
         onePlay.addActionListener(actionEvent -> {
-            player2Panel.player2Txt.setText(" CPU ");
+            player2Panel.player2Txt.setText("  CPU   ");
             GameStatuses.turn = GameStatuses.TurnsEnum.PLAYER1;
             gameType = GameStatuses.GameType.SINGLE_PLAYER;
             showTurn();
@@ -116,16 +116,17 @@ public class GameBoardGui extends JFrame {
             alertMessages();
             P1hasMill = false;  P2hasMill = false;
             showTurn();
-            player2Panel.player2Txt.setText("Player 2");
+            player2Panel.player2Txt.setText(" Player 2 ");
             onePlay.setEnabled(true);
             twoPlay.setEnabled(true);
             reset.setEnabled(false);
             revalidate();
             repaint();
+            GameStatuses.turnCounter = 1;
         });
     }
     // alerting messages, only alerts for mills at the moment. possibility for tutorial version
-    public void alertMessages() {
+    private void alertMessages() {
         if(player2Play.equals(GameStatuses.PlayerPlay.MILLABLE))
             titlePanel.lAlert.setText("   Player 1 has a mill!");
         else if(player1Play.equals(GameStatuses.PlayerPlay.MILLABLE))
@@ -135,9 +136,16 @@ public class GameBoardGui extends JFrame {
             titlePanel.rAlert.setText("                          ");
         }
     }
+    public static void cpuAlert(boolean call) {
+        if(call)
+            titlePanel.rAlert.setText("CPU has a mill!        ");
+        else
+            titlePanel.rAlert.setText("                          ");
+    }
     // Method initializes the board JFrame and sets up default GUI
-    public static void start() {
+    public static void start() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
         JFrame frame = new JFrame("CS 449 Project");
+        UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         frame.setResizable(true);
         frame.setContentPane(new GameBoardGui().masterPanel);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -258,9 +266,6 @@ public class GameBoardGui extends JFrame {
                                                 GameStatuses.changeTurn();
                                                 Pair<Integer, Integer> pair = AI.AIPlacePiece();
                                                 gamePanel.cpuAddPiece(pair);
-                                                if (Board.isPositionMilled(pair.getKey(), pair.getValue())) {
-                                                    gamePanel.cpuRemovePiece(AI.AIRemovePiece());
-                                                }
                                             }
                                             gamePanel.showMills();
                                             break;
@@ -276,9 +281,9 @@ public class GameBoardGui extends JFrame {
                                                 if (!P1hasMill) {
                                                     GameStatuses.changeTurn();
                                                     showTurn();
-                                                    List<Pair<Integer, Integer>> list = AI.AIMovePiece(false);
-                                                    gamePanel.cpuSelectPiece(list.get(0));
-                                                    gamePanel.cpuSwapPiece(list.get(1));
+                                                    Pair<Pair<Integer, Integer>, Pair<Integer, Integer>> movePair = AI.AIMovePiece();
+                                                    gamePanel.cpuSelectPiece(movePair.getKey());
+                                                    gamePanel.cpuSwapPiece(movePair.getValue());
                                                 }
                                             }
                                             break;
@@ -299,7 +304,6 @@ public class GameBoardGui extends JFrame {
                             }
                         }
                     }
-                    gamePanel.showMills();
                     showTurn();
                     alertMessages();
                 }
@@ -374,6 +378,7 @@ public class GameBoardGui extends JFrame {
                                         Pair<Integer, Integer> pair = AI.AIPlacePiece();
                                         gamePanel.cpuAddPiece(pair);
                                     }
+                                    gamePanel.showMills();
                                     break;
                                 }
                                 break;
@@ -385,10 +390,10 @@ public class GameBoardGui extends JFrame {
                                             gamePanel.millRemove(GamePanel.player2Pieces.get(temp));
                                             GameStatuses.changeTurn();
                                             P1hasMill = false;
-                                            if(gameType.equals(GameStatuses.GameType.SINGLE_PLAYER)) {
-                                                List<Pair<Integer, Integer>> list = AI.AIMovePiece(false);
-                                                gamePanel.cpuSelectPiece(list.get(0));
-                                                gamePanel.cpuSwapPiece(list.get(1));
+                                            if(gameType.equals(GameStatuses.GameType.SINGLE_PLAYER) && BLUE_PLAYER.getPieces() >= 3) {
+                                                Pair<Pair<Integer, Integer>, Pair<Integer, Integer>> movePair = AI.AIMovePiece();
+                                                gamePanel.cpuSelectPiece(movePair.getKey());
+                                                gamePanel.cpuSwapPiece(movePair.getValue());
                                             }
                                         }
                                         break;

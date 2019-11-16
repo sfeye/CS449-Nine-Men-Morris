@@ -13,8 +13,8 @@ import static main.java.projectmanagers.trackers.PlayerTracking.*;
 // Contains the logic and data for the Board values
 public class Board {
 
-    static public List<List<Position>> boardArray = new ArrayList<>();
-    static public List<MillConditions> boardMills = new ArrayList<>();
+    static private List<List<Position>> boardArray = new ArrayList<>();
+    static private List<MillConditions> boardMills = new ArrayList<>();
 
     public Board() {
         startingBoard();
@@ -99,7 +99,7 @@ public class Board {
         if ((boardArray.get(xpos).get(ypos).getStatus() == EMPTY) && (boardArray.get(xpos).get(ypos).getStatus() != INVALID)) {
             boardArray.get(xpos).get(ypos).setStatus(updateColor);
             PLAYER_LOOKUP.get(updateColor).incrementPieces();
-
+            turnCounter++;
             return boardArray.get(xpos).get(ypos).determineMills();
         } else {
             return false;
