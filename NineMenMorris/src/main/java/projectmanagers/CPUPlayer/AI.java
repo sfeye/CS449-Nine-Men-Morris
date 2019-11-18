@@ -6,23 +6,17 @@ import main.java.projectmanagers.logic.GameStatuses;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-import static main.java.projectmanagers.logic.GameStatuses.ColorStatus.BLUE;
 import static main.java.projectmanagers.logic.GameStatuses.ColorStatus.EMPTY;
-import static main.java.projectmanagers.logic.GameStatuses.ColorStatus.INVALID;
 import static main.java.projectmanagers.logic.GameStatuses.ColorStatus.RED;
 import static main.java.projectmanagers.trackers.PlayerTracking.BLUE_PLAYER;
+import static main.java.projectmanagers.trackers.PlayerTracking.RED_PLAYER;
 
 public class AI {
 
-    static private Integer randomX;
-    static private Integer randomY;
-
     static public Pair<Integer, Integer> AIPlacePiece() {
 
-
-        if(GameStatuses.turnCounter == 1)
+        if (GameStatuses.turnCounter == 1)
             return new Pair<>(0, 0);
         else if (GameStatuses.turnCounter == 2) {
             if (Board.position(0, 0) == RED && Board.position(6, 6) == EMPTY)
@@ -71,12 +65,7 @@ public class AI {
         */
 
         //if none are applicable, place a random piece
-        while (true) {
-            cycleRandom();
-            if (Board.position(randomX, randomY) == EMPTY) {
-                return new Pair<>(randomX, randomY);
-            }
-        }
+        return Board.getRandomEmptyPosition();
     }
 
     static public Pair<Pair<Integer, Integer>, Pair<Integer, Integer>> AIMovePiece() {
@@ -124,38 +113,32 @@ public class AI {
         Pair<Integer, Integer> newPosition = null;
         List<Pair<Integer, Integer>> adjacent;
 
+        boolean hasEmpty = false;
         // Get Current Piece
-        while (currentPosition == null) {
-            cycleRandom();
-            adjacent = Board.adjacentPieces(randomX, randomY);
+        while (!hasEmpty) {
+            currentPosition = BLUE_PLAYER.getRandomPiece();
+            adjacent = Board.adjacentPieces(currentPosition.getKey(), currentPosition.getValue());
 
-            if (BLUE_PLAYER.getPieces() > 3 && Board.position(randomX, randomY) == BLUE) {
+            if (BLUE_PLAYER.getPieces() > 3) {
                 for (Pair<Integer, Integer> pair : adjacent) {
                     if (Board.position(pair.getKey(), pair.getValue()) == EMPTY) {
-                        currentPosition = new Pair<>(randomX, randomY);
+                        hasEmpty = true;
                     }
                 }
-            } else if (BLUE_PLAYER.getPieces() <= 3 && Board.position(randomX, randomY) == BLUE) {
-                currentPosition = new Pair<>(randomX, randomY);
+            } else if (BLUE_PLAYER.getPieces() <= 3) {
+                hasEmpty = true;
             }
 
         }
 
         // Get new space
         if (BLUE_PLAYER.getPieces() <= 3) {
-            while(newPosition == null) {
-                cycleRandom();
-
-                if (Board.position(randomX, randomY) == EMPTY) {
-                    newPosition = new Pair<>(randomX, randomY);
-                }
-            }
-        }
-        else {
+            newPosition = Board.getRandomEmptyPosition();
+        } else {
             adjacent = Board.adjacentPieces(currentPosition.getKey(), currentPosition.getValue());
 
-            for (Pair pair : adjacent) {
-                if (Board.position((Integer) pair.getKey(), (Integer) pair.getValue()) == EMPTY) {
+            for (Pair<Integer, Integer> pair : adjacent) {
+                if (Board.position(pair.getKey(), pair.getValue()) == EMPTY) {
                     newPosition = pair;
                     break;
                 }
@@ -171,27 +154,7 @@ public class AI {
         //MAYBE: else if my opponent is two moves away from a potential mill, remove that piece
 
         //else, remove a random piece of my opponents
-        while (true) {
-            if (Board.position(randomX, randomY) == RED) {
-                return new Pair<>(randomX, randomY);
-            }
-            else {
-                cycleRandom();
-            }
-        }
-    }
-
-    static private void cycleRandom() {
-        Random random = new Random();
-        boolean cycler = true;
-
-        while(cycler) {
-            randomX = random.nextInt(6);
-            randomY = random.nextInt(6);
-            if (!(Board.position(randomX, randomY) == INVALID)){
-                cycler = false;
-            }
-        }
+        return RED_PLAYER.getRandomPiece();
     }
 
 }

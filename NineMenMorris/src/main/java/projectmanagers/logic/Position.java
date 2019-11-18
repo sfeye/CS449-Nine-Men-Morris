@@ -38,7 +38,7 @@ public class Position {
     }
 
     // Initializes the position as EMPTY and sets the mills that this position owns
-    public void initialize(MillConditions millConditionsX, MillConditions millConditionsY){
+    public void initialize(MillConditions millConditionsX, MillConditions millConditionsY) {
         this.colorStatus = EMPTY;
         this.millConditionsX = millConditionsX;
         this.millConditionsY = millConditionsY;

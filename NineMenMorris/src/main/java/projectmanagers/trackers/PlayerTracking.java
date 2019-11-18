@@ -15,6 +15,7 @@ public class PlayerTracking {
 
     // Provides a map to lookup a player based on a ColorStatus
     final public static Map<ColorStatus, Player> PLAYER_LOOKUP = new HashMap<>();
+
     static {
         PLAYER_LOOKUP.put(RED, RED_PLAYER);
         PLAYER_LOOKUP.put(BLUE, BLUE_PLAYER);

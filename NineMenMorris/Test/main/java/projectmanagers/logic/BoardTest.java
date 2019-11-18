@@ -22,7 +22,7 @@ public class BoardTest {
     public void setUp() {
         RED_PLAYER.setInitialVariables();
         BLUE_PLAYER.setInitialVariables();
-        Board.startingBoard();
+        Board.reset();
         GameStatuses.turn = PLAYER1;
     }
 
@@ -31,6 +31,7 @@ public class BoardTest {
         Board.placePiece(0, 0);
         assertEquals(1, RED_PLAYER.getPieces());
         assertEquals(RED, Board.position(0,0));
+        assertFalse(Board.getEmptyPieces().contains(new Pair<>(0, 0)));
     }
 
     @Test
@@ -56,6 +57,7 @@ public class BoardTest {
         Board.placePiece(0, 0);
         assertEquals(1, BLUE_PLAYER.getPieces());
         assertEquals(BLUE, Board.position(0,0));
+        assertFalse(Board.getEmptyPieces().contains(new Pair<>(0, 0)));
     }
 
     @Test
@@ -79,7 +81,7 @@ public class BoardTest {
         Board.placePiece(0, 0);
 
         assertTrue(Board.remove(0, 0));
-
+        assertTrue(Board.getEmptyPieces().contains(new Pair<>(0, 0)));
         assertEquals(0, RED_PLAYER.getPieces());
     }
 
@@ -88,7 +90,7 @@ public class BoardTest {
         Board.placePiece(0, 0);
 
         assertTrue(Board.remove(0, 0));
-
+        assertTrue(Board.getEmptyPieces().contains(new Pair<>(0, 0)));
         assertEquals(0, BLUE_PLAYER.getPieces());
     }
 
