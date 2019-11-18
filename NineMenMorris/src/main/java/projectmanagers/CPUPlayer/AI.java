@@ -7,13 +7,17 @@ import main.java.projectmanagers.logic.GameStatuses;
 import java.util.ArrayList;
 import java.util.List;
 
-import static main.java.projectmanagers.logic.GameStatuses.ColorStatus.EMPTY;
-import static main.java.projectmanagers.logic.GameStatuses.ColorStatus.RED;
+
+import static main.java.projectmanagers.logic.GameStatuses.ColorStatus.*;
+
 import static main.java.projectmanagers.trackers.PlayerTracking.BLUE_PLAYER;
 import static main.java.projectmanagers.trackers.PlayerTracking.RED_PLAYER;
 
 public class AI {
 
+
+    static public Pair<Integer, Integer> NO_PLACE = new Pair<>(-1, -1);
+  
     static public Pair<Integer, Integer> AIPlacePiece() {
 
         if (GameStatuses.turnCounter == 1)
@@ -30,7 +34,7 @@ public class AI {
         }
 
 
-        List<Pair<Integer, Integer>> myPieces = new ArrayList<>();
+        Pair<Integer, Integer> myPiece;
 
 //        for (int i = 0; i < 7; i++) {
 //            for (int j = 0; i < 7; j++) {
@@ -64,8 +68,20 @@ public class AI {
         }
         */
 
-        //if none are applicable, place a random piece
-        return Board.getRandomEmptyPosition();
+
+        // Basic mill placing or Random piece
+
+        myPiece = DetermineMove.placementMills(BLUE);
+        if (myPiece.equals(NO_PLACE)){
+            myPiece = DetermineMove.placementMills(RED);
+        }
+        if (myPiece.equals(NO_PLACE)) {
+            return Board.getRandomEmptyPosition();
+        } else {
+            return myPiece;
+        }
+
+
     }
 
     static public Pair<Pair<Integer, Integer>, Pair<Integer, Integer>> AIMovePiece() {
@@ -109,6 +125,11 @@ public class AI {
         */
 
         //if none are applicable, move random piece
+        Pair<Pair<Integer, Integer>, Pair<Integer, Integer>> currNew = DetermineMove.movementMills(BLUE);
+        if (!(currNew.getKey().equals(NO_PLACE))) {
+            return currNew;
+        }
+
         Pair<Integer, Integer> currentPosition = null;
         Pair<Integer, Integer> newPosition = null;
         List<Pair<Integer, Integer>> adjacent;
@@ -154,6 +175,14 @@ public class AI {
         //MAYBE: else if my opponent is two moves away from a potential mill, remove that piece
 
         //else, remove a random piece of my opponents
+        List<Pair<Integer, Integer>> enemyPieces = RED_PLAYER.getPlacedPieces();
+        for (Pair<Integer, Integer> piece : enemyPieces) {
+            if ((Board.isPositionCloseToMilled(piece.getKey(), piece.getValue())).equals(EMPTY)) {
+                return piece;
+            }
+        }
+
+
         return RED_PLAYER.getRandomPiece();
     }
 

@@ -113,6 +113,12 @@ public class Board {
         return mills;
     }
 
+
+    static public ColorStatus isPositionCloseToMilled(int xpos, int ypos) {
+        return boardArray.get(xpos).get(ypos).closeToMilled();
+    }
+
+
     // Returns all empty pieces on the board
     static public List<Pair<Integer, Integer>> getEmptyPieces() {
         return new ArrayList<>(emptyPieces);

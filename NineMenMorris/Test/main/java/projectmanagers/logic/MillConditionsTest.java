@@ -3,16 +3,14 @@ package main.java.projectmanagers.logic;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static main.java.projectmanagers.logic.GameStatuses.ColorStatus.RED;
+import static org.junit.Assert.*;
 
 public class MillConditionsTest {
-    private Board testBoard = new Board();
 
     @Before
     public void setUp() {
-        Board testBoard = new Board();
-        Board.startingBoard();
+        Board.reset();
     }
 
     @Test
@@ -32,5 +30,21 @@ public class MillConditionsTest {
 
         Board.remove(0, 6);
         assertFalse(Board.isPositionMilled(0, 3));
+    }
+
+    @Test
+    public void closeToMill_twoPiecesPlacedOnSameAxis() {
+        Board.placePiece( 0, 0);
+        Board.placePiece( 0, 3);
+
+        assertEquals(RED, Board.isPositionCloseToMilled(0, 6));
+    }
+
+    @Test
+    public void closeToMill_twoPiecesPlacedOnOppositeAxis() {
+        Board.placePiece( 3, 0);
+        Board.placePiece( 0, 3);
+
+        assertEquals(RED, Board.isPositionCloseToMilled(0, 6));
     }
 }
