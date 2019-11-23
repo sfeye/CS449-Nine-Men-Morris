@@ -1,6 +1,7 @@
 package main.java.projectmanagers.logic;
 
 import javafx.util.Pair;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Collections;
@@ -11,10 +12,15 @@ import static org.junit.Assert.assertEquals;
 public class PlayerTest {
     private Player mockPlayer = new Player(RED);
 
+    @Before
+    public void setUp() {
+        Board.reset();
+    }
+
     @Test
     public void addPlacedPiece_correctInputs() {
         mockPlayer.addPlacedPiece(0, 0);
-        assertEquals(Collections.singletonList(new Pair(0, 0)), mockPlayer.getPlacedPieces());
+        assertEquals(Collections.singletonList(new Pair<>(0, 0)), mockPlayer.getPlacedPieces());
     }
 
     @Test

@@ -1,9 +1,11 @@
 package main.java.projectmanagers.logic;
 
+import javafx.util.Pair;
 import org.junit.Before;
 import org.junit.Test;
 
-import static main.java.projectmanagers.logic.GameStatuses.ColorStatus.RED;
+import static main.java.projectmanagers.logic.GameStatuses.ColorStatus.*;
+import static main.java.projectmanagers.logic.GameStatuses.turn;
 import static org.junit.Assert.*;
 
 public class MillConditionsTest {
@@ -34,10 +36,11 @@ public class MillConditionsTest {
 
     @Test
     public void closeToMill_twoPiecesPlacedOnSameAxis() {
+        turn = GameStatuses.TurnsEnum.PLAYER1;
         Board.placePiece( 0, 0);
         Board.placePiece( 0, 3);
 
-        assertEquals(RED, Board.isPositionCloseToMilled(0, 6));
+        assertEquals(RED, Board.isPositionCloseToMilled(new Pair<>(0, 6)).getKey());
     }
 
     @Test
@@ -45,6 +48,6 @@ public class MillConditionsTest {
         Board.placePiece( 3, 0);
         Board.placePiece( 0, 3);
 
-        assertEquals(RED, Board.isPositionCloseToMilled(0, 6));
+        assertEquals(INVALID, Board.isPositionCloseToMilled(new Pair<>(0, 6)).getKey());
     }
 }

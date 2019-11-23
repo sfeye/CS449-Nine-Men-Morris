@@ -1,29 +1,34 @@
 package main.java.projectmanagers.logic;
 
+import javafx.util.Pair;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import static main.java.projectmanagers.logic.GameStatuses.ColorStatus.EMPTY;
 import static main.java.projectmanagers.logic.GameStatuses.ColorStatus;
 import static main.java.projectmanagers.logic.GameStatuses.ColorStatus.INVALID;
+import static main.java.projectmanagers.logic.GameStatuses.NO_PLACE;
 
 // Class containing X Y information about pieces contained within a mill
 public class MillConditions {
-    private Integer x1, y1, x2, y2, x3, y3;
-    private ColorStatus pos1, pos2, pos3;
+    private Pair<Integer, Integer> coord1, coord2, coord3;
     private boolean milled;
 
     // Sets a valid mill with each position's given X Y
     MillConditions(int x1, int y1, int x2, int y2, int x3, int y3) {
-        this.x1 = x1;
-        this.y1 = y1;
-        this.x2 = x2;
-        this.y2 = y2;
-        this.x3 = x3;
-        this.y3 = y3;
+        this.coord1 = new Pair<>(x1, y1);
+        this.coord2 = new Pair<>(x2, y2);
+        this.coord3 = new Pair<>(x3, y3);
         this.milled = false;
     }
 
     // Logic to determine whether a mill exists
     boolean determineMill() {
-        update();
+        ColorStatus pos1 = Board.position(coord1);
+        ColorStatus pos2 = Board.position(coord2);
+        ColorStatus pos3 = Board.position(coord3);
         if (milled || pos1 == EMPTY || pos2 == EMPTY || pos3 == EMPTY) {
             return false;
         } else if ((pos1 == pos2) && (pos2 == pos3)) {
@@ -35,7 +40,6 @@ public class MillConditions {
 
     // Sets milled to false
     void unsetMillStatus() {
-        update();
         milled = false;
     }
 
@@ -44,25 +48,27 @@ public class MillConditions {
         return milled;
     }
 
-    public ColorStatus closeToMilled() {
-        update();
+    public Pair<ColorStatus, List<Pair<Integer, Integer>>> closeToMilled() {
+        ColorStatus pos1 = Board.position(coord1);
+        ColorStatus pos2 = Board.position(coord2);
+        ColorStatus pos3 = Board.position(coord3);
+
+        List<Pair<Integer, Integer>> coordsList = new ArrayList<>();
+        coordsList.add(coord1);
+        coordsList.add(coord2);
+        coordsList.add(coord3);
+
         if (milled) {
-            return INVALID;
+            return new Pair<>(INVALID, Collections.singletonList(NO_PLACE));
         } else if ((pos1.equals(pos2) && !pos1.equals(EMPTY) && pos3.equals(EMPTY))) {
-            return pos1;
+            return new Pair<>(pos1, coordsList);
         } else if ((pos2.equals(pos3) && !pos2.equals(EMPTY) && pos1.equals(EMPTY))) {
-            return pos2;
+            return new Pair<>(pos2, coordsList);
         }else if ((pos1.equals(pos3) && !pos1.equals(EMPTY) && pos2.equals(EMPTY))) {
-            return pos1;
+            return new Pair<>(pos1, coordsList);
         } else {
-            return INVALID;
+            return new Pair<>(INVALID, Collections.singletonList(NO_PLACE));
         }
     }
 
-    private void update() {
-        pos1 = Board.position(x1, y1);
-        pos2 = Board.position(x2, y2);
-        pos3 = Board.position(x3, y3);
-
-    }
 }

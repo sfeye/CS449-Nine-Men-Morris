@@ -1,5 +1,6 @@
 package main.java.projectmanagers.logic;
 
+import javafx.util.Pair;
 import main.java.projectmanagers.gui.panels.Player1Panel;
 import main.java.projectmanagers.gui.panels.Player2Panel;
 
@@ -18,8 +19,13 @@ public class GameStatuses {
 
     public enum TurnsEnum {PLAYER1, PLAYER2, MENU}
 
+    public enum GameDifficulty {BEGINNER, EASY, MEDIUM}
+
     public static TurnsEnum turn = TurnsEnum.MENU;
+
     public static int turnCounter = 1;
+
+    static public Pair<Integer, Integer> NO_PLACE = new Pair<>(-1, -1);
 
     // Returns the stage of the game
     public static GamePlay getGamePlay() {

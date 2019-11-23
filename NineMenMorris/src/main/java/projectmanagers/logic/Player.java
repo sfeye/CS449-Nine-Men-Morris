@@ -71,11 +71,14 @@ public class Player {
         placedPieces.remove(new Pair<>(xpos, ypos));
     }
 
-    public Pair<Integer, Integer> getRandomPiece() {
-        if (placedPieces.isEmpty()){
-            return new Pair<>(-1, -1);
+    public boolean allPiecesMilled() {
+        int counter = 0;
+        for (Pair<Integer, Integer> position : placedPieces) {
+            if (Board.isPositionMilled(position.getKey(), position.getValue())) {
+                counter++;
+            }
         }
-        Random rand = new Random();
-        return placedPieces.get(rand.nextInt(placedPieces.size()));
+        return (counter == placedPieces.size());
     }
+
 }

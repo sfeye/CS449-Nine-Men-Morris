@@ -177,4 +177,10 @@ public class BoardTest {
     public void adjacentPieces_returnsEmptyListOnBadInput() {
         assertEquals(Collections.emptyList(), Board.adjacentPieces(1, 0));
     }
+
+    @Test
+    public void position_returnsOnPairInput() {
+        Board.placePiece(0, 0);
+        assertEquals(RED, Board.position(new Pair<>(0, 0)));
+    }
 }

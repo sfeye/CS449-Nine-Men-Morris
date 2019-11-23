@@ -113,21 +113,17 @@ public class Board {
         return mills;
     }
 
-
-    static public ColorStatus isPositionCloseToMilled(int xpos, int ypos) {
-        return boardArray.get(xpos).get(ypos).closeToMilled();
+    static public Pair<ColorStatus, List<Pair<Integer, Integer>>> isPositionCloseToMilled(Pair<Integer, Integer> coord) {
+        return boardArray.get(coord.getKey()).get(coord.getValue()).closeToMilled();
     }
-
 
     // Returns all empty pieces on the board
     static public List<Pair<Integer, Integer>> getEmptyPieces() {
         return new ArrayList<>(emptyPieces);
     }
 
-    // Returns a random pair of coordinates for an empty space
-    static public Pair<Integer, Integer> getRandomEmptyPosition() {
-        Random rand = new Random();
-        return emptyPieces.get(rand.nextInt(emptyPieces.size()));
+    static public ColorStatus position(Pair<Integer, Integer> coord) {
+        return position(coord.getKey(), coord.getValue());
     }
 
     // Constructs the data structure for the initial board
@@ -192,7 +188,7 @@ public class Board {
 
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 7; j++) {
-                if (position(i, j).equals(EMPTY)){
+                if (position(i, j).equals(EMPTY)) {
                     emptyPieces.add(new Pair<>(i, j));
                 }
             }
