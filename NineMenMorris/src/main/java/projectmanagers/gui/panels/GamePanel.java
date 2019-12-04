@@ -117,10 +117,10 @@ public class GamePanel extends JPanel {
     }
     // Method to remove a players piece if they are selected in a mill
     public void millRemove(PlayerPieces piece) {
+        Board.remove(piece.getXCoordinate(), piece.getYCoordinate());
         remove(piece);
         gbc.gridx = piece.getXCoordinate(); gbc.gridy = piece.getYCoordinate();
         add(getOrigin(piece), gbc);
-        Board.remove(piece.getXCoordinate(), piece.getYCoordinate());
         piece.setXCoordinate(8); piece.setYCoordinate(8);
         revalidate();
         repaint();
@@ -203,7 +203,7 @@ public class GamePanel extends JPanel {
         selectedPiece.setYCoordinate(piece.getYCoordinate());
     }
     // deselects all pieces and changes ol to black
-    public void deselectPiece() {
+    public static void deselectPiece() {
         for(PlayerPieces piece : player1Pieces)
             piece.deselectPiece();
         for(PlayerPieces piece : player2Pieces)

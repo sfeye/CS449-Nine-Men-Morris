@@ -414,6 +414,7 @@ public class GameBoardGui extends JFrame {
                                             GameStatuses.changeTurn();
                                             P1hasMill = false;
                                             if(gameType.equals(GameStatuses.GameType.SINGLE_PLAYER) && BLUE_PLAYER.getPieces() >= 3) {
+                                                GamePanel.deselectPiece();
                                                 Pair<Pair<Integer, Integer>, Pair<Integer, Integer>> movePair = AI.AIMovePiece();
                                                 gamePanel.cpuSelectPiece(movePair.getKey());
                                                 gamePanel.cpuSwapPiece(movePair.getValue());
@@ -421,7 +422,7 @@ public class GameBoardGui extends JFrame {
                                         }
                                         break;
                                     case SELECTED:
-                                        if (GameStatuses.turn.equals(GameStatuses.TurnsEnum.PLAYER2)) {
+                                        if (GameStatuses.turn.equals(GameStatuses.TurnsEnum.PLAYER2) && !gameType.equals(GameStatuses.GameType.SINGLE_PLAYER)) {
                                             player2Play = GameStatuses.PlayerPlay.DESELECTED;
                                             gamePanel.deselectPiece();
                                         }

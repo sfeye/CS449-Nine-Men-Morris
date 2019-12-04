@@ -32,128 +32,56 @@ public class AI {
                 return new Pair<>(6, 0);
         }
 
-
         Pair<Integer, Integer> myPiece;
-
-//        for (int i = 0; i < 7; i++) {
-//            for (int j = 0; i < 7; j++) {
-//                if (Board.boardArray.get(i).get(j).getStatus() == BLUE)
-//                    myPieces.add(new Pair<>(i, j));
-//            }
-//        }
-
-
-        //else if I have a potential mill, add piece to the free space
-
-        //else if opponent has a potential mill, add piece to the free space
-
-        //else if I have the potential to set up  a mill, place adjacent to placed piece
-        /*
-        for (int i = 0; i < myPieces.size(); i++) {
-            Pair<Integer, Integer> temp = myPieces.get(i);
-            List<Pair<Integer, Integer>> adjacent = Board.adjacentPieces(temp.getKey(), temp.getValue());
-
-            for (int j = 0; j < adjacent.size(); j++) {
-
-                if (Board.boardArray.get(adjacent.get(j).getKey()).get(adjacent.get(j).getValue()).getStatus() == EMPTY) {
-
-                    Pair<Integer, Integer> temp2 = adjacent.get(j);
-                    List<Pair<Integer, Integer>> adjacent2 = Board.adjacentPieces(temp2.getKey(), temp2.getValue());
-
-                    if (Board.boardArray.get(adjacent2.get(j).getKey()).get(adjacent2.get(j).getValue()).getStatus() == EMPTY)
-                        return adjacent.get(i);
-                }
-            }
-        }
-        */
-
-
-        // Basic mill placing or Random piece
 
         myPiece = DetermineMove.placementMills(BLUE);
         if (myPiece.equals(NO_PLACE)){
             myPiece = DetermineMove.placementMills(RED);
         }
         if (myPiece.equals(NO_PLACE)) {
-            return getRandom(EMPTY);
-        } else {
-            return myPiece;
+            myPiece = getRandom(EMPTY);
         }
-
-
+        return myPiece;
     }
 
     static public Pair<Pair<Integer, Integer>, Pair<Integer, Integer>> AIMovePiece() {
-
-        List<Pair<Integer, Integer>> swapPieces = new ArrayList<>();
-
-
-        //if I have potential mill, move piece to make the mill
-
-        //else if my opponent has a potential mill, move piece to the free space
-
-        //else if I am one move away from setting up a mill, move piece to the free space
-        List<Pair<Integer, Integer>> myPieces = new ArrayList<>();
-        /*
-        for (int i = 0; i < 7; i++) {
-            for (int j = 0; j < 7; j++) {
-                if (Board.boardArray.get(i).get(j).getStatus() == BLUE)
-                    myPieces.add(new Pair<>(i, j));
-            }
-        }
-
-        for (int i = 0; i < myPieces.size(); i++) {
-            Pair<Integer, Integer> temp = myPieces.get(i);
-            List<Pair<Integer, Integer>> adjacent = Board.adjacentPieces(temp.getKey(), temp.getValue());
-
-            for (int j = 0; j < adjacent.size(); j++) {
-
-                if (Board.boardArray.get(adjacent.get(j).getKey()).get(adjacent.get(j).getValue()).getStatus() == EMPTY) {
-
-                    Pair<Integer, Integer> temp2 = adjacent.get(j);
-                    List<Pair<Integer, Integer>> adjacent2 = Board.adjacentPieces(temp2.getKey(), temp2.getValue());
-
-                    if (Board.boardArray.get(adjacent2.get(j).getKey()).get(adjacent2.get(j).getValue()).getStatus() == EMPTY) {
-                        swapPieces.add(temp);
-                        swapPieces.add(adjacent.get(i));
-                        return swapPieces;
-                    }
-                }
-            }
-        }
-        */
-
-        //if none are applicable, move random piece
         Pair<Pair<Integer, Integer>, Pair<Integer, Integer>> currNew = DetermineMove.movementMills(BLUE);
-        if (!(currNew.getKey().equals(NO_PLACE))) {
+        if (!(currNew.getKey().equals(NO_PLACE) || currNew.getValue().equals(NO_PLACE))) {
             return currNew;
         }
 
-        Pair<Integer, Integer> currentPosition = null;
-        Pair<Integer, Integer> newPosition = null;
+        Pair<Integer, Integer> currentPosition = NO_PLACE;
+        Pair<Integer, Integer> newPosition = NO_PLACE;
         List<Pair<Integer, Integer>> adjacent;
 
-        boolean hasEmpty = false;
         // Get Current Piece
-        while (!hasEmpty) {
-            currentPosition = getRandom(BLUE);
-            adjacent = Board.adjacentPieces(currentPosition.getKey(), currentPosition.getValue());
+        while (currentPosition.equals(NO_PLACE)) {
+            Pair<Integer, Integer> tempCurrent = getRandom(BLUE);
+            adjacent = Board.adjacentPieces(tempCurrent.getKey(), tempCurrent.getValue());
 
-            if (BLUE_PLAYER.getPieces() > 3) {
-                for (Pair<Integer, Integer> pair : adjacent) {
-                    if (Board.position(pair).equals(EMPTY)) {
-                        hasEmpty = true;
+            if (BLUE_PLAYER.getPieces() <= 3) {
+                currentPosition = tempCurrent;
+            } else {
+                if (!adjacent.isEmpty()) {
+                    for (Pair<Integer, Integer> pair : adjacent) {
+                        if (Board.position(pair).equals(EMPTY)) {
+                            currentPosition = tempCurrent;
+                        }
                     }
                 }
-            } else if (BLUE_PLAYER.getPieces() <= 3) {
-                hasEmpty = true;
             }
-
         }
 
         // Get new space
         if (BLUE_PLAYER.getPieces() <= 3) {
-            newPosition = getRandom(EMPTY);
+            Pair<Integer, Integer> tempNew = DetermineMove.placementMills(BLUE);
+            if (tempNew.equals(NO_PLACE)){
+                tempNew = DetermineMove.placementMills(RED);
+            }
+            if (tempNew.equals(NO_PLACE)) {
+                tempNew = getRandom(EMPTY);
+            }
+            newPosition = tempNew;
         } else {
             adjacent = Board.adjacentPieces(currentPosition.getKey(), currentPosition.getValue());
 
@@ -170,14 +98,8 @@ public class AI {
     }
 
     static public Pair<Integer, Integer> AIRemovePiece() {
-
         Pair<Integer, Integer> removal =  NO_PLACE;
 
-        //If my opponent has a potential mill, remove that piece
-
-        //MAYBE: else if my opponent is two moves away from a potential mill, remove that piece
-
-        //else, remove a random piece of my opponents
         List<Pair<Integer, Integer>> enemyPieces = RED_PLAYER.getPlacedPieces();
         for (Pair<Integer, Integer> piece : enemyPieces) {
             if ((Board.isPositionCloseToMilled(piece)).getKey().equals(RED)) {
